@@ -18,7 +18,7 @@ const app = createServer();
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api', apiRoutes);
+app.use(`/${process.env.API_ROUTES_PREFIX}`, apiRoutes);
 app.get('/*', (req, res) => {
     throw createHttpError(400, 'Resource Not Found');
 });
