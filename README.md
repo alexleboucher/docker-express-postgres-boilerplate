@@ -13,13 +13,13 @@
 
 <br />
 
-## Overview
+## ∙ Overview
 
 The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication with session, error handling, etc.
 
 Try it out and give me your opinion on what you would like to see integrated.
 
-## Features
+## ∙ Features
 
 - **Docker containerization** to easily run your code anywhere and don't have to install tools like PostgreSQL on your computer.
 - **Simple Authentication** with [Passport](https://www.passportjs.org/).
@@ -33,23 +33,17 @@ Try it out and give me your opinion on what you would like to see integrated.
 - **Helpful logger** with [morgan](https://github.com/expressjs/morgan)
 - **A lot of other features** mainly integrated by [TypeORM](https://github.com/typeorm/typeorm) like [Entity listener and subscribers](https://typeorm.io/listeners-and-subscribers), [migrations](https://typeorm.io/migrations) or [transactions](https://typeorm.io/transactions)
 
-## Table of Contents
+## ∙ Table of Contents
 
 - [Getting Started](#getting-started)
-- [Scripts and Tasks](#scripts-and-tasks)
-- [Debugger in VSCode](#debugger-in-vscode)
-- [API Routes](#-api-routes)
-- [Project Structure](#-project-structure)
-- [Logging](#-logging)
-- [Event Dispatching](#-event-dispatching)
-- [Seeding](#-seeding)
-- [GraphQL](#-graph-q-l)
-- [Docker](#-docker)
-- [Further Documentations](#-further-documentations)
-- [Related Projects](#-related-projects)
-- [License](#-license)
+- [Scripts](#scripts)
+- [API Routes](#api-routes)
+- [Project Structure](#project-structure)
+- [Logging](#logging)
+- [Further Documentations](#further-documentations)
+- [License](#license)
 
-## Getting Started
+## ∙ Getting Started
 
 ### Step 1: Set up the Development Environment
 
@@ -100,7 +94,7 @@ yarn dev
 To test the server, you can query `http://localhost:8000/api/health` using [Postman](https://www.postman.com/) or just copy it in the address bar in your browser.
 If the server is running, you should receive `Server is up!` as response.
 
-## Scripts
+## ∙ Scripts
 
 All script are defined in the `package-scripts.js` file, but the most important ones are listed here.
 
@@ -136,7 +130,7 @@ The swagger and the monitor route can be altered in the `.env` file.
 | **/api/users**  | Example entity endpoint |
 | **/api/pets**   | Example entity endpoint |
 
-## Project Structure
+## ∙ Project Structure
 
 | Name                                        | Description |
 | ------------------------------------------- | ----------- |
@@ -166,7 +160,7 @@ The swagger and the monitor route can be altered in the `.env` file.
 | **tsconfig.json**                           | Typescript configuration file |
 | **yarn.lock**                               | Package lock file |
 
-## ❯ Logging
+## ∙ Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
 You can easily configurate it by passing an other [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`
@@ -176,7 +170,7 @@ Example:
 app.use(morgan('short'));
 ```
 
-## Further Documentations
+## ∙ Further Documentations
 
 | Name & Link                       | Description                       |
 | --------------------------------- | --------------------------------- |
@@ -189,6 +183,6 @@ app.use(morgan('short'));
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |
 | [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |
 
-## License
+## ∙ License
 
 [MIT](/LICENSE)
