@@ -1,14 +1,14 @@
 <h1 align="center">Docker Express Postgres Auth Boilerplate</h1>
 
 <p align="center">
-  <a href="https://stackshare.io/alexleboucher/docker-express-postgres-auth">
+  <a href="https://stackshare.io/alexleboucher/docker-express-postgres-boilerplate">
     <img src="https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat" alt="StackShare" />
   </a>
 </p>
 
 <p align="center">
   <b>A really simple boilerplate to build a REST API with authentication written in TypeScript and using Docker, Express, TypeORM and Passport</b></br>
-  <sub>Made by <a href="https://github.com/w3tecch">Alex Le Boucher</a></sub>
+  <sub>Made by <a href="https://github.com/alexleboucher">Alex Le Boucher</a></sub>
 </p>
 
 <br />
@@ -68,8 +68,8 @@ npm install --global yarn
 ### Step 2: Clone the project
 
 ```bash
-git clone https://github.com/alexleboucher/docker-express-postgres-auth
-cd docker-express-postgres-auth
+git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
+cd docker-express-postgres-boilerplate
 yarn
 ```
 
