@@ -22,16 +22,16 @@ export class User {
     @DeleteDateColumn({ nullable: true })
     deletedAt!: Date | null;
 
-    @Column({ nullable: true, unique: true, length: 80 })
+    @Column({ nullable: true, unique: true, length: 20 })
     username!: string;
 
     @Column({ nullable: true, unique: true, length: 255 })
     email!: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     hashPassword!: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     salt!: string;
     
     setPassword(password: string) {

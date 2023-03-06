@@ -52,6 +52,10 @@
     "docker:up": "docker-compose up -d && yarn docker:shell",
     "docker:down": "docker-compose down",
     "docker:shell": "docker exec -it api sh",
-    "docker:build": "docker build -t docker-express-boilerplace-api ."
+    "docker:build": "docker build -t docker-express-boilerplace-api .",
+    "migration:generate": "sh -c 'ts-node ./node_modules/typeorm/cli.js migration:generate -d src/data-source.ts src/migrations/$0'",
+    "migration:create": "sh -c 'ts-node ./node_modules/typeorm/cli.js migration:create src/migrations/$0'",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d src/data-source.ts",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts"
   }
 }

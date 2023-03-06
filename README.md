@@ -13,13 +13,17 @@
 
 <br />
 
-## ∙ Overview
+---
+
+## Overview
 
 The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication with session, error handling, etc.
 
 Try it out and give me your opinion on what you would like to see integrated.
 
-## ∙ Features
+---
+
+## Features
 
 - **Docker containerization** to easily run your code anywhere and don't have to install tools like PostgreSQL on your computer.
 - **Simple Authentication** with [Passport](https://www.passportjs.org/).
@@ -31,9 +35,12 @@ Try it out and give me your opinion on what you would like to see integrated.
 - **Basic Security Features** with [Helmet](https://helmetjs.github.io/), [cors](https://github.com/expressjs/cors).
 - **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
 - **Helpful logger** with [morgan](https://github.com/expressjs/morgan)
-- **A lot of other features** mainly integrated by [TypeORM](https://github.com/typeorm/typeorm) like [Entity listener and subscribers](https://typeorm.io/listeners-and-subscribers), [migrations](https://typeorm.io/migrations) or [transactions](https://typeorm.io/transactions)
+- **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm)
+- **A lot of other features** mainly integrated by [TypeORM](https://github.com/typeorm/typeorm) like [Entity listener and subscribers](https://typeorm.io/listeners-and-subscribers) or [transactions](https://typeorm.io/transactions)
 
-## ∙ Table of Contents
+---
+
+## Table of Contents
 
 - [Getting Started](#getting-started)
 - [Scripts](#scripts)
@@ -43,7 +50,9 @@ Try it out and give me your opinion on what you would like to see integrated.
 - [Further Documentations](#further-documentations)
 - [License](#license)
 
-## ∙ Getting Started
+---
+
+## Getting Started
 
 ### Step 1: Set up the Development Environment
 
@@ -94,18 +103,20 @@ yarn dev
 To test the server, you can query `http://localhost:8000/api/health` using [Postman](https://www.postman.com/) or just copy it in the address bar in your browser.
 If the server is running, you should receive `Server is up!` as response.
 
-## ∙ Scripts
+### Step 6: Create the User database table
+
+To create the User database table, you must run the migration.
+Run `yarn migration:run` to run the migration and create the table.
+
+---
+
+## Scripts
 
 All script are defined in the `package-scripts.js` file, but the most important ones are listed here.
 
 ### Install
 
 - Install all dependencies with `yarn install`
-
-### Linting
-
-- Run code quality analysis using `yarn lint`. This runs ESLint and display warning and errors.
-- You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
 
 ### Docker
 
@@ -117,7 +128,20 @@ All script are defined in the `package-scripts.js` file, but the most important 
 ### Running in dev mode
 
 - Run `yarn dev` to start [nodemon](https://www.npmjs.com/package/nodemon) with ts-node, to serve the app.
-- Buy default, the server will be running on `http://0.0.0.0:8000` (or `http://localhost:8000`).
+- By default, the server will be running on `http://0.0.0.0:8000` (or `http://localhost:8000`).
+
+### Migrations
+- Run `yarn migration:run` to run non-executed migrations.
+- Run `yarn migration:generate MigrationName` to generate a migration based on entities changes.
+- Run `yarn migration:create MigrationName` to create a empty migration.
+- Run `yarn migration:revert` to revert the last migration. If you want to revert multiple migrations, you can run this command several times.
+
+### Linting
+
+- Run code quality analysis using `yarn lint`. This runs ESLint and display warning and errors.
+- You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
+
+---
 
 ## API Routes
 
@@ -130,7 +154,9 @@ The swagger and the monitor route can be altered in the `.env` file.
 | **/api/users**  | Example entity endpoint |
 | **/api/pets**   | Example entity endpoint |
 
-## ∙ Project Structure
+---
+
+## Project Structure
 
 | Name                                        | Description |
 | ------------------------------------------- | ----------- |
@@ -160,7 +186,9 @@ The swagger and the monitor route can be altered in the `.env` file.
 | **tsconfig.json**                           | Typescript configuration file |
 | **yarn.lock**                               | Package lock file |
 
-## ∙ Logging
+---
+
+## Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
 You can easily configurate it by passing an other [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`
@@ -170,7 +198,9 @@ Example:
 app.use(morgan('short'));
 ```
 
-## ∙ Further Documentations
+---
+
+## Further Documentations
 
 | Name & Link                       | Description                       |
 | --------------------------------- | --------------------------------- |
@@ -183,6 +213,8 @@ app.use(morgan('short'));
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |
 | [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |
 
-## ∙ License
+---
+
+## License
 
 [MIT](/LICENSE)
