@@ -1,0 +1,2 @@
+# Ignore the node-modules because they will be installed after
+node_modules

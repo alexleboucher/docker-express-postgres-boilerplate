@@ -1,0 +1,27 @@
+services:
+  api:
+    container_name: api
+    image: node:18-alpine
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+    working_dir: /app
+    volumes:
+      - ./:/app
+    stdin_open: true 
+    tty: true
+
+  db:
+    container_name: postgres
+    image: postgres
+    ports:
+      - '5433:${DB_PORT}'
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes:
+  data:
