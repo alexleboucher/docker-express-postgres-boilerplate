@@ -57,7 +57,7 @@ You need to set up your development environment before you can do anything.
 #### Install yarn globally
 
 ```bash
-yarn global add yarn
+npm install --global yarn
 ```
 
 #### Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
@@ -68,8 +68,8 @@ yarn global add yarn
 ### Step 2: Clone the project
 
 ```bash
-git clone https://github.com/jsynowiec/node-typescript-boilerplate
-cd node-typescript-boilerplate
+git clone https://github.com/alexleboucher/docker-express-postgres-auth
+cd docker-express-postgres-auth
 yarn
 ```
 
