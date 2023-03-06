@@ -84,9 +84,8 @@ yarn
 
 ### Step 3: Copy .env.example file
 
-```bash
-cp .env.example .env
-```
+- on OSX run `cp .env.example .env`
+- on Windows run `copy .env.example .env`
 
 ### Step 4: Run the server
 
