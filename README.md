@@ -32,7 +32,7 @@ Try it out and give me your opinion on what you would like to see integrated.
 - **Simple but clear Structure** with different layers like routes, controllers, entities, utils, middlewares, config, etc.
 - **Object-oriented database model** with [TypeORM](https://github.com/typeorm/typeorm) entities.
 - **Exception Handling** using [http-errors](https://github.com/jshttp/http-errors).
-- **Basic Security Features** with [Helmet](https://helmetjs.github.io/), [cors](https://github.com/expressjs/cors).
+- **Basic Security Features** with [Helmet](https://helmetjs.github.io/) and [cors](https://github.com/expressjs/cors).
 - **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
 - **Helpful logger** with [morgan](https://github.com/expressjs/morgan)
 - **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm)
@@ -46,7 +46,9 @@ Try it out and give me your opinion on what you would like to see integrated.
 - [Scripts](#scripts)
 - [API Routes](#api-routes)
 - [Project Structure](#project-structure)
+- [Database Migrations](#database-migrations)
 - [Logging](#logging)
+- [Common errors](#common-errors)
 - [Further Documentations](#further-documentations)
 - [License](#license)
 
@@ -102,7 +104,7 @@ yarn dev
 To test the server, you can query `http://localhost:8000/api/health` using [Postman](https://www.postman.com/) or just copy it in the address bar in your browser.
 If the server is running, you should receive `Server is up!` as response.
 
-### Step 6: Create the User database table
+### Step 6: Create the user database table
 
 To create the User database table, you must run the migration.
 Run `yarn migration:run` to run the migration and create the table.
@@ -111,11 +113,8 @@ Run `yarn migration:run` to run the migration and create the table.
 
 ## Scripts
 
-All script are defined in the `package-scripts.js` file, but the most important ones are listed here.
+⚠️ Except Docker scripts, all the scripts must be executed in the `api` container shell.
 
-### Install
-
-- Install all dependencies with `yarn install`
 
 ### Docker
 
@@ -123,6 +122,10 @@ All script are defined in the `package-scripts.js` file, but the most important 
 - Run `docker:down` to stop the running containers.
 - Run `docker:shell` to open a shell in `api` container
 - Run `docker:build` to build an image of your API.
+
+### Install
+
+- Install all dependencies with `yarn install`.
 
 ### Running in dev mode
 
@@ -187,6 +190,37 @@ The swagger and the monitor route can be altered in the `.env` file.
 
 ---
 
+## Database Migrations
+
+Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table, it allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
+
+⚠️ The migrations script must be executed in the `api` container shell.
+
+### Create a migration
+
+To create a migration, run `yarn migration:create MigrationName`, it will create an empty migration in `src/migrations`. The migration file have two functions : `up` and `down`. `up` is executed when you run the migration. `down` is executed when you revert the migration.
+
+### Generate a migration
+
+To generate a migration based on entities changes, run `yarn migration:generate MigrationName`, it will create a migration in `src/migrations`. The migration is automatically generated based on your entities compared to your actual database.
+
+You can try by adding a property `firstName` in the `User` entity :
+```typescript
+@Column({ nullable: false, length: 20 })
+firstName!: string;
+```
+Then, run `yarn migration:generate AddFirstNameInUser`, it will automatically generate a migration to create the new column.
+
+### Run migrations
+
+To run the migrations that have not been executed yet, run `yarn migration:run`.
+
+### Revert a migration
+
+You can revert the last migration by running `yarn migration:revert`. If you want to revert multiple migrations, you can run this command several times.
+
+---
+
 ## Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
@@ -196,6 +230,14 @@ Example:
 ```typescript
 app.use(morgan('short'));
 ```
+
+---
+
+## Common errors
+
+If you encounter an error when running `yarn docker:up`, make sure you launched Docker Desktop.
+
+If you encounter an error when running a script, make sure you are in `api` container shell.
 
 ---
 

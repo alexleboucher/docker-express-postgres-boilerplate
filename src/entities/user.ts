@@ -22,10 +22,10 @@ export class User {
     @DeleteDateColumn({ nullable: true })
     deletedAt!: Date | null;
 
-    @Column({ nullable: true, unique: true, length: 20 })
+    @Column({ nullable: false, unique: true, length: 20 })
     username!: string;
 
-    @Column({ nullable: true, unique: true, length: 255 })
+    @Column({ nullable: false, unique: true, length: 255 })
     email!: string;
 
     @Column({ nullable: false })
