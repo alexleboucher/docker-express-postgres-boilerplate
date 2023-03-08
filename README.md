@@ -19,7 +19,7 @@
 
 The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication with session, error handling, etc.
 
-Try it out and give me your opinion on what you would like to see integrated.
+Try it out and give me your opinion on what you would like to see integrated!
 
 ---
 
@@ -36,6 +36,8 @@ Try it out and give me your opinion on what you would like to see integrated.
 - **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
 - **Helpful logger** with [morgan](https://github.com/expressjs/morgan)
 - **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm)
+- **Validation utils** thanks to [Validator](https://github.com/validatorjs/validator.js)
+- **Transactions control** with [TypeORM](https://github.com/typeorm/typeorm).
 - **A lot of other features** mainly integrated by [TypeORM](https://github.com/typeorm/typeorm) like [Entity listener and subscribers](https://typeorm.io/listeners-and-subscribers) or [transactions](https://typeorm.io/transactions)
 
 ---
@@ -81,8 +83,11 @@ npm install --global yarn
 ```bash
 git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
 cd docker-express-postgres-boilerplate
-yarn
+rm -rf .git
+yarn install
 ```
+
+`rm -rf .git` deletes the branch git history. Otherwise, you will have all the commits of this repository in your repository.
 
 ### Step 3: Copy .env.example file
 
@@ -106,7 +111,7 @@ If the server is running, you should receive `Server is up!` as response.
 
 ### Step 6: Create the user database table
 
-To create the User database table, you must run the migration.
+To create the `user` database table, you must run the migration.
 Run `yarn migration:run` to run the migration and create the table.
 
 ---
@@ -148,13 +153,13 @@ Run `yarn migration:run` to run the migration and create the table.
 ## API Routes
 
 The route prefix is `/api` by default, but you can change this in the .env file.
-The swagger and the monitor route can be altered in the `.env` file.
 
-| Route           | Description |
-| --------------- | ----------- |
-| **/api/health** | Show `Server is up!` |
-| **/api/users**  | Example entity endpoint |
-| **/api/pets**   | Example entity endpoint |
+| Route                | Method | Description |
+| -------------------- | ------ | ----------- |
+| **/api/health**      | GET    | Show `Server is up!` |
+| **/api/users**       | POST   | Create a user |
+| **/api/auth/login**  | POST   | Log a user |
+| **/api/auth/logout** | POST   | Logout logged user |
 
 ---
 
@@ -253,6 +258,7 @@ If you encounter an error when running a script, make sure you are in `api` cont
 | [cors](https://github.com/expressjs/cors) | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options. |
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |
 | [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |
+| [validator](https://github.com/validatorjs/validator.js/) | A library of string validators and sanitizers. |
 
 ---
 
