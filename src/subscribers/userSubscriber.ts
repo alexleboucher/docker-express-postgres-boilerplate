@@ -8,8 +8,8 @@ export class UserSubscriber implements EntitySubscriberInterface {
         return User;
     }
 
-    async afterInsert(event: InsertEvent<User>): Promise<void> {
+    afterInsert(event: InsertEvent<User>): void {
         const user = event.entity;
-        console.log(`User ${user.username} has been inserted`);
+        console.info(`User ${user.username} has been inserted`);
     }
 }

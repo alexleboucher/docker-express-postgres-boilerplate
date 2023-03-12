@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import createHttpError from 'http-errors';
 import 'reflect-metadata';
 dotenv.config();
 
@@ -7,7 +8,6 @@ import { errorHandler } from './middlewares/errorHandler';
 import { AppDataSource } from './data-source';
 import passport from './config/passport';
 import apiRoutes from './routes/api';
-import createHttpError from 'http-errors';
 
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || '8080';

@@ -1,8 +1,8 @@
 import { Response } from 'express';
 import createHttpError from 'http-errors';
+
 import { AppDataSource } from '../../data-source';
 import { User } from '../../entities/user';
-
 import { TypedRequestBody } from '../../types/express';
 import { UsersCreateBody } from '../../types/routes/users';
 import { validateCreateBody } from './validators';

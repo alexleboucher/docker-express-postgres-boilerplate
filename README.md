@@ -1,4 +1,4 @@
-<h1 align="center">Docker Express Postgres Auth Boilerplate</h1>
+<h1 align="center">Docker Express Postgres Boilerplate</h1>
 
 <p align="center">
   <a href="https://stackshare.io/alexleboucher/docker-express-postgres-boilerplate">
@@ -48,6 +48,7 @@ Try it out and give me your opinion on what you would like to see integrated!
 - [Scripts](#scripts)
 - [API Routes](#api-routes)
 - [Project Structure](#project-structure)
+- [Authentication](#authentication)
 - [Migrations](#migrations)
 - [Subscribers](#subscribers)
 - [Logging](#logging)
@@ -198,6 +199,19 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 
 ---
 
+## Authentication
+
+`Passport.js` is used to handle authentication. This is a flexible and modular authentication middleware that allow to easily add new authentication strategies like login with Facebook, Google, Github, etc.
+
+The `Passport` configuration and functions are located in `src/config/passport.ts`.
+
+The `serializeUser` defines what data are saved in request session, generally we save the user id.
+The `deserializeUser` allows to get the whole user object and assign it in `req.user`. So, you can easily get the authenticated user with `req.user`.
+
+You can find the Passport docs [here](https://www.passportjs.org/).
+
+---
+
 ## Migrations
 
 Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table, it allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
@@ -212,7 +226,7 @@ To create a migration, run `yarn migration:create MigrationName`, it will create
 
 To generate a migration based on entities changes, run `yarn migration:generate MigrationName`, it will create a migration in `src/migrations`. The migration is automatically generated based on your entities compared to your actual database.
 
-You can try by adding a property `firstName` in the `User` entity :
+For example, you can try by adding a property `firstName` in the `User` entity :
 ```typescript
 @Column({ nullable: false, length: 20 })
 firstName!: string;
@@ -238,6 +252,8 @@ By default, a subscriber listen all the entities but it's a good practice to lis
 The subscribers functions take 1 parameter called `event`. In this object, you can find several properties like the concerned entity, the connection object, the query runner or the manager. 
 
 If you need to query the database in a subscriber function, use the event manager or query runner or it will not include the data not commited yet.
+
+The subscribers function can be `async`.
 
 You can find more infos about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber)
 
