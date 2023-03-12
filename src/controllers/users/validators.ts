@@ -24,7 +24,7 @@ export const validateCreateBody = (body: Partial<UsersCreateBody>) => {
         throw createHttpError(400, 'Password required');
     }
     if (password.length < 8) {
-        throw createHttpError(400, 'Username must contain at least 8 characters');
+        throw createHttpError(400, 'Password must contain at least 8 characters');
     }
 
     // As the function checked the properties are not missing,

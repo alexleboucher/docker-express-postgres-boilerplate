@@ -17,16 +17,16 @@
 
 ## Overview
 
-The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication with session, error handling, etc.
+The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication, error handling, etc.
 
-Try it out and give me your opinion on what you would like to see integrated!
+Some basic features like authentication and user creation are already implemented. They can be used to quickly start your project or like examples. More infos about what is already implemented [here](#existing-features)
 
 ---
 
 ## Features
 
 - **Docker containerization** to easily run your code anywhere and don't have to install tools like PostgreSQL on your computer.
-- **Simple Authentication** with [Passport](https://www.passportjs.org/).
+- **Authentication** with [Passport](https://www.passportjs.org/).
 - **Authentication session** thanks to [express-session](https://github.com/expressjs/session) and [connect-pg-simple](https://github.com/voxpelli/node-connect-pg-simple)
 - **Simplified Database Query** managed by [TypeORM](https://github.com/typeorm/typeorm).
 - **Simple but clear Structure** with different layers like routes, controllers, entities, utils, middlewares, config, etc.
@@ -52,7 +52,8 @@ Try it out and give me your opinion on what you would like to see integrated!
 - [Migrations](#migrations)
 - [Subscribers](#subscribers)
 - [Logging](#logging)
-- [Common errors](#common-errors)
+- [Existing Features](#existing-features)
+- [Common Errors](#common-errors)
 - [Further Documentations](#further-documentations)
 - [License](#license)
 
@@ -271,7 +272,19 @@ app.use(morgan('short'));
 
 ---
 
-## Common errors
+## Existing Features
+
+Some basic features are already implemented. Feel free to use, update or delete them at your conveniance.
+
+You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters. the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
+
+Then you can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.
+
+Finally, you can logout with the POST route `/api/auth/logout`.
+
+---
+
+## Common Errors
 
 If you encounter an error when running `yarn docker:up`, make sure you launched Docker Desktop.
 
