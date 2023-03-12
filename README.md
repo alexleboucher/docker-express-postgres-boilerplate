@@ -54,6 +54,7 @@ Some basic features like authentication and user creation are already implemente
 - [Logging](#logging)
 - [Existing Features](#existing-features)
 - [Common Errors](#common-errors)
+- [Upcoming Features](#upcoming-features)
 - [Further Documentations](#further-documentations)
 - [License](#license)
 
@@ -292,6 +293,12 @@ You can get your authentication state by using the GET route `/api/auth/authenti
 If you encounter an error when running `yarn docker:up`, make sure you launched Docker Desktop.
 
 If you encounter an error when running a script, make sure you are in `api` container shell.
+
+---
+
+## Upcoming Features
+
+You can see the upcoming or in progress features [here](https://github.com/users/alexleboucher/projects/1/views/1)
 
 ---
 
