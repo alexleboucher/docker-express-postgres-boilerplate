@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import createHttpError, { HttpError } from 'http-errors';
 import passport from 'passport';
 
@@ -43,7 +43,7 @@ const login = (
 };
 
 const logout = (
-    req: TypedRequestBody<AuthLoginBody>,
+    req: Request,
     res: Response,
     next: NextFunction,
 ) => {
@@ -55,7 +55,19 @@ const logout = (
     });
 };
 
+const authenticated = (
+    req: Request,
+    res: Response,
+) => {
+    if (req.user) {
+        res.send('You are authenticated');
+    } else {
+        res.send('You are not authenticated');
+    }
+};
+
 export default {
     login,
     logout,
+    authenticated,
 };

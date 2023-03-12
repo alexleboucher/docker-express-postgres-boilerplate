@@ -19,7 +19,7 @@
 
 The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication, error handling, etc.
 
-Some basic features like authentication and user creation are already implemented. They can be used to quickly start your project or like examples. More infos about what is already implemented [here](#existing-features)
+Some basic features like authentication and user creation are already implemented. They can be used to quickly start your project. More infos about what is already implemented [here](#existing-features)
 
 ---
 
@@ -146,7 +146,7 @@ Run `yarn migration:run` to run the migration and create the table.
 - Run `yarn migration:create MigrationName` to create a empty migration.
 - Run `yarn migration:revert` to revert the last migration. If you want to revert multiple migrations, you can run this command several times.
 
-
+### • Linting
 - Run code quality analysis using `yarn lint`. This runs ESLint and display warning and errors.
 - You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
 
@@ -156,12 +156,13 @@ Run `yarn migration:run` to run the migration and create the table.
 
 The route prefix is `/api` by default, but you can change this in the .env file.
 
-| Route                | Method | Description |
-| -------------------- | ------ | ----------- |
-| **/api/health**      | GET    | Show `Server is up!` |
-| **/api/users**       | POST   | Create a user |
-| **/api/auth/login**  | POST   | Log a user |
-| **/api/auth/logout** | POST   | Logout logged user |
+| Route                       | Method | Description |
+| --------------------------- | ------ | ----------- |
+| **/api/health**             | GET    | Show `Server is up!` |
+| **/api/users**              | POST   | Create a user |
+| **/api/auth/login**         | POST   | Log a user |
+| **/api/auth/logout**        | POST   | Logout logged user |
+| **/api/auth/authenticated** | GET    | Return authentication state |
 
 ---
 
@@ -207,7 +208,7 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 The `Passport` configuration and functions are located in `src/config/passport.ts`.
 
 The `serializeUser` defines what data are saved in request session, generally we save the user id.
-The `deserializeUser` allows to get the whole user object and assign it in `req.user`. So, you can easily get the authenticated user with `req.user`.
+The `deserializeUser` allows to get the whole user object and assign it in `req.user`. So, you can easily get the authenticated user with `req.user`. You don't need to explicitly call `deserializeUser` before calling `req.user`.
 
 You can find the Passport docs [here](https://www.passportjs.org/).
 
@@ -278,9 +279,11 @@ Some basic features are already implemented. Feel free to use, update or delete 
 
 You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters. the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
 
-Then you can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.
+You can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.
 
-Finally, you can logout with the POST route `/api/auth/logout`.
+You can logout with the POST route `/api/auth/logout`.
+
+You can get your authentication state by using the GET route `/api/auth/authenticated`. If you're authenticated, it will send `You are authenticated` as response. Otherwise, it will send `You are not authenticated`.
 
 ---
 
