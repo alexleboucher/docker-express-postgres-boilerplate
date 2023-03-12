@@ -38,7 +38,7 @@ Try it out and give me your opinion on what you would like to see integrated!
 - **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm)
 - **Validation utils** thanks to [Validator](https://github.com/validatorjs/validator.js)
 - **Transactions control** with [TypeORM](https://github.com/typeorm/typeorm).
-- **A lot of other features** mainly integrated by [TypeORM](https://github.com/typeorm/typeorm) like [Entity listener and subscribers](https://typeorm.io/listeners-and-subscribers) or [transactions](https://typeorm.io/transactions)
+- **Entity events** with [TypeORM subscribers](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber)
 
 ---
 
@@ -48,7 +48,8 @@ Try it out and give me your opinion on what you would like to see integrated!
 - [Scripts](#scripts)
 - [API Routes](#api-routes)
 - [Project Structure](#project-structure)
-- [Database Migrations](#database-migrations)
+- [Migrations](#migrations)
+- [Subscribers](#subscribers)
 - [Logging](#logging)
 - [Common errors](#common-errors)
 - [Further Documentations](#further-documentations)
@@ -121,29 +122,28 @@ Run `yarn migration:run` to run the migration and create the table.
 ⚠️ Except Docker scripts, all the scripts must be executed in the `api` container shell.
 
 
-### Docker
+### • Docker
 
 - Run `yarn docker:up` to start the containers defined in `docker-compose.yml`. It automatically opens a shell in the `api` container. In this shell, you can run other scrips like `yarn dev` or run TypeORM migrations, etc.
 - Run `docker:down` to stop the running containers.
 - Run `docker:shell` to open a shell in `api` container
 - Run `docker:build` to build an image of your API.
 
-### Install
+### • Install
 
 - Install all dependencies with `yarn install`.
 
-### Running in dev mode
+### • Running in dev mode
 
 - Run `yarn dev` to start [nodemon](https://www.npmjs.com/package/nodemon) with ts-node, to serve the app.
 - By default, the server will be running on `http://0.0.0.0:8000` (or `http://localhost:8000`).
 
-### Migrations
+### • Migrations
 - Run `yarn migration:run` to run non-executed migrations.
 - Run `yarn migration:generate MigrationName` to generate a migration based on entities changes.
 - Run `yarn migration:create MigrationName` to create a empty migration.
 - Run `yarn migration:revert` to revert the last migration. If you want to revert multiple migrations, you can run this command several times.
 
-### Linting
 
 - Run code quality analysis using `yarn lint`. This runs ESLint and display warning and errors.
 - You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
@@ -171,13 +171,16 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 | **@types/**                                 | Golbal types definitions |
 | **build/**                                  | Compiled source files will be placed here |
 | **src/**                                    | Source files |
+| **src/config/**                             | Configuration files |
 | **src/controllers/**                        | REST API Controllers |
 | **src/controllers/[feature]/index.ts**      | Validation functions for feature routes |
 | **src/controllers/[feature]/validators.ts** | Validation functions for feature routes |
 | **src/entities/**                           | TypeORM entities |
-| **src/middlewares/**                        | Middlewares like error handler |
+| **src/middlewares/**                        | Middlewares |
+| **src/migrations/**                         | Migrations files |
 | **src/routes/**                             | REST API Routes |
 | **src/routes/[feature].ts**                 | Feature routes |
+| **src/subscribers/**                        | Entity subscribers |
 | **src/types/**                              | Typescript types |
 | **src/utils/**                              | Utils functions |
 | **src/data-source.ts**                      | TypeORM data source |
@@ -195,7 +198,7 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 
 ---
 
-## Database Migrations
+## Migrations
 
 Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table, it allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
 
@@ -223,6 +226,20 @@ To run the migrations that have not been executed yet, run `yarn migration:run`.
 ### Revert a migration
 
 You can revert the last migration by running `yarn migration:revert`. If you want to revert multiple migrations, you can run this command several times.
+
+---
+
+## Subscribers
+
+Subscribers allows us to listen entity events like insert, update, delete, etc and execute a method before or after the event. They are defined in `src/subscribers`.
+
+By default, a subscriber listen all the entities but it's a good practice to listen one entity by subscriber. To do that, use the function `listenTo()` and returns the entity you want to listen with this subscriber.
+
+The subscribers functions take 1 parameter called `event`. In this object, you can find several properties like the concerned entity, the connection object, the query runner or the manager. 
+
+If you need to query the database in a subscriber function, use the event manager or query runner or it will not include the data not commited yet.
+
+You can find more infos about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber)
 
 ---
 
