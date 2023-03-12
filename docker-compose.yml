@@ -23,5 +23,17 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
 
+  db_test:
+    container_name: test_postgres
+    image: postgres
+    ports:
+      - '${TEST_DB_HOST_PORT}:${DB_PORT}'
+    volumes:
+      - data_test:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${TEST_DB_NAME}
+
 volumes:
   data:
+  data_test:

@@ -4,6 +4,11 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import session from 'express-session';
 import pgSession from 'connect-pg-simple';
+import createHttpError from 'http-errors';
+
+import { errorHandler } from '../middlewares/errorHandler';
+import passport from './passport';
+import apiRoutes from '../routes/api';
 
 const createServer = () => {
     const app = express();
@@ -24,11 +29,11 @@ const createServer = () => {
 
     const sessionStore = new (pgSession(session))({
         conObject: {
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
+            host: process.env.NODE_ENV === 'test' ? process.env.TEST_DB_HOST : process.env.DB_HOST,
+            port: process.env.NODE_ENV === 'test' ? Number(process.env.TEST_DB_PORT) : Number(process.env.DB_PORT),
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
+            database: process.env.NODE_ENV === 'test' ? process.env.TEST_DB_NAME : process.env.DB_NAME,
         },
         createTableIfMissing: true,
     });
@@ -47,6 +52,17 @@ const createServer = () => {
             },
         }),
     );
+
+    // Passport authentication
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    app.use(`/${process.env.API_ROUTES_PREFIX}`, apiRoutes);
+    app.get('/*', (req, res) => {
+        throw createHttpError(400, 'Resource Not Found');
+    });
+
+    app.use(errorHandler);
 
     return app;
 };
