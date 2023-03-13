@@ -123,4 +123,16 @@ describe('Auth routes', () => {
         expect(res.statusCode).toEqual(200);
         expect(res.headers['set-cookie']).toBeUndefined();
     });
+
+    test('Handle case where error is thrown during Passport local strategy', async () => {
+        const username = 'fakeUser';
+        const password = 'fakeUserPwd';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce((entity) => { throw 'Repo error' });
+
+        const res = await request(server).post('/api/auth/login').send({ login: username, password });
+        
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.message).toEqual('Unexpected error');
+    });
 });
