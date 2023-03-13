@@ -51,7 +51,12 @@ const logout = (
         if (err) {
             return next(err);
         }
-        return res.send();
+        req.session.destroy((err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.send();
+        });
     });
 };
 

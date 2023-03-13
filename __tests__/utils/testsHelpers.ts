@@ -29,7 +29,7 @@ export const createAgent = (server: Server) => {
 }
 
 export const createAuthenticatedAgent = async (server: Server, testUser?: TestUserProps) => {
-    const agent = request.agent(server);
+    const agent = createAgent(server);
     const user = await createTestUser(testUser);
     await agent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
     return agent;

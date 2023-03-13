@@ -1,6 +1,8 @@
 import { Server } from 'http';
 import request from 'supertest';
 
+import { AppDataSource } from '../../src/data-source';
+import { User } from '../../src/entities/user';
 import { clearDatabase, closeDatabase, createAuthenticatedAgent, createTestServer } from '../utils/testsHelpers';
 import { createTestUser } from '../utils/userHelpers';
 
@@ -18,22 +20,6 @@ afterAll(async () => {
 describe('Auth routes', () => {
     afterEach(async () => {
         await clearDatabase();
-    })
-
-    test('Send "You are authenticated" for authenticated user', async () => {
-        const agent = await createAuthenticatedAgent(server);
-
-        const res = await agent.get('/api/auth/authenticated');
-        
-        expect(res.statusCode).toEqual(200);
-        expect(res.text).toEqual('You are authenticated');
-    });
-
-    test('Send "You are not authenticated" for non authenticated user', async () => {
-        const res = await request(server).get('/api/auth/authenticated');
-        
-        expect(res.statusCode).toEqual(200);
-        expect(res.text).toEqual('You are not authenticated');
     });
 
     test('Log user by username', async () => {
@@ -48,7 +34,8 @@ describe('Auth routes', () => {
             id: user.id,
             username: user.username,
             email: user.email,
-        })
+        });
+        expect(res.headers['set-cookie']).toBeDefined();
     });
 
     test('Log user by email', async () => {
@@ -63,7 +50,8 @@ describe('Auth routes', () => {
             id: user.id,
             username: user.username,
             email: user.email,
-        })
+        });
+        expect(res.headers['set-cookie']).toBeDefined();
     });
 
     test('Login fails if wrong credentials', async () => {
@@ -96,5 +84,43 @@ describe('Auth routes', () => {
         
         expect(res2.statusCode).toEqual(400);
         expect(res2.body.message).toEqual('Password required');
+    });
+
+    test('Send "You are authenticated" for authenticated user', async () => {
+        const agent = await createAuthenticatedAgent(server);
+
+        const res = await agent.get('/api/auth/authenticated');
+        
+        expect(res.statusCode).toEqual(200);
+        expect(res.text).toEqual('You are authenticated');
+    });
+
+    test('Send "You are not authenticated" for non authenticated user', async () => {
+        const res = await request(server).get('/api/auth/authenticated');
+        
+        expect(res.statusCode).toEqual(200);
+        expect(res.text).toEqual('You are not authenticated');
+    });
+
+    test('Authenticated user is considered as non authenticated if user has been deleted', async () => {
+        const username = 'fakeUser';
+        const agent = await createAuthenticatedAgent(server, { username });
+
+        const repo = AppDataSource.getRepository(User);
+        await repo.delete({ username });
+
+        const res = await agent.get('/api/auth/authenticated');
+        
+        expect(res.statusCode).toEqual(200);
+        expect(res.text).toEqual('You are not authenticated');
+    });
+
+    test('Logout user', async () => {
+        const agent = await createAuthenticatedAgent(server);
+
+        const res = await agent.post('/api/auth/logout');
+        
+        expect(res.statusCode).toEqual(200);
+        expect(res.headers['set-cookie']).toBeUndefined();
     });
 });
