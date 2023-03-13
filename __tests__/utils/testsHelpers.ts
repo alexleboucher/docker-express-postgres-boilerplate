@@ -23,6 +23,11 @@ export const clearDatabase = async () => {
     }
 }
 
+export const createAgent = (server: Server) => {
+    const agent = request.agent(server);
+    return agent;
+}
+
 export const createAuthenticatedAgent = async (server: Server, testUser?: TestUserProps) => {
     const agent = request.agent(server);
     const user = await createTestUser(testUser);

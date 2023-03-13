@@ -13,7 +13,6 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitAny": true,
     "noImplicitThis": false,

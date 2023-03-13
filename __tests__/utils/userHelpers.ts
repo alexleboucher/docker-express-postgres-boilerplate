@@ -12,7 +12,7 @@ export const createTestUser = async (testUser?: TestUserProps) => {
 
     const user = new User();
     user.username = testUser?.username || 'testUser';
-    user.email = testUser?.username || 'testUser@gmail.com';
+    user.email = testUser?.email || 'testUser@gmail.com';
     user.setPassword(testUser?.password || 'password');
 
     await userRepo.save(user);
