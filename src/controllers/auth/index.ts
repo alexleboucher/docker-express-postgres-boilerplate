@@ -59,7 +59,7 @@ const authenticated = (
     req: Request,
     res: Response,
 ) => {
-    if (req.user) {
+    if (req.isAuthenticated()) {
         res.send('You are authenticated');
     } else {
         res.send('You are not authenticated');
