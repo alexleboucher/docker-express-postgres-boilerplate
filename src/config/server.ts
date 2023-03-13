@@ -32,7 +32,7 @@ const createServer = () => {
 
     app.use(`/${process.env.API_ROUTES_PREFIX}`, apiRoutes);
     app.get('/*', (req, res) => {
-        throw createHttpError(400, 'Resource Not Found');
+        throw createHttpError(404, 'Resource Not Found');
     });
 
     app.use(errorHandler);
