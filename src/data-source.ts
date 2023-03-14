@@ -13,13 +13,7 @@ export const AppDataSource = new DataSource({
     database: process.env.NODE_ENV === 'test' ? process.env.TEST_DB_NAME : process.env.DB_NAME,
     logging: false,
     synchronize: process.env.NODE_ENV ==='test',
-    entities: process.env.NODE_ENV === "production"
-        ? ["build/entities/**/*.js"]
-        : [join(__dirname, "./entities/**/*.ts")],
-    subscribers: process.env.NODE_ENV === "production"
-        ? ["build/subscribers/**/*.js"]
-        : [join(__dirname, "./subscribers/**/*.ts")],
-    migrations: process.env.NODE_ENV === "production"
-        ? ["build/migrations/**/*.js"]
-        : [join(__dirname, "./migrations/**/*.ts")],
+    entities: process.env.NODE_ENV === "production" ? ["build/entities/**/*.js"] : [join(__dirname, "./entities/**/*.ts")],
+    subscribers: process.env.NODE_ENV === "production" ? ["build/subscribers/**/*.js"] : [join(__dirname, "./subscribers/**/*.ts")],
+    migrations: process.env.NODE_ENV === "production" ? ["build/migrations/**/*.js"] : [join(__dirname, "./migrations/**/*.ts")],
 });
