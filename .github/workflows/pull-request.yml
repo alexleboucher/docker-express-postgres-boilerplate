@@ -6,11 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  HOST: 0.0.0.0
   DB_USER: postgres
   DB_PASSWORD: secret
   DB_PORT: 5432
-  CORS_ORIGIN_ALLOWED: 
   API_ROUTES_PREFIX: api
   TEST_DB_HOST: localhost
   TEST_DB_NAME: test_db
@@ -28,7 +26,7 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'yarn'
-      
+
       - name: Cache node modules
         uses: actions/cache@v3
         env:
@@ -60,7 +58,7 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'yarn'
-      
+
       - name: Cache node modules
         uses: actions/cache@v3
         env:
@@ -82,10 +80,27 @@ jobs:
 
       - name: Build app
         run: yarn build
-  
+
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PORT: ${{ env.DB_PORT }}
+          POSTGRES_DB: ${{ env.TEST_DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v3
@@ -95,7 +110,7 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'yarn'
-      
+
       - name: Cache node modules
         uses: actions/cache@v3
         env:
@@ -111,9 +126,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      
+
       - name: Run E2E tests
         run: yarn test:coverage
-        
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
