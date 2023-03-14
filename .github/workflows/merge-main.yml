@@ -1,4 +1,5 @@
 name: Update main code coverage
+run-name: Testing main to update code coverage 🧪
 
 on:
   push:
