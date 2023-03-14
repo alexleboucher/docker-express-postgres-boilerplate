@@ -1,0 +1,32 @@
+name: Tests & Lint
+run-name: Testing ${{ github.head_ref }} 🧪
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  HOST: 0.0.0.0
+  DB_USER: postgres
+  DB_PASSWORD: secret
+  DB_PORT: 5432
+  CORS_ORIGIN_ALLOWED: 
+  API_ROUTES_PREFIX: api
+  TEST_DB_HOST: localhost
+  TEST_DB_NAME: test_db
+
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
