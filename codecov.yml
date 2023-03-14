@@ -1,5 +1,5 @@
 comment:
-  behaviour: new
+  behavior: new
   require_changes: false
 coverage:
   status:
