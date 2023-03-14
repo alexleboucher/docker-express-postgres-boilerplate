@@ -21,7 +21,7 @@ The main goal of this boilerplate is to setup an Express REST API and add common
 
 Some basic routes for authentication and user creation are already implemented. They can be used to quickly start your project. More infos about what is already implemented [here](#existing-routes).
 
-End-to-end tests are implemented. The code coverage is 100%.
+End-to-end tests are already implemented. The code coverage is 100%.
 
 ---
 
@@ -93,11 +93,11 @@ npm install --global yarn
 ```bash
 git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
 cd docker-express-postgres-boilerplate
-rm -rf .git
+rm -rf .git .github # Windows: rd /s /q .git .github
 yarn install
 ```
 
-`rm -rf .git` deletes the branch git history. Otherwise, you will have all the commits of this repository in your repository.
+`rm -rf .git .github` (or `rd /s /q .git .github` on Windows) deletes the git and github infos of the boilerplate branch like history, templates, workflows, etc.
 
 ### Step 3: Copy .env.example file
 
