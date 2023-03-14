@@ -16,5 +16,4 @@ AppDataSource.initialize()
             console.info(`⚡️ Server is running at http://${host}:${port}`);
         });
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .catch((err: any) => console.error(err));
+    .catch(console.error);
