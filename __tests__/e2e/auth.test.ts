@@ -124,7 +124,7 @@ describe('Auth routes', () => {
         expect(res.headers['set-cookie']).toBeUndefined();
     });
 
-    test('Handle case where error is thrown during Passport local strategy', async () => {
+    test('Throw an error if an error occurs during Passport authentication', async () => {
         const username = 'fakeUser';
         const password = 'fakeUserPwd';
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -134,5 +134,34 @@ describe('Auth routes', () => {
         
         expect(res.statusCode).toEqual(500);
         expect(res.body.message).toEqual('Unexpected error');
+    });
+
+    test('Throw an error if an error occurs during Express logout', async () => {
+        const serverFailingLogout = await createTestServer(7778, true, {
+            logout: (cb) => { cb('Error') },
+        });
+        const res = await request(serverFailingLogout).post('/api/auth/logout');
+        
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.message).toEqual('Unexpected error');
+
+        serverFailingLogout.close();
+    });
+
+    test('Throw an error if an error occurs during Express login', async () => {
+        const serverFailingLogIn = await createTestServer(7778, true, {
+            logIn: (user, cb) => { cb('Error') },
+        });
+
+        const username = 'fakeUser';
+        const password = 'fakeUserPwd';
+        await createTestUser({ username, password });
+
+        const res = await request(serverFailingLogIn).post('/api/auth/login').send({ login: username, password });
+        
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.message).toEqual('Unexpected error');
+
+        serverFailingLogIn.close();
     });
 });

@@ -1,14 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Server } from "http";
 import request from 'supertest';
+import { Express } from 'express';
 
 import createServer from "../../src/config/server";
 import { AppDataSource } from "../../src/data-source";
 import { createTestUser, TestUserProps } from "./userHelpers";
 
-export const createTestServer = async () => {
+interface OverrideExpressOptions {
+    logout?: (cb: any) => unknown;
+    logIn?: (user: any, cb: any) => unknown;
+}
+
+const overrideExpressServer = (server: Express, overrideExpressOptions: OverrideExpressOptions) => {
+    if (overrideExpressOptions.logout) {
+        server.request.logOut = overrideExpressOptions.logout;
+    }
+    if (overrideExpressOptions.logIn) {
+        server.request.logIn = overrideExpressOptions.logIn;
+    }
+    return server;
+}
+
+export const createTestServer = async (port = 7777, preventDataSourceInit = false, overrideExpressOptions?: OverrideExpressOptions) => {
     const server = createServer();
-    await AppDataSource.initialize();
-    return server.listen(7777);
+    if (overrideExpressOptions) {
+        overrideExpressServer(server, overrideExpressOptions);
+    }
+
+    if (!preventDataSourceInit) {
+        await AppDataSource.initialize();
+    }
+
+    return server.listen(port);
 }
 
 export const closeDatabase = async () => {
