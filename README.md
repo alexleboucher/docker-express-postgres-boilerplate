@@ -149,8 +149,9 @@ Run `yarn migration:run` to run the migration and create the table.
 
 ### • Build
 
-- Run `yarn dev` to build the project. The compiled files will be placed in `build/`
+- Run `yarn build` to build the project. The compiled files will be placed in `build/`
 - Run `yarn start` to run compiled project.
+- Run `yarn type-check` to run type checking.
 
 ### • Migrations
 - Run `yarn migration:run` to run non-executed migrations.
