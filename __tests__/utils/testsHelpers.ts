@@ -22,23 +22,36 @@ const overrideExpressServer = (server: Express, overrideExpressOptions: Override
     return server;
 }
 
-export const createTestServer = async (port = 7777, preventDataSourceInit = false, overrideExpressOptions?: OverrideExpressOptions) => {
+/**
+ * Create a test server.
+ * @param port - Port used to listen server. Default 7777. Optional.
+ * @param preventDatabaseConnection - If true, database connection is not initialized. Default false. Optional.
+ * @param overrideExpressOptions - Object used to override Express. Optional.
+ * @returns The created test server.
+ */
+export const createTestServer = async (port = 7777, preventDatabaseConnection = false, overrideExpressOptions?: OverrideExpressOptions) => {
     const server = createServer();
     if (overrideExpressOptions) {
         overrideExpressServer(server, overrideExpressOptions);
     }
 
-    if (!preventDataSourceInit) {
+    if (!preventDatabaseConnection) {
         await AppDataSource.initialize();
     }
 
     return server.listen(port);
 }
 
+/**
+ * Close the database connection.
+ */
 export const closeDatabase = async () => {
     await AppDataSource.destroy();
 }
 
+/**
+ * Clear the database data.
+ */
 export const clearDatabase = async () => {
     const entities = AppDataSource.entityMetadatas;
     for (const entity of entities) {
@@ -47,13 +60,14 @@ export const clearDatabase = async () => {
     }
 }
 
-export const createAgent = (server: Server) => {
-    const agent = request.agent(server);
-    return agent;
-}
-
+/**
+ * Create an authenticated test agent. A test agent allows to maintain session between multiple requests.
+ * @param server - The server used by the agent.
+ * @param testUser - The authenticated user informations. Optional.
+ * @returns The created agent.
+ */
 export const createAuthenticatedAgent = async (server: Server, testUser?: TestUserProps) => {
-    const agent = createAgent(server);
+    const agent = request.agent(server);
     const user = await createTestUser(testUser);
     await agent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
     return agent;
