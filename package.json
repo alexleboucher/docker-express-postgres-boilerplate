@@ -55,6 +55,7 @@
     "start": "node build/index.js",
     "dev": "yarn && nodemon -L src/index.ts --watch \"src/**/*.{ts,js}\"",
     "build": "tsc",
+    "type-check": "tsc --noEmit",
     "lint:fix": "eslint --fix \"src/**/*.{ts,js}\"",
     "lint": "eslint \"src/**/*.{ts,js}\"",
     "test": "jest --runInBand",

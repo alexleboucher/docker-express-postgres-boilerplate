@@ -14,7 +14,7 @@ services:
 
   db:
     container_name: postgres
-    image: postgres
+    image: postgres:15-alpine
     ports:
       - '${DB_HOST_PORT}:${DB_PORT}'
     volumes:
@@ -25,7 +25,7 @@ services:
 
   db_test:
     container_name: test_postgres
-    image: postgres
+    image: postgres:15-alpine
     ports:
       - '${TEST_DB_HOST_PORT}:${DB_PORT}'
     volumes:

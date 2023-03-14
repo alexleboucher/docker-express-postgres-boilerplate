@@ -93,11 +93,11 @@ npm install --global yarn
 ```bash
 git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
 cd docker-express-postgres-boilerplate
-rm -rf .git .github # Windows: rd /s /q .git .github
+rm -rf .git # Windows: rd /s /q .git
 yarn install
 ```
 
-`rm -rf .git .github` (or `rd /s /q .git .github` on Windows) deletes the git and github infos of the boilerplate branch like history, templates, workflows, etc.
+`rm -rf .git` (or `rd /s /q .git` on Windows) deletes the git infos of the branch like history.
 
 ### Step 3: Copy .env.example file
 
@@ -124,6 +124,22 @@ If the server is running, you should receive `Server is up!` as response.
 To create the `user` database table, you must run the migration.
 Run `yarn migration:run` to run the migration and create the table.
 
+### Step 7 (optional): Clean github and Codecov files
+
+The project contains github templates and workflows.
+
+If you don't want to keep the issue templates, you can delete the folder `ISSUE_TEMPLATE` in `.github` folder. 
+
+If you don't want to keep the Pull Request template, you can delete the file `pull_request_templace.md` in `.github` folder. 
+
+There are 2 workflows:
+- The first workflow concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the `pull-request.yml` in the folder `workflows` in `.github`.
+
+- The second workflow concerns is trigeered when a PR is merged on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It allows to have the main branch coverage. If you don't want to keep it, you can delete the `merge-main.yml` in the folder `workflows`.
+
+If you want to keep the tests on pull request but don't want to use Codecov, you can delete `merge-main.yml` and only delete the 4 last lines in `pull-request.yml`. You can also delete `codecov.yml`. Its only goal is to fail the Pull Request tests if the code coverage is not 100%.<br>
+But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
+
 ---
 
 ## Scripts
@@ -149,8 +165,9 @@ Run `yarn migration:run` to run the migration and create the table.
 
 ### • Build
 
-- Run `yarn dev` to build the project. The compiled files will be placed in `build/`
+- Run `yarn build` to build the project. The compiled files will be placed in `build/`
 - Run `yarn start` to run compiled project.
+- Run `yarn type-check` to run type checking.
 
 ### • Migrations
 - Run `yarn migration:run` to run non-executed migrations.

@@ -1,0 +1,9 @@
+comment:
+  behavior: new
+  require_changes: false
+coverage:
+  status:
+    project:
+      default:
+        target: 100%
+        threshold: 1%
