@@ -25,6 +25,7 @@
         "object-curly-spacing": ["error", "always"],
         "spaced-comment": "warn",
         "eslint-comments/no-unused-disable": "error",
+        "eslint-comments/disable-enable-pair": ["error", {"allowWholeFile": true}],
         "@typescript-eslint/await-thenable": "error",
         "require-await": "off",
         "@typescript-eslint/require-await": "error",

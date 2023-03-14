@@ -12,9 +12,9 @@ passport.use(
             passwordField: 'password',
         },
         async (login, password, done) => {
-            const userRepo = AppDataSource.getRepository(User);
-
             try {
+                const userRepo = AppDataSource.getRepository(User);
+                
                 // Search a user whose username or email is the login parameter
                 const user = await userRepo.findOne({
                     where: [{ username: login }, { email: login }],
