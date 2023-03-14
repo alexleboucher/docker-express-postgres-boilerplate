@@ -13,7 +13,7 @@ export const errorHandler = (
         error = err;
     } else {
         // if the error is not an HttpError, it means the error is not handled,
-        // so we create an InternalServerError
+        // so we throw an internal server error
         console.error('Internal server error:', err.message);
         error = createHttpError(500, err.message ?? 'Unexpected error');
     }

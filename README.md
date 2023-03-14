@@ -19,7 +19,9 @@
 
 The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication, error handling, etc.
 
-Some basic features like authentication and user creation are already implemented. They can be used to quickly start your project. More infos about what is already implemented [here](#existing-features)
+Some basic routes for authentication and user creation are already implemented. They can be used to quickly start your project. More infos about what is already implemented [here](#existing-routes).
+
+End-to-end tests are already implemented. The code coverage is 100%.
 
 ---
 
@@ -27,18 +29,21 @@ Some basic features like authentication and user creation are already implemente
 
 - **Docker containerization** to easily run your code anywhere and don't have to install tools like PostgreSQL on your computer.
 - **Authentication** with [Passport](https://www.passportjs.org/).
-- **Authentication session** thanks to [express-session](https://github.com/expressjs/session) and [connect-pg-simple](https://github.com/voxpelli/node-connect-pg-simple)
+- **Authentication session** thanks to [express-session](https://github.com/expressjs/session) and [connect-pg-simple](https://github.com/voxpelli/node-connect-pg-simple).
 - **Simplified Database Query** managed by [TypeORM](https://github.com/typeorm/typeorm).
 - **Simple but clear Structure** with different layers like routes, controllers, entities, utils, middlewares, config, etc.
 - **Object-oriented database model** with [TypeORM](https://github.com/typeorm/typeorm) entities.
+- **Integrated Testing Tool** with [Jest](https://jestjs.io/fr/docs/getting-started).
+- **E2E API Testing** thanks to [Supertest](https://github.com/ladjs/supertest).
+- **Tests utils** already implemented to simplify tests creation.
 - **Exception Handling** using [http-errors](https://github.com/jshttp/http-errors).
 - **Basic Security Features** with [Helmet](https://helmetjs.github.io/) and [cors](https://github.com/expressjs/cors).
 - **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
-- **Helpful logger** with [morgan](https://github.com/expressjs/morgan)
-- **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm)
-- **Validation utils** thanks to [Validator](https://github.com/validatorjs/validator.js)
+- **Helpful logger** with [morgan](https://github.com/expressjs/morgan).
+- **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm).
+- **Validation utils** thanks to [Validator](https://github.com/validatorjs/validator.js).
 - **Transactions control** with [TypeORM](https://github.com/typeorm/typeorm).
-- **Entity events** with [TypeORM subscribers](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber)
+- **Entity events** with [TypeORM subscribers](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber).
 
 ---
 
@@ -51,8 +56,9 @@ Some basic features like authentication and user creation are already implemente
 - [Authentication](#authentication)
 - [Migrations](#migrations)
 - [Subscribers](#subscribers)
+- [E2E Tests](#e2e-tests)
 - [Logging](#logging)
-- [Existing Features](#existing-features)
+- [Existing routes](#existing-routes)
 - [Common Errors](#common-errors)
 - [Upcoming Features](#upcoming-features)
 - [Further Documentations](#further-documentations)
@@ -87,11 +93,11 @@ npm install --global yarn
 ```bash
 git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
 cd docker-express-postgres-boilerplate
-rm -rf .git
+rm -rf .git .github # Windows: rd /s /q .git .github
 yarn install
 ```
 
-`rm -rf .git` deletes the branch git history. Otherwise, you will have all the commits of this repository in your repository.
+`rm -rf .git .github` (or `rd /s /q .git .github` on Windows) deletes the git and github infos of the boilerplate branch like history, templates, workflows, etc.
 
 ### Step 3: Copy .env.example file
 
@@ -127,9 +133,9 @@ Run `yarn migration:run` to run the migration and create the table.
 
 ### • Docker
 
-- Run `yarn docker:up` to start the containers defined in `docker-compose.yml`. It automatically opens a shell in the `api` container. In this shell, you can run other scrips like `yarn dev` or run TypeORM migrations, etc.
+- Run `yarn docker:up` to start the containers defined in `docker-compose.yml`. It automatically opens a shell in the `api` container. In this shell, you can run other scrips like `yarn dev`.
 - Run `docker:down` to stop the running containers.
-- Run `docker:shell` to open a shell in `api` container
+- Run `docker:shell` to open a shell in `api` container.
 - Run `docker:build` to build an image of your API.
 
 ### • Install
@@ -141,6 +147,11 @@ Run `yarn migration:run` to run the migration and create the table.
 - Run `yarn dev` to start [nodemon](https://www.npmjs.com/package/nodemon) with ts-node, to serve the app.
 - By default, the server will be running on `http://0.0.0.0:8000` (or `http://localhost:8000`).
 
+### • Build
+
+- Run `yarn dev` to build the project. The compiled files will be placed in `build/`
+- Run `yarn start` to run compiled project.
+
 ### • Migrations
 - Run `yarn migration:run` to run non-executed migrations.
 - Run `yarn migration:generate MigrationName` to generate a migration based on entities changes.
@@ -150,6 +161,10 @@ Run `yarn migration:run` to run the migration and create the table.
 ### • Linting
 - Run code quality analysis using `yarn lint`. This runs ESLint and display warning and errors.
 - You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
+
+### • Tests
+- Run tests using `yarn test`.
+- Run tests with coverage using `yarn test:coverage`.
 
 ---
 
@@ -163,7 +178,7 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 | **/api/users**              | POST   | Create a user |
 | **/api/auth/login**         | POST   | Log a user |
 | **/api/auth/logout**        | POST   | Logout logged user |
-| **/api/auth/authenticated** | GET    | Return authentication state |
+| **/api/auth/authenticated** | GET    | Return authentication |
 
 ---
 
@@ -171,9 +186,12 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 
 | Name                                        | Description |
 | ------------------------------------------- | ----------- |
-| **.vscode/**                                | VSCode tasks, launch configuration and some other settings |
-| **@types/**                                 | Golbal types definitions |
+| **__tests__/**                              | Tests |
+| **__tests__/e2e/**                          | End-to-end tests |
+| **__tests__/utils/**                        | Tests utils |
+| **@types/**                                 | Global types definitions |
 | **build/**                                  | Compiled source files will be placed here |
+| **coverage/**                               | Jest coverage results will be placed here |
 | **src/**                                    | Source files |
 | **src/config/**                             | Configuration files |
 | **src/controllers/**                        | REST API Controllers |
@@ -229,7 +247,7 @@ To create a migration, run `yarn migration:create MigrationName`, it will create
 
 To generate a migration based on entities changes, run `yarn migration:generate MigrationName`, it will create a migration in `src/migrations`. The migration is automatically generated based on your entities compared to your actual database.
 
-For example, you can try by adding a property `firstName` in the `User` entity :
+For example, you can try by adding a property `firstName` in the `User` entity:
 ```typescript
 @Column({ nullable: false, length: 20 })
 firstName!: string;
@@ -254,18 +272,107 @@ By default, a subscriber listen all the entities but it's a good practice to lis
 
 The subscribers functions take 1 parameter called `event`. In this object, you can find several properties like the concerned entity, the connection object, the query runner or the manager. 
 
-If you need to query the database in a subscriber function, use the event manager or query runner or it will not include the data not commited yet.
+If you need to query the database in a subscriber function, use the event manager or event query runner. Otherwise, it will not include the data not commited yet.
 
 The subscribers function can be `async`.
 
-You can find more infos about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber)
+You can find more infos about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber).
+
+---
+
+## E2E Tests
+
+### Tests overview
+End-to-end testing is a methodology used to test the functionality and performance of an application under product-like circumstances and data to replicate live settings. The goal is to simulate what a real user scenario looks like from start to finish.
+
+In this project, [Jest](https://jestjs.io/docs/getting-started) and [supertest](https://github.com/ladjs/supertest) are used for the E2E tests.
+
+They are located in `__tests__/e2e/`.
+
+The actual coverage is 100%.
+
+### Commands
+You can run the tests by running `yarn test` in the `api` container shell.
+
+If you want to see the tests coverage, you can run `yarn test:coverage`.
+
+If you want to run only one test file, you can add the name or path of the file after the command. By example, `yarn test auth` to run only the auth tests.
+
+### How to create new tests
+To create new tests, you can add tests in an existing test file or create a new test file.
+
+Before all your tests, you need to create the test server:
+```typescript
+let server: Server;
+
+beforeAll(async() => {
+    server = await createTestServer();
+});
+```
+
+And after all your tests, you must close the database connection and the test server:
+```typescript
+afterAll(async () => {
+    await closeDatabase();
+    server.close();
+})
+```
+
+Then, you can create a test suite by using `describe` function.
+
+It is strongly recommended to clean the database after each test to prevent data issues and duplicates:
+```typescript
+afterEach(async () => {
+    await clearDatabase();
+});
+```
+
+Then, you can create a test by using `test` function.
+
+To test a route, you need to use `supertest`: 
+```typescript
+const res = await request(server).get('/api/auth/authenticated');
+```
+To test a route as an authenticated user, use the `createAuthenticatedAgent` function:
+```typescript
+const agent = await createAuthenticatedAgent(server);
+const res = await agent.get('/api/auth/authenticated');
+```
+Agents allow to maintain a session betwwen multiple requests.
+
+To check values, you must use `expect` function:
+```typescript
+expect(res.statusCode).toEqual(200);
+```
+
+You can find more infos about `Jest` [here](https://jestjs.io/docs/getting-started).
+
+You can find more infos about `supertest` [here](https://github.com/ladjs/supertest).
+
+### Tests utils
+Some utils have been created to easily create new tests. They are located in `__tests__/utils/`.
+
+#### `createTestServer` (`testHelpers.ts`)
+This function creates a test server. You can change the port, prevent the database connection or override Express.
+
+#### `closeDatabase` (`testHelpers.ts`)
+This function closes the database connection.
+
+#### `clearDatabase` (`testHelpers.ts`)
+This function clear the database data.
+
+#### `createAuthenticatedAgent` (`testHelpers.ts`)
+This function creates an authenticated agent. Agents allow to maintain a session between multiple requests. You can pass customize the agent user informations.
+
+#### `createTestUser` (`userHelpers.ts`)
+This function creates a user and insert it in the database. You can pass customize the user informations.
 
 ---
 
 ## Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
-You can easily configurate it by passing an other [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`
+You can easily configurate it by passing an other [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`.
 
 Example:
 ```typescript
@@ -274,9 +381,9 @@ app.use(morgan('short'));
 
 ---
 
-## Existing Features
+## Existing Routes
 
-Some basic features are already implemented. Feel free to use, update or delete them at your conveniance.
+Some basic routes are already implemented. Feel free to use, update or delete them at your conveniance.
 
 You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters. the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
 
@@ -298,7 +405,7 @@ If you encounter an error when running a script, make sure you are in `api` cont
 
 ## Upcoming Features
 
-You can see the upcoming or in progress features [here](https://github.com/users/alexleboucher/projects/1/views/1)
+You can see the upcoming or in progress features [here](https://github.com/users/alexleboucher/projects/1/views/1).
 
 ---
 
@@ -308,13 +415,16 @@ You can see the upcoming or in progress features [here](https://github.com/users
 | --------------------------------- | --------------------------------- |
 | [Express](https://expressjs.com/) | Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. |
 | [TypeORM](http://typeorm.io/#/) | TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework. |
-| [Helmet](https://helmetjs.github.io/) | Helmet helps you secure your Express apps by setting various HTTP headers. It’s not a silver bullet, but it can help! |
 | [Passport](https://www.passportjs.org/) | Passport is authentication middleware for Node.js. Extremely flexible and modular, Passport can be unobtrusively dropped in to any Express-based web application. |
 | [Docker](https://www.docker.com/) | Docker is a platform designed to help developers build, share, and run modern applications. We handle the tedious setup, so you can focus on the code. |
-| [cors](https://github.com/expressjs/cors) | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options. |
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |
 | [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |
 | [validator](https://github.com/validatorjs/validator.js/) | A library of string validators and sanitizers. |
+| [Jest](https://jestjs.io/fr/docs/getting-started/) | Jest is a Testing Framework with a focus on simplicity. |
+| [supertest](https://github.com/ladjs/supertest/) | A library that allows developers and testers to test the APIs. |
+| [Helmet](https://helmetjs.github.io/) | Helmet helps you secure your Express apps by setting various HTTP headers. |
+| [cors](https://github.com/expressjs/cors) | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options. |
+| [ESLint](https://eslint.org/docs/latest/use/getting-started) | ESLint is a tool for identifying and reporting on patterns found in code, with the goal of making code more consistent and avoiding bugs. |
 
 ---
 
