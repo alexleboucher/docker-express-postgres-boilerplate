@@ -1,3 +1,6 @@
+comment:
+  behaviour: new
+  require_changes: false
 coverage:
   status:
     project:
