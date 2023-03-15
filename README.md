@@ -1,8 +1,8 @@
 <h1 align="center">Docker Express Postgres Boilerplate</h1>
 
 <p align="center">
-  <a href="https://codecov.io/github/alexleboucher/docker-express-postgres-boilerplate" >
-    <img src="https://codecov.io/github/alexleboucher/docker-express-postgres-boilerplate/branch/main/graph/badge.svg?token=FQQ4Z3G1EO"/>
+  <a href="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate" >
+    <img src="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate/branch/main/graph/badge.svg?token=FQQ4Z3G1EO"/>
   </a>
   <a href="https://stackshare.io/alexleboucher/docker-express-postgres-boilerplate">
     <img src="https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat" alt="StackShare" />
