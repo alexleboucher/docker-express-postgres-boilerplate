@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node", "jest"],
+    "types": ["node"],
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
