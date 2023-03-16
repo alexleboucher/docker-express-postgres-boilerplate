@@ -86,6 +86,48 @@ describe('Auth routes', () => {
         expect(res2.body.message).toEqual('Password required');
     });
 
+    test('Throw an error if authenticated user tries to login', async () => {
+        const username = 'fakeUser';
+        const password = 'fakeUserPwd';
+        const agent = await createAuthenticatedAgent(server, { username, password });
+
+        const res = await agent.post('/api/auth/login').send({ login: username, password });
+        expect(res.statusCode).toEqual(403);
+        expect(res.body.message).toEqual('User must not be authenticated');
+    });
+
+    test('Throw an error if an error occurs during Passport authentication', async () => {
+        const username = 'fakeUser';
+        const password = 'fakeUserPwd';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce((entity) => { throw 'Repo error' });
+
+        const res = await request(server).post('/api/auth/login').send({ login: username, password });
+        
+        expect(res.statusCode).toEqual(500);
+        expect(res.body.message).toEqual('Unexpected error');
+    });
+
+    test('Throw an error if an error occurs during Express login', async () => {
+        const serverFailingLogIn = await createTestServer(7778, true, {
+            logIn: (user, cb) => { cb('Error') },
+        });
+
+        const username = 'fakeUser';
+        const password = 'fakeUserPwd';
+        await createTestUser({ username, password });
+
+        const res = await request(serverFailingLogIn).post('/api/auth/login').send({ login: username, password });
+        
+        try {
+            expect(res.statusCode).toEqual(500);
+            expect(res.body.message).toEqual('Unexpected error');
+        } finally {
+            // Use finally to always close the server, even if the tests fail
+            serverFailingLogIn.close();
+        }
+    });
+
     test('Send "You are authenticated" for authenticated user', async () => {
         const agent = await createAuthenticatedAgent(server);
 
@@ -124,44 +166,25 @@ describe('Auth routes', () => {
         expect(res.headers['set-cookie']).toBeUndefined();
     });
 
-    test('Throw an error if an error occurs during Passport authentication', async () => {
-        const username = 'fakeUser';
-        const password = 'fakeUserPwd';
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce((entity) => { throw 'Repo error' });
-
-        const res = await request(server).post('/api/auth/login').send({ login: username, password });
-        
-        expect(res.statusCode).toEqual(500);
-        expect(res.body.message).toEqual('Unexpected error');
+    test('Throw an error if unauthenticated user tries to logout', async () => {
+        const res = await request(server).post('/api/auth/logout');
+        expect(res.statusCode).toEqual(403);
+        expect(res.body.message).toEqual('User must be authenticated');
     });
 
     test('Throw an error if an error occurs during Express logout', async () => {
         const serverFailingLogout = await createTestServer(7778, true, {
             logout: (cb) => { cb('Error') },
         });
-        const res = await request(serverFailingLogout).post('/api/auth/logout');
-        
-        expect(res.statusCode).toEqual(500);
-        expect(res.body.message).toEqual('Unexpected error');
+        const agent = await createAuthenticatedAgent(serverFailingLogout);
+        const res = await agent.post('/api/auth/logout');
 
-        serverFailingLogout.close();
-    });
-
-    test('Throw an error if an error occurs during Express login', async () => {
-        const serverFailingLogIn = await createTestServer(7778, true, {
-            logIn: (user, cb) => { cb('Error') },
-        });
-
-        const username = 'fakeUser';
-        const password = 'fakeUserPwd';
-        await createTestUser({ username, password });
-
-        const res = await request(serverFailingLogIn).post('/api/auth/login').send({ login: username, password });
-        
-        expect(res.statusCode).toEqual(500);
-        expect(res.body.message).toEqual('Unexpected error');
-
-        serverFailingLogIn.close();
+        try {
+            expect(res.statusCode).toEqual(500);
+            expect(res.body.message).toEqual('Unexpected error');
+        } finally {
+            // Use finally to always close the server, even if the tests fail
+            serverFailingLogout.close();
+        }
     });
 });

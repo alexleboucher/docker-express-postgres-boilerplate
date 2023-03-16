@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["node", "jest"],
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -24,7 +24,7 @@
     "outDir": "./build",
     "typeRoots": ["@types", "./node_modules/@types"],  
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__/**/*"],
   "exclude": ["node_modules", "build"],
   "files": ["@types/express/index.d.ts"]
 }
