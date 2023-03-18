@@ -1,8 +1,14 @@
 <h1 align="center">Docker Express Postgres Boilerplate</h1>
 
 <p align="center">
+  <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml">
+    <img src="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml/badge.svg"/>
+  </a>
   <a href="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate" >
     <img src="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate/branch/main/graph/badge.svg?token=FQQ4Z3G1EO"/>
+  </a>
+  <a href="https://snyk.io/test/github/alexleboucher/docker-express-postgres-boilerplate">
+    <img src="https://snyk.io/test/github/alexleboucher/docker-express-postgres-boilerplate/badge.svg"/>
   </a>
   <a href="https://stackshare.io/alexleboucher/docker-express-postgres-boilerplate">
     <img src="https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat" alt="StackShare" />
@@ -410,9 +416,10 @@ Some basic routes are already implemented. Feel free to use, update or delete th
 
 You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters. the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
 
-You can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.
+You can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.<br/>
+You can access this route only if you are not authenticated.
 
-You can logout with the POST route `/api/auth/logout`.
+You can logout with the POST route `/api/auth/logout`. You can access this route only if you are authenticated.
 
 You can get your authentication state by using the GET route `/api/auth/authenticated`. If you're authenticated, it will send `You are authenticated` as response. Otherwise, it will send `You are not authenticated`.
 
