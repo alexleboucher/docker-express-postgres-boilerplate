@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml">
-    <img src="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml/badge.svg"/>
+    <img src="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml/badge.svg?event=push"/>
   </a>
   <a href="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate" >
     <img src="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate/branch/main/graph/badge.svg?token=FQQ4Z3G1EO"/>
@@ -63,6 +63,7 @@ End-to-end tests are already implemented. The code coverage is 100%.
 - [Scripts](#scripts)
 - [API Routes](#api-routes)
 - [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
 - [Authentication](#authentication)
 - [Migrations](#migrations)
 - [Subscribers](#subscribers)
@@ -70,6 +71,7 @@ End-to-end tests are already implemented. The code coverage is 100%.
 - [Logging](#logging)
 - [Existing routes](#existing-routes)
 - [Common Errors](#common-errors)
+- [Clean Github Templates and Workflows](#clean-github-templates-and-workflows)
 - [Upcoming Features](#upcoming-features)
 - [Further Documentations](#further-documentations)
 - [License](#license)
@@ -136,19 +138,7 @@ Run `yarn migration:run` to run the migration and create the table.
 
 ### Step 7 (optional): Clean github and Codecov files
 
-The project contains github templates and workflows.
-
-If you don't want to keep the issue templates, you can delete the folder `ISSUE_TEMPLATE` in `.github` folder. 
-
-If you don't want to keep the Pull Request template, you can delete the file `pull_request_templace.md` in `.github` folder. 
-
-There are 2 workflows:
-- The first workflow concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the `pull-request.yml` in the folder `workflows` in `.github`.
-
-- The second workflow concerns is trigeered when a PR is merged on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It allows to have the main branch coverage. If you don't want to keep it, you can delete the `merge-main.yml` in the folder `workflows`.
-
-If you want to keep the tests on pull request but don't want to use Codecov, you can delete `merge-main.yml` and only delete the 4 last lines in `pull-request.yml`. You can also delete `codecov.yml`. Its only goal is to fail the Pull Request tests if the code coverage is not 100%.<br>
-But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
+The project contains Github templates and workflows. If you don't want to keep them, you can easily delete them by following this [section](#clean-github-templates-and-workflows).
 
 ---
 
@@ -234,6 +224,27 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 | **src/utils/**                              | Utils functions |
 | **src/data-source.ts**                      | TypeORM data source |
 | **src/index.ts**                            | REST API entry point |
+
+---
+
+## Environment Variables
+
+| Name                | Description | Optional | Default value |
+| ------------------- | ----------- | -------- | ------------- |
+| NODE_ENV            |  Used to state whether an environment is a production, development, test environment, etc. | ✔️ | 
+| HOST                | Server host | ✔️ | 0.0.0.0 |
+| PORT                | Server host port | ❌ |
+| DB_USER             | Database username | ❌ |
+| DB_HOST             | Database host | ❌ |
+| DB_NAME             | Database name | ❌ |
+| DB_PASSWORD         | Database password | ❌ |
+| DB_PORT             | Database host port | ❌ |
+| DB_HOST_PORT        | Database mapped port. On the machine that use Docker, the database will be accessible on this port | ❌ |
+| CORS_ORIGIN_ALLOWED | List of CORS allowed origins | ✔️ |
+| API_ROUTES_PREFIX   | The API routes prefix. Is set to `/api`, all the routes are accessible by querying `/api/...`   | ✔️ |
+| TEST_DB_HOST        | Test database host | ❌
+| TEST_DB_NAME        | Test database name | ❌
+| TEST_DB_HOST_PORT   | Test database mapped port. On the machine that use Docker, the test database will be accessible on this port | ❌
 
 ---
 
@@ -430,6 +441,24 @@ You can get your authentication state by using the GET route `/api/auth/authenti
 If you encounter an error when running `yarn docker:up`, make sure you launched Docker Desktop.
 
 If you encounter an error when running a script, make sure you are in `api` container shell.
+
+---
+
+## Clean Github Templates and Workflows
+
+If you don't want to keep the issue templates, you can delete the folder `ISSUE_TEMPLATE` in `.github` folder. 
+
+If you don't want to keep the Pull Request template, you can delete the file `pull_request_templace.md` in `.github` folder. 
+
+There are 3 workflows:
+1. The workflow `pull-request` concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the file `pull-request.yml` in the folder `workflows` in `.github`.
+
+2. The workflow `main-tests` is triggered when something is merged or pull on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It allows to have the main branch coverage. If you don't want to keep it, you can delete the file `merge-main.yml` in the folder `workflows`.
+
+If you want to keep the tests on pull request but don't want to use Codecov, you can delete `merge-main.yml` and only delete the 4 last lines in `pull-request.yml`. You can also delete `codecov.yml`. Its only goal is to fail the Pull Request tests if the code coverage is not 100%.<br>
+But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
+
+3. The workflow `main` is triggered when something is merged or pull on main too. It builds the project. Its main goal is to check if main is building. If you don't want to keep it, you can delete the file `main.yml` in the folder `workflows`.
 
 ---
 
