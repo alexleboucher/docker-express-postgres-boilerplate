@@ -39,6 +39,7 @@ End-to-end tests are already implemented. The code coverage is 100%.
 - **Integrated Testing Tool** with [Jest](https://jestjs.io/fr/docs/getting-started).
 - **E2E API Testing** thanks to [Supertest](https://github.com/ladjs/supertest).
 - **Tests utils** already implemented to simplify tests creation.
+- **Routes protection** with custom middlewares.
 - **Exception Handling** using [http-errors](https://github.com/jshttp/http-errors).
 - **Basic Security Features** with [Helmet](https://helmetjs.github.io/) and [cors](https://github.com/expressjs/cors).
 - **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
@@ -198,7 +199,7 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 | **/api/users**              | POST   | Create a user |
 | **/api/auth/login**         | POST   | Log a user |
 | **/api/auth/logout**        | POST   | Logout logged user |
-| **/api/auth/authenticated** | GET    | Return authentication |
+| **/api/auth/authenticated** | GET    | Return authentication status |
 
 ---
 
@@ -215,7 +216,7 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 | **src/**                                    | Source files |
 | **src/config/**                             | Configuration files |
 | **src/controllers/**                        | REST API Controllers |
-| **src/controllers/[feature]/index.ts**      | Validation functions for feature routes |
+| **src/controllers/[feature]/index.ts**      | Functions for feature routes |
 | **src/controllers/[feature]/validators.ts** | Validation functions for feature routes |
 | **src/entities/**                           | TypeORM entities |
 | **src/middlewares/**                        | Middlewares |
@@ -227,16 +228,6 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 | **src/utils/**                              | Utils functions |
 | **src/data-source.ts**                      | TypeORM data source |
 | **src/index.ts**                            | REST API entry point |
-| **.dockerignore**                           | Docker ignore file |
-| **.env.example**                            | Environment variables example file |
-| **.eslintrc.json**                          | ESLint configuration file |
-| **.gitignore**                              | Git ignore file |
-| **docker-compose.yml**                      | Docker Compose configuration file |
-| **Dockerfile**                              | Dockerfile configuration |
-| **LICENSE**                                 | License file |
-| **package.json**                            | Package configuration file |
-| **tsconfig.json**                           | Typescript configuration file |
-| **yarn.lock**                               | Package lock file |
 
 ---
 
@@ -250,6 +241,18 @@ The `serializeUser` defines what data are saved in request session, generally we
 The `deserializeUser` allows to get the whole user object and assign it in `req.user`. So, you can easily get the authenticated user with `req.user`. You don't need to explicitly call `deserializeUser` before calling `req.user`.
 
 You can find the Passport docs [here](https://www.passportjs.org/).
+
+To protect a route, you can use auth middlewares located in `src/middlewares/auth.ts`.
+
+To check a user is authenticated before accessing a route, use `isAuthenticated`:
+```typescript
+router.route('/logout').post(isAuthenticated, AuthController.logout);
+```
+
+To check a user is not authenticated before accessing a route, use `isUnauthenticated`:
+```typescript
+router.route('/login').post(isUnauthenticated, AuthController.login);
+```
 
 ---
 
