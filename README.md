@@ -17,7 +17,7 @@
 
 <p align="center">
   <b>A really simple boilerplate to build a REST API with authentication written in TypeScript and using Docker, Express, TypeORM and Passport</b></br>
-  <sub>Made by <a href="https://github.com/alexleboucher">Alex Le Boucher</a></sub>
+  <sub>Made with ❤️ by <a href="https://github.com/alexleboucher">Alex Le Boucher</a></sub>
 </p>
 
 <br />
@@ -74,6 +74,7 @@ End-to-end tests are already implemented. The code coverage is 100%.
 - [Clean Github Templates and Workflows](#clean-github-templates-and-workflows)
 - [Upcoming Features](#upcoming-features)
 - [Further Documentations](#further-documentations)
+- [Contributing](#contributing)
 - [License](#license)
 
 ---
@@ -446,9 +447,13 @@ If you encounter an error when running a script, make sure you ran the script in
 
 ## Clean Github Templates and Workflows
 
+### Templates
+
 If you don't want to keep the issue templates, you can delete the folder `ISSUE_TEMPLATE` in `.github` folder. 
 
 If you don't want to keep the Pull Request template, you can delete the file `pull_request_templace.md` in `.github` folder. 
+
+### Workflows
 
 There are 3 workflows:
 1. The workflow `pull-request` concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the file `pull-request.yml` in the folder `workflows` in `.github`.
@@ -459,6 +464,10 @@ If you want to keep the tests on pull request but don't want to use Codecov, you
 But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
 
 3. The workflow `main` is triggered when something is merged or pull on main too. It builds the project. Its main goal is to check if main is building. If you don't want to keep it, you can delete the file `main.yml` in the folder `workflows`.
+
+### Github files
+
+This repository contains `CONTRIBUTING`, `CODE_OF_CONDUCT` and `LICENSE` files, you can delete them too.
 
 ---
 
@@ -484,6 +493,17 @@ You can see the upcoming or in progress features [here](https://github.com/users
 | [Helmet](https://helmetjs.github.io/) | Helmet helps you secure your Express apps by setting various HTTP headers. |
 | [cors](https://github.com/expressjs/cors) | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options. |
 | [ESLint](https://eslint.org/docs/latest/use/getting-started) | ESLint is a tool for identifying and reporting on patterns found in code, with the goal of making code more consistent and avoiding bugs. |
+
+---
+
+## Contributing
+
+Anyone and everyone is welcome to [contribute](CONTRIBUTING.md).
+
+If you want to propose new features, fix a bug or improve the README, don't hesitate to open a pull request. If your changes concern new feature or bugfix, please open an issue before.
+
+However, if you decide to get involved, please take a moment to review the
+[guidelines](CONTRIBUTING.md).
 
 ---
 
