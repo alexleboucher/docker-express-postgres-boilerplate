@@ -28,7 +28,7 @@
 
 The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication, error handling, etc.
 
-Some basic routes for authentication and user creation are already implemented. They can be used to quickly start your project. More infos about what is already implemented [here](#existing-routes).
+Some basic routes for authentication and user creation are already implemented. They can be used to quickly start your project. More info about what is already implemented [here](#existing-routes).
 
 End-to-end tests are already implemented. The code coverage is 100%.
 
@@ -109,7 +109,7 @@ rm -rf .git # Windows: rd /s /q .git
 yarn install
 ```
 
-`rm -rf .git` (or `rd /s /q .git` on Windows) deletes the git infos of the branch like history.
+`rm -rf .git` (or `rd /s /q .git` on Windows) deletes the git info of the branch like history.
 
 ### Step 3: Copy .env.example file
 
@@ -136,7 +136,7 @@ If the server is running, you should receive `Server is up!` as response.
 To create the `user` database table, you must run the migration.
 Run `yarn migration:run` to run the migration and create the table.
 
-### Step 7 (optional): Clean github and Codecov files
+### Step 7 (optional): Clean Github templates and workflows
 
 The project contains Github templates and workflows. If you don't want to keep them, you can easily delete them by following this [section](#clean-github-templates-and-workflows).
 
@@ -250,7 +250,7 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 
 ## Authentication
 
-`Passport.js` is used to handle authentication. This is a flexible and modular authentication middleware that allow to easily add new authentication strategies like login with Facebook, Google, Github, etc.
+`Passport.js` is used to handle authentication. This is a flexible and modular authentication middleware that allows you to easily add new authentication strategies like login with Facebook, Google, Github, etc.
 
 The `Passport` configuration and functions are located in `src/config/passport.ts`.
 
@@ -277,7 +277,7 @@ router.route('/login').post(isUnauthenticated, AuthController.login);
 
 Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table, it allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
 
-⚠️ The migrations script must be executed in the `api` container shell.
+⚠️ The migrations scripts must be executed in the `api` container shell.
 
 ### Create a migration
 
@@ -300,7 +300,7 @@ To run the migrations that have not been executed yet, run `yarn migration:run`.
 
 ### Revert a migration
 
-You can revert the last migration by running `yarn migration:revert`. If you want to revert multiple migrations, you can run this command several times.
+You can revert the last executed migration by running `yarn migration:revert`. If you want to revert multiple migrations, you can run this command several times.
 
 ---
 
@@ -314,9 +314,9 @@ The subscribers functions take 1 parameter called `event`. In this object, you c
 
 If you need to query the database in a subscriber function, use the event manager or event query runner. Otherwise, it will not include the data not commited yet.
 
-The subscribers function can be `async`.
+The subscribers functions can be `async`.
 
-You can find more infos about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber).
+You can find more info about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber).
 
 ---
 
@@ -385,9 +385,9 @@ To check values, you must use `expect` function:
 expect(res.statusCode).toEqual(200);
 ```
 
-You can find more infos about `Jest` [here](https://jestjs.io/docs/getting-started).
+You can find more info about `Jest` [here](https://jestjs.io/docs/getting-started).
 
-You can find more infos about `supertest` [here](https://github.com/ladjs/supertest).
+You can find more info about `supertest` [here](https://github.com/ladjs/supertest).
 
 ### Tests utils
 Some utils have been created to easily create new tests. They are located in `__tests__/utils/`.
@@ -405,7 +405,7 @@ This function clear the database data.
 This function creates an authenticated agent. Agents allow to maintain a session between multiple requests. You can pass customize the agent user informations.
 
 #### `createTestUser` (`userHelpers.ts`)
-This function creates a user and insert it in the database. You can pass customize the user informations.
+This function creates a user and insert it in the database. You can customize the user informations.
 
 ---
 
@@ -432,7 +432,7 @@ You can access this route only if you are not authenticated.
 
 You can logout with the POST route `/api/auth/logout`. You can access this route only if you are authenticated.
 
-You can get your authentication state by using the GET route `/api/auth/authenticated`. If you're authenticated, it will send `You are authenticated` as response. Otherwise, it will send `You are not authenticated`.
+You can get your authentication status by using the GET route `/api/auth/authenticated`. If you're authenticated, it will send `You are authenticated` as response. Otherwise, it will send `You are not authenticated`.
 
 ---
 
@@ -440,7 +440,7 @@ You can get your authentication state by using the GET route `/api/auth/authenti
 
 If you encounter an error when running `yarn docker:up`, make sure you launched Docker Desktop.
 
-If you encounter an error when running a script, make sure you are in `api` container shell.
+If you encounter an error when running a script, make sure you ran the script in the `api` container shell.
 
 ---
 
@@ -453,7 +453,7 @@ If you don't want to keep the Pull Request template, you can delete the file `pu
 There are 3 workflows:
 1. The workflow `pull-request` concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the file `pull-request.yml` in the folder `workflows` in `.github`.
 
-2. The workflow `main-tests` is triggered when something is merged or pull on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It allows to have the main branch coverage. If you don't want to keep it, you can delete the file `merge-main.yml` in the folder `workflows`.
+2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It allows to have the main branch coverage. If you don't want to keep it, you can delete the file `merge-main.yml` in the folder `workflows`.
 
 If you want to keep the tests on pull request but don't want to use Codecov, you can delete `merge-main.yml` and only delete the 4 last lines in `pull-request.yml`. You can also delete `codecov.yml`. Its only goal is to fail the Pull Request tests if the code coverage is not 100%.<br>
 But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
