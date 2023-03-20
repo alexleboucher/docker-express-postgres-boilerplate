@@ -168,7 +168,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 ### • Build
 
-- Run `yarn build` to build the project. The compiled files will be placed in `build/`
+- Run `yarn build` to build the project. The compiled files will be placed in `build/`.
 - Run `yarn start` to run compiled project.
 - Run `yarn type-check` to run type checking.
 
@@ -179,7 +179,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 - Run `yarn migration:revert` to revert the last migration. If you want to revert multiple migrations, you can run this command several times.
 
 ### • Linting
-- Run code quality analysis using `yarn lint`. This runs ESLint and display warning and errors.
+- Run code quality analysis using `yarn lint`. This runs ESLint and displays warning and errors.
 - You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
 
 ### • Tests
@@ -258,18 +258,18 @@ The route prefix is `/api` by default, but you can change this in the .env file.
 The `Passport` configuration and functions are located in `src/config/passport.ts`.
 
 The `serializeUser` defines what data are saved in request session, generally we save the user id.
-The `deserializeUser` allows to get the whole user object and assign it in `req.user`. So, you can easily get the authenticated user with `req.user`. You don't need to explicitly call `deserializeUser` before calling `req.user`.
+The `deserializeUser` allows getting the whole user object and assigning it in `req.user`, so you can easily get the authenticated user with `req.user`. You don't need to explicitly call `deserializeUser` before calling `req.user`.
 
 You can find the Passport docs [here](https://www.passportjs.org/).
 
 To protect a route, you can use auth middlewares located in `src/middlewares/auth.ts`.
 
-To check a user is authenticated before accessing a route, use `isAuthenticated`:
+To check if a user is authenticated before accessing a route, use `isAuthenticated`:
 ```typescript
 router.route('/logout').post(isAuthenticated, AuthController.logout);
 ```
 
-To check a user is not authenticated before accessing a route, use `isUnauthenticated`:
+To check if a user is not authenticated before accessing a route, use `isUnauthenticated`:
 ```typescript
 router.route('/login').post(isUnauthenticated, AuthController.login);
 ```
@@ -278,17 +278,17 @@ router.route('/login').post(isUnauthenticated, AuthController.login);
 
 ## Migrations
 
-Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table, it allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
+Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table which allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
 
 ⚠️ The migrations scripts must be executed in the `api` container shell.
 
 ### Create a migration
 
-To create a migration, run `yarn migration:create MigrationName`, it will create an empty migration in `src/migrations`. The migration file have two functions : `up` and `down`. `up` is executed when you run the migration. `down` is executed when you revert the migration.
+To create a migration, run `yarn migration:create MigrationName`. It will create an empty migration in `src/migrations`. The migration file have two functions : `up` and `down`. `up` is executed when you run the migration. `down` is executed when you revert the migration.
 
 ### Generate a migration
 
-To generate a migration based on entities changes, run `yarn migration:generate MigrationName`, it will create a migration in `src/migrations`. The migration is automatically generated based on your entities compared to your actual database.
+To generate a migration based on entities' changes, run `yarn migration:generate MigrationName`, it will create a migration in `src/migrations`. The migration is automatically generated based on your entities compared to your actual database.
 
 For example, you can try by adding a property `firstName` in the `User` entity:
 ```typescript
@@ -309,9 +309,9 @@ You can revert the last executed migration by running `yarn migration:revert`. I
 
 ## Subscribers
 
-Subscribers allows us to listen entity events like insert, update, delete, etc and execute a method before or after the event. They are defined in `src/subscribers`.
+Subscribers allow us to listen entity events like insert, update, delete, etc and execute a method before or after the event. They are defined in `src/subscribers`.
 
-By default, a subscriber listen all the entities but it's a good practice to listen one entity by subscriber. To do that, use the function `listenTo()` and returns the entity you want to listen with this subscriber.
+By default, a subscriber listens to all the entities but it's a good practice to listen to one entity by subscriber. To do that, use the function `listenTo()` and return the entity you want to listen with this subscriber.
 
 The subscribers functions take 1 parameter called `event`. In this object, you can find several properties like the concerned entity, the connection object, the query runner or the manager. 
 
@@ -337,9 +337,9 @@ The actual coverage is 100%.
 ### Commands
 You can run the tests by running `yarn test` in the `api` container shell.
 
-If you want to see the tests coverage, you can run `yarn test:coverage`.
+If you want to see the tests' coverage, you can run `yarn test:coverage`.
 
-If you want to run only one test file, you can add the name or path of the file after the command. By example, `yarn test auth` to run only the auth tests.
+If you want to run only one test file, you can add the name or path of the file after the command. For example, use `yarn test auth` to run only the auth tests.
 
 ### How to create new tests
 To create new tests, you can add tests in an existing test file or create a new test file.
@@ -381,7 +381,7 @@ To test a route as an authenticated user, use the `createAuthenticatedAgent` fun
 const agent = await createAuthenticatedAgent(server);
 const res = await agent.get('/api/auth/authenticated');
 ```
-Agents allow to maintain a session betwwen multiple requests.
+Agents allow maintaining a session between multiple requests.
 
 To check values, you must use `expect` function:
 ```typescript
@@ -402,20 +402,20 @@ This function creates a test server. You can change the port, prevent the databa
 This function closes the database connection.
 
 #### `clearDatabase` (`testHelpers.ts`)
-This function clear the database data.
+This function clears the database data.
 
 #### `createAuthenticatedAgent` (`testHelpers.ts`)
-This function creates an authenticated agent. Agents allow to maintain a session between multiple requests. You can pass customize the agent user informations.
+This function creates an authenticated agent. Agents allow maintaining a session between multiple requests. You can customize agent user information.
 
 #### `createTestUser` (`userHelpers.ts`)
-This function creates a user and insert it in the database. You can customize the user informations.
+This function creates a user and inserts it in the database. You can customize the user information.
 
 ---
 
 ## Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
-You can easily configurate it by passing an other [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`.
+You can easily configure it by passing a [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`.
 
 Example:
 ```typescript
@@ -428,10 +428,10 @@ app.use(morgan('short'));
 
 Some basic routes are already implemented. Feel free to use, update or delete them at your conveniance.
 
-You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters. the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
+You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters, the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
 
 You can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.<br/>
-You can access this route only if you are not authenticated.
+You can access this route only if you are unauthenticated.
 
 You can logout with the POST route `/api/auth/logout`. You can access this route only if you are authenticated.
 
@@ -441,7 +441,7 @@ You can get your authentication status by using the GET route `/api/auth/authent
 
 ## Common Errors
 
-If you encounter an error when running `yarn docker:up`, make sure you launched Docker Desktop.
+If you encounter an error when running `yarn docker:up`, make sure Docker Desktop is running.
 
 If you encounter an error when running a script, make sure you ran the script in the `api` container shell.
 
@@ -460,12 +460,12 @@ If you don't want to keep the Pull Request template, you can delete the file `pu
 There are 3 workflows:
 1. The workflow `pull-request` concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the file `pull-request.yml` in the folder `workflows` in `.github`.
 
-2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It allows to have the main branch coverage. If you don't want to keep it, you can delete the file `merge-main.yml` in the folder `workflows`.
+2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It has coverage for the main branch. If you don't want to keep it, you can delete the file `merge-main.yml` in the folder `workflows`.
 
 If you want to keep the tests on pull request but don't want to use Codecov, you can delete `merge-main.yml` and only delete the 4 last lines in `pull-request.yml`. You can also delete `codecov.yml`. Its only goal is to fail the Pull Request tests if the code coverage is not 100%.<br>
 But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
 
-3. The workflow `main` is triggered when something is merged or pull on main too. It builds the project. Its main goal is to check if main is building. If you don't want to keep it, you can delete the file `main.yml` in the folder `workflows`.
+3. The workflow `main` is triggered when something is merged or pulled on main. It builds the project and its primary goal is to check if main is building. If you don't want to keep it, you can delete the file `main.yml` in the folder `workflows`.
 
 ### Github files
 
