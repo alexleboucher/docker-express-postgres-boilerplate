@@ -17,7 +17,7 @@
 
 <p align="center">
   <b>A really simple boilerplate to build a REST API with authentication written in TypeScript and using Docker, Express, TypeORM and Passport</b></br>
-  <sub>Made with ❤️ by <a href="https://github.com/alexleboucher">Alex Le Boucher</a></sub>
+  <sub>Made with ❤️ by <a href="https://github.com/alexleboucher">Alex Le Boucher</a> and <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/graphs/contributors">contributors</a></sub>
 </p>
 
 <br />
