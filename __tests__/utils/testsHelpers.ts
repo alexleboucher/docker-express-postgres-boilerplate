@@ -53,11 +53,8 @@ export const closeDatabase = async () => {
  * Clear the database data.
  */
 export const clearDatabase = async () => {
-    const entities = AppDataSource.entityMetadatas;
-    for (const entity of entities) {
-        const repository = AppDataSource.getRepository(entity.name);
-        await repository.clear();
-    }
+    const entities = AppDataSource.entityMetadatas.map((entity) => `"${entity.tableName}"`).join(", ");
+    await AppDataSource.query(`TRUNCATE ${entities} CASCADE;`);
 }
 
 /**
