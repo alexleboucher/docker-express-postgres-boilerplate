@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="./repo-image.png" alt="docker-express-postgres-boilerplate" width="80%" />
+</p>
 <h1 align="center">Docker Express Postgres Boilerplate</h1>
 
 <p align="center">
