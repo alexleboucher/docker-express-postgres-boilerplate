@@ -456,7 +456,7 @@ If you encounter an error when running a script, make sure you ran the script in
 
 If you don't want to keep the issue templates, you can delete the folder `ISSUE_TEMPLATE` in `.github` folder. 
 
-If you don't want to keep the Pull Request template, you can delete the file `pull_request_templace.md` in `.github` folder. 
+If you don't want to keep the Pull Request template, you can delete the file `pull_request_template.md` in `.github` folder. 
 
 ### Workflows
 
