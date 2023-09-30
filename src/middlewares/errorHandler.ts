@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import createHttpError, { isHttpError, HttpError as IHttpError } from 'http-errors';
+import type { Request, Response, NextFunction } from 'express';
+import type { HttpError as IHttpError } from 'http-errors';
+import createHttpError, { isHttpError } from 'http-errors';
 
 export const errorHandler = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

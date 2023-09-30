@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import createHttpError from "http-errors";
+import type { Request, Response, NextFunction } from 'express';
+import createHttpError from 'http-errors';
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     if (req.isAuthenticated()) {
@@ -7,12 +7,12 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     } else {
         next(createHttpError(403, 'User must be authenticated'));
     }
-}
+};
 
 export const isUnauthenticated = (req: Request, res: Response, next: NextFunction) => {
     if (req.isUnauthenticated()) {
-        next()
+        next();
     } else {
         next(createHttpError(403, 'User must not be authenticated'));
     }
-}
+};

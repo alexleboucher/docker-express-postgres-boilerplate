@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Server } from "http";
+import type { Server } from 'http';
 import request from 'supertest';
-import { Express } from 'express';
+import type { Express } from 'express';
 
-import createServer from "../../src/config/server";
-import { AppDataSource } from "../../src/data-source";
-import { createTestUser, TestUserProps } from "./userHelpers";
+import createServer from '../../src/config/server';
+import { AppDataSource } from '../../src/data-source';
+import type { TestUserProps } from './userHelpers';
+import { createTestUser } from './userHelpers';
 
 interface OverrideExpressOptions {
     logout?: (cb: any) => unknown;
@@ -20,7 +21,7 @@ const overrideExpressServer = (server: Express, overrideExpressOptions: Override
         server.request.logIn = overrideExpressOptions.logIn;
     }
     return server;
-}
+};
 
 /**
  * Create a test server.
@@ -40,22 +41,22 @@ export const createTestServer = async (port = 7777, preventDatabaseConnection = 
     }
 
     return server.listen(port);
-}
+};
 
 /**
  * Close the database connection.
  */
 export const closeDatabase = async () => {
     await AppDataSource.destroy();
-}
+};
 
 /**
  * Clear the database data.
  */
 export const clearDatabase = async () => {
-    const entities = AppDataSource.entityMetadatas.map((entity) => `"${entity.tableName}"`).join(", ");
+    const entities = AppDataSource.entityMetadatas.map((entity) => `"${entity.tableName}"`).join(', ');
     await AppDataSource.query(`TRUNCATE ${entities} CASCADE;`);
-}
+};
 
 /**
  * Create an authenticated test agent. A test agent allows to maintain session between multiple requests.
@@ -68,4 +69,4 @@ export const createAuthenticatedAgent = async (server: Server, testUser?: TestUs
     const user = await createTestUser(testUser);
     await agent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
     return agent;
-}
+};

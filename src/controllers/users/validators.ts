@@ -1,7 +1,7 @@
 import createHttpError from 'http-errors';
 import isEmail from 'validator/lib/isEmail';
 
-import { UsersCreateBody } from '../../types/routes/users';
+import type { UsersCreateBody } from '../../types/routes/users';
 
 export const validateCreateBody = (body: Partial<UsersCreateBody>) => {
     const { username, email, password } = body;

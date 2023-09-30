@@ -1,6 +1,6 @@
-import { Request } from 'express';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import type { Request } from 'express';
 
 import { AppDataSource } from '../data-source';
 import { User } from '../entities/user';
