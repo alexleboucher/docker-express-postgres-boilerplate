@@ -100,7 +100,7 @@ describe('Auth routes', () => {
         const username = 'fakeUser';
         const password = 'fakeUserPwd';
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce((entity) => { throw 'Repo error' });
+        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce(_ => { throw 'Repo error' });
 
         const res = await request(server).post('/api/auth/login').send({ login: username, password });
         
@@ -110,7 +110,7 @@ describe('Auth routes', () => {
 
     test('Throw an error if an error occurs during Express login', async () => {
         const serverFailingLogIn = await createTestServer(7778, true, {
-            logIn: (user, cb) => { cb('Error') },
+            logIn: (_, cb) => { cb('Error') },
         });
 
         const username = 'fakeUser';
