@@ -1,10 +1,11 @@
-import { NextFunction, Request, Response } from 'express';
-import createHttpError, { HttpError } from 'http-errors';
+import type { NextFunction, Request, Response } from 'express';
+import type { HttpError } from 'http-errors';
+import createHttpError from 'http-errors';
 import passport from 'passport';
 
-import { User } from '../../entities/user';
-import { TypedRequestBody } from '../../types/express';
-import { AuthLoginBody, AuthLoginResponse } from '../../types/routes/auth';
+import type { TypedRequestBody } from '../../types/express';
+import type { AuthLoginBody, AuthLoginResponse } from '../../types/routes/auth';
+import type { User } from '../../entities/user';
 import { validateLoginBody } from './validators';
 
 const login = (
@@ -51,9 +52,7 @@ const logout = (
         if (err) {
             return next(err);
         }
-        req.session.destroy(() => {
-            return res.send();
-        });
+        req.session.destroy(() => res.send());
     });
 };
 

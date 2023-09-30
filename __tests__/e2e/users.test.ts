@@ -1,4 +1,4 @@
-import { Server } from 'http';
+import type { Server } from 'http';
 import request from 'supertest';
 
 import { AppDataSource } from '../../src/data-source';
@@ -15,7 +15,7 @@ beforeAll(async() => {
 afterAll(async () => {
     await closeDatabase();
     server.close();
-})
+});
 
 describe('Users routes', () => {
     afterEach(async () => {

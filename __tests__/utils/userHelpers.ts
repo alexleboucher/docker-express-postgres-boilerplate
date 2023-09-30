@@ -1,5 +1,5 @@
-import { AppDataSource } from "../../src/data-source";
-import { User } from "../../src/entities/user";
+import { AppDataSource } from '../../src/data-source';
+import { User } from '../../src/entities/user';
 
 export interface TestUserProps {
     username?: string;
@@ -22,4 +22,4 @@ export const createTestUser = async (testUser?: TestUserProps) => {
 
     await userRepo.save(user);
     return user;
-}
+};

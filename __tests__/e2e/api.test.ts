@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { Server } from 'http';
+import type { Server } from 'http';
 
 import * as AuthValidators from '../../src/controllers/auth/validators';
 import { closeDatabase, createTestServer } from '../utils/testsHelpers';
@@ -32,7 +32,7 @@ describe('API', () => {
 
     test('Handle unexpected errors', async () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        jest.spyOn(AuthValidators, 'validateLoginBody').mockImplementationOnce((body) => { throw 'User error' });
+        jest.spyOn(AuthValidators, 'validateLoginBody').mockImplementationOnce(_ => { throw 'User error'; });
         const res = await request(server).post('/api/auth/login');
 
         expect(res.statusCode).toEqual(500);

@@ -1,10 +1,10 @@
-import { Response } from 'express';
+import type { Response } from 'express';
 import createHttpError from 'http-errors';
 
 import { AppDataSource } from '../../data-source';
 import { User } from '../../entities/user';
-import { TypedRequestBody } from '../../types/express';
-import { UsersCreateBody } from '../../types/routes/users';
+import type { TypedRequestBody } from '../../types/express';
+import type { UsersCreateBody } from '../../types/routes/users';
 import { validateCreateBody } from './validators';
 
 const create = async (req: TypedRequestBody<UsersCreateBody>, res: Response) => {

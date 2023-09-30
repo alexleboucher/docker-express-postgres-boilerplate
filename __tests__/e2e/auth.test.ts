@@ -1,4 +1,4 @@
-import { Server } from 'http';
+import type { Server } from 'http';
 import request from 'supertest';
 
 import { AppDataSource } from '../../src/data-source';
@@ -15,7 +15,7 @@ beforeAll(async() => {
 afterAll(async () => {
     await closeDatabase();
     server.close();
-})
+});
 
 describe('Auth routes', () => {
     afterEach(async () => {
@@ -100,7 +100,7 @@ describe('Auth routes', () => {
         const username = 'fakeUser';
         const password = 'fakeUserPwd';
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce((entity) => { throw 'Repo error' });
+        jest.spyOn(AppDataSource, 'getRepository').mockImplementationOnce(_ => { throw 'Repo error'; });
 
         const res = await request(server).post('/api/auth/login').send({ login: username, password });
         
@@ -110,7 +110,7 @@ describe('Auth routes', () => {
 
     test('Throw an error if an error occurs during Express login', async () => {
         const serverFailingLogIn = await createTestServer(7778, true, {
-            logIn: (user, cb) => { cb('Error') },
+            logIn: (_, cb) => { cb('Error'); },
         });
 
         const username = 'fakeUser';
@@ -174,7 +174,7 @@ describe('Auth routes', () => {
 
     test('Throw an error if an error occurs during Express logout', async () => {
         const serverFailingLogout = await createTestServer(7778, true, {
-            logout: (cb) => { cb('Error') },
+            logout: (cb) => { cb('Error'); },
         });
         const agent = await createAuthenticatedAgent(serverFailingLogout);
         const res = await agent.post('/api/auth/logout');

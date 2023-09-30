@@ -18,8 +18,8 @@ export default session({
     saveUninitialized: false,
     resave: false,
     cookie: {
-        secure: process.env.NODE_ENV == 'production' ? true : false,
-        httpOnly: process.env.NODE_ENV == 'production' ? true : false,
+        secure: process.env.NODE_ENV === 'production' ? true : false,
+        httpOnly: process.env.NODE_ENV === 'production' ? true : false,
         sameSite: 'lax',
         maxAge: 90 * 24 * 60 * 60 * 1000, // 3 months
     },
