@@ -89,7 +89,7 @@ describe('Auth routes', () => {
     test('Throw an error if authenticated user tries to login', async () => {
         const username = 'fakeUser';
         const password = 'fakeUserPwd';
-        const agent = await createAuthenticatedAgent(server, { username, password });
+        const { agent } = await createAuthenticatedAgent(server, { username, password });
 
         const res = await agent.post('/api/auth/login').send({ login: username, password });
         expect(res.statusCode).toEqual(403);
@@ -129,7 +129,7 @@ describe('Auth routes', () => {
     });
 
     test('Send "You are authenticated" for authenticated user', async () => {
-        const agent = await createAuthenticatedAgent(server);
+        const { agent } = await createAuthenticatedAgent(server);
 
         const res = await agent.get('/api/auth/authenticated');
         
@@ -146,7 +146,7 @@ describe('Auth routes', () => {
 
     test('Authenticated user is considered as non authenticated if user has been deleted', async () => {
         const username = 'fakeUser';
-        const agent = await createAuthenticatedAgent(server, { username });
+        const { agent } = await createAuthenticatedAgent(server, { username });
 
         const repo = AppDataSource.getRepository(User);
         await repo.delete({ username });
@@ -158,7 +158,7 @@ describe('Auth routes', () => {
     });
 
     test('Logout user', async () => {
-        const agent = await createAuthenticatedAgent(server);
+        const { agent } = await createAuthenticatedAgent(server);
 
         const res = await agent.post('/api/auth/logout');
         
@@ -176,7 +176,7 @@ describe('Auth routes', () => {
         const serverFailingLogout = await createTestServer(7778, true, {
             logout: (cb) => { cb('Error'); },
         });
-        const agent = await createAuthenticatedAgent(serverFailingLogout);
+        const { agent } = await createAuthenticatedAgent(serverFailingLogout);
         const res = await agent.post('/api/auth/logout');
 
         try {

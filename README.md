@@ -37,6 +37,8 @@ End-to-end tests are already implemented. The code coverage is 100%.
 
 Packages are frequently upgraded. You can easily see the packages version status [here](https://docs.google.com/spreadsheets/d/1vIeh02Y_SNqVuoQYIxjEXZTnDHQHr5ctQAk2EgS84KQ/edit?usp=share_link).
 
+⭐ If you like it, please leave a star. it helps me a lot! ⭐
+
 ---
 
 ## Features
@@ -381,7 +383,7 @@ const res = await request(server).get('/api/auth/authenticated');
 ```
 To test a route as an authenticated user, use the `createAuthenticatedAgent` function:
 ```typescript
-const agent = await createAuthenticatedAgent(server);
+const { agent } = await createAuthenticatedAgent(server);
 const res = await agent.get('/api/auth/authenticated');
 ```
 Agents allow maintaining a session between multiple requests.

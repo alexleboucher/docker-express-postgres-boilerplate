@@ -10,7 +10,7 @@ export interface TestUserProps {
 /**
  * Create a user in database.
  * @param testUser - User informations. Optional.
- * @returns 
+ * @returns The created user
  */
 export const createTestUser = async (testUser?: TestUserProps) => {
     const userRepo = AppDataSource.getRepository(User);

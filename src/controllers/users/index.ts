@@ -3,7 +3,6 @@ import createHttpError from 'http-errors';
 
 import { AppDataSource } from '../../data-source';
 import { User } from '../../entities/user';
-import type { TypedRequestBody } from '../../types/express';
 import type { UsersCreateBody } from '../../types/routes/users';
 import { validateCreateBody } from './validators';
 

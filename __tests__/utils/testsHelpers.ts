@@ -65,8 +65,9 @@ export const clearDatabase = async () => {
  * @returns The created agent.
  */
 export const createAuthenticatedAgent = async (server: Server, testUser?: TestUserProps) => {
-    const agent = request.agent(server);
+    const userAgent = request.agent(server);
     const user = await createTestUser(testUser);
-    await agent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
-    return agent;
+    await userAgent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
+
+    return { agent: userAgent, user };
 };
