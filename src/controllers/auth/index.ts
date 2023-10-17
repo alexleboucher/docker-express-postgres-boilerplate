@@ -3,7 +3,6 @@ import type { HttpError } from 'http-errors';
 import createHttpError from 'http-errors';
 import passport from 'passport';
 
-import type { TypedRequestBody } from '../../types/express';
 import type { AuthLoginBody, AuthLoginResponse } from '../../types/routes/auth';
 import type { User } from '../../entities/user';
 import { validateLoginBody } from './validators';
