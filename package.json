@@ -10,7 +10,7 @@
     "connect-pg-simple": "^9.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
     "express-session": "^1.17.3",
     "helmet": "^7.1.0",
