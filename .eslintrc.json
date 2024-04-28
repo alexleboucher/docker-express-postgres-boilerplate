@@ -15,7 +15,7 @@
     "plugin:import/typescript"
   ],
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["build", "src/migrations", "jest.config.ts"],
+  "ignorePatterns": ["build", "src/migrations", "jest.config.ts", "eslint.config.js.future"],
   "rules": {
     "spaced-comment": "warn",
     "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
