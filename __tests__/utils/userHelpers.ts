@@ -2,9 +2,9 @@ import { AppDataSource } from '../../src/data-source';
 import { User } from '../../src/entities/user';
 
 export interface TestUserProps {
-    username?: string;
-    email?: string;
-    password?: string;
+  username?: string;
+  email?: string;
+  password?: string;
 }
 
 /**
@@ -13,13 +13,13 @@ export interface TestUserProps {
  * @returns The created user
  */
 export const createTestUser = async (testUser?: TestUserProps) => {
-    const userRepo = AppDataSource.getRepository(User);
+  const userRepo = AppDataSource.getRepository(User);
 
-    const user = new User();
-    user.username = testUser?.username || 'testUser';
-    user.email = testUser?.email || 'testUser@gmail.com';
-    user.setPassword(testUser?.password || 'password');
+  const user = new User();
+  user.username = testUser?.username || 'testUser';
+  user.email = testUser?.email || 'testUser@gmail.com';
+  user.setPassword(testUser?.password || 'password');
 
-    await userRepo.save(user);
-    return user;
+  await userRepo.save(user);
+  return user;
 };

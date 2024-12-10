@@ -21,9 +21,7 @@
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "typeRoots": ["@types", "./node_modules/@types"],  
+    "typeRoots": ["@types", "./node_modules/@types"], 
   },
   "include": ["src/**/*", "__tests__/**/*"],
   "exclude": ["node_modules", "build"],
