@@ -11,9 +11,9 @@ const port = process.env.PORT || '8080';
 const app = createServer();
 
 AppDataSource.initialize()
-    .then(() => {
-        app.listen({ host, port }, () => {
-            console.info(`⚡️ Server is running at http://${host}:${port}`);
-        });
-    })
-    .catch(console.error);
+  .then(() => {
+    app.listen({ host, port }, () => {
+      console.info(`⚡️ Server is running at http://${host}:${port}`);
+    });
+  })
+  .catch(console.error);

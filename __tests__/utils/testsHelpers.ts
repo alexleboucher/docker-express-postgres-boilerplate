@@ -9,18 +9,18 @@ import type { TestUserProps } from './userHelpers';
 import { createTestUser } from './userHelpers';
 
 interface OverrideExpressOptions {
-    logout?: (cb: any) => unknown;
-    logIn?: (user: any, cb: any) => unknown;
+  logout?: (cb: any) => unknown;
+  logIn?: (user: any, cb: any) => unknown;
 }
 
 const overrideExpressServer = (server: Express, overrideExpressOptions: OverrideExpressOptions) => {
-    if (overrideExpressOptions.logout) {
-        server.request.logOut = overrideExpressOptions.logout;
-    }
-    if (overrideExpressOptions.logIn) {
-        server.request.logIn = overrideExpressOptions.logIn;
-    }
-    return server;
+  if (overrideExpressOptions.logout) {
+    server.request.logOut = overrideExpressOptions.logout;
+  }
+  if (overrideExpressOptions.logIn) {
+    server.request.logIn = overrideExpressOptions.logIn;
+  }
+  return server;
 };
 
 /**
@@ -31,31 +31,31 @@ const overrideExpressServer = (server: Express, overrideExpressOptions: Override
  * @returns The created test server.
  */
 export const createTestServer = async (port = 7777, preventDatabaseConnection = false, overrideExpressOptions?: OverrideExpressOptions) => {
-    const server = createServer();
-    if (overrideExpressOptions) {
-        overrideExpressServer(server, overrideExpressOptions);
-    }
+  const server = createServer();
+  if (overrideExpressOptions) {
+    overrideExpressServer(server, overrideExpressOptions);
+  }
 
-    if (!preventDatabaseConnection) {
-        await AppDataSource.initialize();
-    }
+  if (!preventDatabaseConnection) {
+    await AppDataSource.initialize();
+  }
 
-    return server.listen(port);
+  return server.listen(port);
 };
 
 /**
  * Close the database connection.
  */
 export const closeDatabase = async () => {
-    await AppDataSource.destroy();
+  await AppDataSource.destroy();
 };
 
 /**
  * Clear the database data.
  */
 export const clearDatabase = async () => {
-    const entities = AppDataSource.entityMetadatas.map((entity) => `"${entity.tableName}"`).join(', ');
-    await AppDataSource.query(`TRUNCATE ${entities} CASCADE;`);
+  const entities = AppDataSource.entityMetadatas.map((entity) => `"${entity.tableName}"`).join(', ');
+  await AppDataSource.query(`TRUNCATE ${entities} CASCADE;`);
 };
 
 /**
@@ -65,9 +65,9 @@ export const clearDatabase = async () => {
  * @returns The created agent.
  */
 export const createAuthenticatedAgent = async (server: Server, testUser?: TestUserProps) => {
-    const userAgent = request.agent(server);
-    const user = await createTestUser(testUser);
-    await userAgent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
+  const userAgent = request.agent(server);
+  const user = await createTestUser(testUser);
+  await userAgent.post('/api/auth/login').send({ login: user.username, password: testUser?.password || 'password' });
 
-    return { agent: userAgent, user };
+  return { agent: userAgent, user };
 };
