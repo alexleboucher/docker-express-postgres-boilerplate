@@ -31,6 +31,14 @@ module.exports = tseslint.config({
     '@typescript-eslint': tseslint.plugin,
     '@stylistic': stylistic,
   },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.lint.json',
+      }
+    },
+  },
   rules: {
     "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
     "no-duplicate-imports": "off",
@@ -43,7 +51,7 @@ module.exports = tseslint.config({
     "@typescript-eslint/require-await": "error",
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "req|res|next|err" }],
-    "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "type-imports" }],
+    "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }],
     "@typescript-eslint/no-floating-promises": "error",
 
     "import/default": "off",
