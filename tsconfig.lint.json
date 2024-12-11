@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    // Those options must be set to false or ESLint will not show errors for
+    // rule @typescript-eslint/consistent-type-imports in files containing decorators
+    // source: https://typescript-eslint.io/rules/consistent-type-imports/#caveat-decorators--experimentaldecorators-true--emitdecoratormetadata-true
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": false,
+  }
+}
