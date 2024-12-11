@@ -27,7 +27,6 @@ const createServer = () => {
 
   app.use(session);
 
-  app.use(passport.initialize());
   app.use(passport.session());
 
   app.use(`/${process.env.API_ROUTES_PREFIX}`, apiRoutes);

@@ -69,5 +69,8 @@
     "migration:create": "sh -c 'ts-node ./node_modules/typeorm/cli.js migration:create src/migrations/$0'",
     "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d src/data-source.ts",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts"
+  },
+  "resolutions": {
+    "@types/express": "4.17.21"
   }
 }
