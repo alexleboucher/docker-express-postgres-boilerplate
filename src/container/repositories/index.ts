@@ -1,0 +1,1 @@
+export { registerRepositories } from './container';

@@ -1,0 +1,1 @@
+export { registerRequestHandlers } from './container';

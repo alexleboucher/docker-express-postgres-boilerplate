@@ -7,7 +7,7 @@ const stylistic = require('@stylistic/eslint-plugin');
 
 module.exports = tseslint.config({
   files: ['**/*.ts'],
-  ignores: ["build/*", "src/migrations/*", "jest.config.ts"],
+  ignores: ["build/*", "src/infra/database/migrations/*", "jest.config.ts"],
   extends: [
     jseslint.configs.recommended,
     tseslint.configs.recommended,
@@ -40,13 +40,18 @@ module.exports = tseslint.config({
     },
   },
   rules: {
-    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    // General rules
+    "no-console": "warn",
     "no-duplicate-imports": "off",
     "camelcase": "warn",
     "require-await": "off",
     "arrow-body-style": ["warn", "as-needed"],
     "eqeqeq": "error",
+    "object-shorthand": "warn",
+    "prefer-const": "warn",
+    "consistent-return": "error",
 
+    // TypeScript rules
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/require-await": "error",
     "@typescript-eslint/no-unnecessary-condition": "warn",
@@ -54,11 +59,12 @@ module.exports = tseslint.config({
     "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }],
     "@typescript-eslint/no-floating-promises": "error",
 
+    // Import rules
     "import/default": "off",
     "import/no-duplicates": ["error"],
     "import/no-named-as-default-member": "off",
     "import/order": [
-      "error",
+      "warn",
       {
         "groups": [
           ["builtin", "external"],
@@ -68,6 +74,7 @@ module.exports = tseslint.config({
       }
     ],
 
+    // Comments rules
     "@eslint-community/eslint-comments/no-unused-disable": "error",
     "@eslint-community/eslint-comments/disable-enable-pair": ["error", { "allowWholeFile": true }],
 
@@ -82,7 +89,7 @@ module.exports = tseslint.config({
     "@stylistic/comma-style": ["warn", "last"],
     "@stylistic/function-call-spacing": ["warn", "never"],
     "@stylistic/function-call-argument-newline": ["warn", "consistent"],
-    "@stylistic/function-paren-newline": ["warn", "multiline"],
+    "@stylistic/function-paren-newline": ["warn", "multiline-arguments"],
     "@stylistic/indent": ['warn', 2],
     "@stylistic/indent-binary-ops": ["warn", 2],
     "@stylistic/key-spacing": "warn",

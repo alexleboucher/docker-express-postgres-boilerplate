@@ -1,11 +1,12 @@
 services:
-  api:
-    container_name: api
+  backend:
+    container_name: backend
     image: node:22-alpine
+    profiles:
+      - dev
+      - tests
     ports:
       - ${PORT}:${PORT}
-    depends_on:
-      - db
     working_dir: /app
     volumes:
       - ./:/app
@@ -14,7 +15,9 @@ services:
 
   db:
     container_name: postgres
-    image: postgres:15-alpine
+    image: postgres:15.6-alpine
+    profiles:
+      - dev
     ports:
       - '${DB_HOST_PORT}:${DB_PORT}'
     volumes:
@@ -25,12 +28,13 @@ services:
 
   db_test:
     container_name: test_postgres
-    image: postgres:15-alpine
+    image: postgres:15.6-alpine
+    profiles:
+      - tests
     ports:
       - '${TEST_DB_HOST_PORT}:${DB_PORT}'
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${TEST_DB_NAME}
-
 volumes:
   data:
