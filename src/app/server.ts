@@ -1,7 +1,3 @@
-import * as dotenv from 'dotenv';
-import 'reflect-metadata';
-dotenv.config();
-
 import cors from 'cors';
 import helmet from 'helmet';
 import type { Container } from 'inversify';

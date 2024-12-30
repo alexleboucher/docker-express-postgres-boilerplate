@@ -13,7 +13,7 @@
     "test": "jest --runInBand",
     "test:coverage": "jest --runInBand --collectCoverage",
     "docker:up": "docker-compose --profile dev up -d && yarn docker:shell",
-    "docker:test:up": "docker-compose --profile tests up -d && yarn docker:shell",
+    "docker:test:up": "docker-compose --profile test up -d && yarn docker:shell",
     "docker:down": "docker-compose --profile dev --profile tests down",
     "docker:shell": "docker exec -it backend sh",
     "docker:build": "docker build . -t pet-signal-backend",

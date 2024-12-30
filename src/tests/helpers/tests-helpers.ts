@@ -1,4 +1,7 @@
 import type { QueryRunner } from 'typeorm';
+import * as dotenv from 'dotenv';
+import 'reflect-metadata';
+dotenv.config();
 
 import { createServer } from '@/app/server';
 import { setupContainer } from '@/container/container';

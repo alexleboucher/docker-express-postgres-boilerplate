@@ -9,6 +9,6 @@
 
 ## :white_check_mark: Checklist before requesting a review
 - [ ] I have performed a self-review of my code
-- [ ] The code coverage is 100%
+- [ ] I added the required tests (E2E/units)
 
 ## :bulb: Additional informations

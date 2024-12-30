@@ -10,10 +10,9 @@ on:
 env:
   DB_USER: postgres
   DB_PASSWORD: secret
-  DB_PORT: 5432
-  API_ROUTES_PREFIX: api
   TEST_DB_HOST: localhost
   TEST_DB_NAME: test_db
+  TEST_DB_PORT: 5432
 
 jobs:
   e2e-tests:
@@ -24,7 +23,7 @@ jobs:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_PORT: ${{ env.DB_PORT }}
+          POSTGRES_PORT: ${{ env.TEST_DB_PORT }}
           POSTGRES_DB: ${{ env.TEST_DB_NAME }}
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}

@@ -4,7 +4,7 @@ services:
     image: node:22-alpine
     profiles:
       - dev
-      - tests
+      - test
     ports:
       - ${PORT}:${PORT}
     working_dir: /app
@@ -30,7 +30,7 @@ services:
     container_name: test_postgres
     image: postgres:15.6-alpine
     profiles:
-      - tests
+      - test
     ports:
       - '${TEST_DB_HOST_PORT}:${DB_PORT}'
     environment:
