@@ -1,6 +1,6 @@
 import type { ContainerBuilder } from '@/container';
 import { CORE_DI_TYPES } from '@/container/core/di-types';
-import { mandatoryEnv } from '@/core/env';
+import { unionEnv } from '@/core/env';
 import type { IIDGenerator } from '@/core/id';
 import type { ILogger } from '@/core/logger';
 import type { ITime } from '@/core/time';
@@ -31,10 +31,10 @@ class CoreContainerBuilder {
   }
 
   private registerLogger() {
-    const isTest = mandatoryEnv('NODE_ENV') === 'test';
-
+    const loggerType = unionEnv('LOGGER_TYPE', ['console', 'broken'], 'console');
+    const logger = loggerType === 'console' ? ConsoleLogger : BrokenLogger;
     this.containerBuilder.registerActions.push((container) => {
-      container.bind<ILogger>(CORE_DI_TYPES.Logger).to(isTest ? BrokenLogger : ConsoleLogger).inSingletonScope();
+      container.bind<ILogger>(CORE_DI_TYPES.Logger).to(logger).inSingletonScope();
     });
 
     return this;

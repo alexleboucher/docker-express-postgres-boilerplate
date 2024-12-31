@@ -5,8 +5,7 @@ import type { IEncryptor } from '@/domain/services/security';
 import type { UserEntity, IDatabase } from '@/infra/database';
 import { UserRepository } from '@/infra/database';
 import { User } from '@/domain/models';
-import { HttpError } from '@/app/http-error';
-import { mockTypeOrmQueryRunner } from '@/tests/helpers/tests-helpers';
+import { mockTypeOrmQueryRunner } from '@/tests/helpers/test-helpers';
 
 describe('UserRepository', () => {
   const mockDependencies = () => ({
@@ -113,6 +112,70 @@ describe('UserRepository', () => {
     });
   });
 
+  describe('existsByEmail', () => {
+    test('Return true if user exists', async () => {
+      const userEmail = 'email@test.com';
+      const { database, encryptor, databaseUserRepository } = mockDependencies();
+
+      database.getRepository.mockReturnValue(databaseUserRepository);
+      databaseUserRepository.existsBy
+        .calledWith(expect.objectContaining({ email: userEmail }))
+        .mockResolvedValue(true);
+
+      const userRepository = new UserRepository(database, encryptor);
+      const exists = await userRepository.existsByEmail(userEmail);
+
+      expect(exists).toBe(true);
+    });
+
+    test("Return false if user doesn't exist", async () => {
+      const userEmail = 'email@test.com';
+      const { database, encryptor, databaseUserRepository } = mockDependencies();
+
+      database.getRepository.mockReturnValue(databaseUserRepository);
+      databaseUserRepository.existsBy
+        .calledWith(expect.objectContaining({ email: userEmail }))
+        .mockResolvedValue(false);
+
+      const userRepository = new UserRepository(database, encryptor);
+      const exists = await userRepository.existsByEmail(userEmail);
+
+      expect(exists).toBe(false);
+    });
+  });
+
+  describe('existsByUsername', () => {
+    test('Return true if user exists', async () => {
+      const userUsername = 'username';
+      const { database, encryptor, databaseUserRepository } = mockDependencies();
+
+      database.getRepository.mockReturnValue(databaseUserRepository);
+      databaseUserRepository.existsBy
+        .calledWith(expect.objectContaining({ username: userUsername }))
+        .mockResolvedValue(true);
+
+      const userRepository = new UserRepository(database, encryptor);
+      const exists = await userRepository.existsByUsername(userUsername);
+
+      expect(exists).toBe(true);
+    });
+
+    test("Return false if user doesn't exist", async () => {
+      const userUsername = 'username';
+      const { database, encryptor, databaseUserRepository } = mockDependencies();
+
+      database.getRepository.mockReturnValue(databaseUserRepository);
+      databaseUserRepository.existsBy
+        .calledWith(expect.objectContaining({ username: userUsername }))
+        .mockResolvedValue(false);
+
+      const userRepository = new UserRepository(database, encryptor);
+      const exists = await userRepository.existsByUsername(userUsername);
+
+      expect(exists).toBe(false);
+    });
+  });
+
   describe('create', () => {
     const mockDependenciesWithQueryRunner = () => {
       const { database, encryptor, databaseUserRepository } = mockDependencies();
@@ -123,35 +186,6 @@ describe('UserRepository', () => {
 
       return { database, encryptor, databaseUserRepository };
     };
-
-    test('Throw an error if email already exists', async () => {
-      const userEmail = 'email@test.com';
-      const { database, encryptor, databaseUserRepository } = mockDependenciesWithQueryRunner();
-
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ email: userEmail }))
-        .mockResolvedValue(true);
-
-      const userRepository = new UserRepository(database, encryptor);
-      await expect(userRepository.create({ email: userEmail } as User)).rejects.toStrictEqual(HttpError.conflict('Email already exists'));
-    });
-
-    test('Throw an error if username already exists', async () => {
-      const userEmail = 'email@test.com';
-      const userUsername = 'username';
-      const { database, encryptor, databaseUserRepository } = mockDependenciesWithQueryRunner();
-
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ email: userEmail }))
-        .mockResolvedValue(false);
-
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ username: userUsername }))
-        .mockResolvedValue(true);
-
-      const userRepository = new UserRepository(database, encryptor);
-      await expect(userRepository.create({ email: userEmail, username: userUsername } as User)).rejects.toStrictEqual(HttpError.conflict('Username already exists'));
-    });
 
     test('Create user and return it', async () => {
       const user = new User({

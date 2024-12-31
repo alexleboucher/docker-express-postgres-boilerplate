@@ -6,7 +6,6 @@ import type { IEncryptor } from '@/domain/services/security';
 import { UserEntity } from '@/infra/database/models';
 import type { IDatabase } from '@/infra/database';
 import { SERVICES_DI_TYPES } from '@/container/di-types';
-import { HttpError } from '@/app/http-error';
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -51,18 +50,7 @@ export class UserRepository implements IUserRepository {
     try {
       const userRepository = queryRunner.manager.getRepository(UserEntity);
 
-      const emailExists = await userRepository.existsBy({ email: user.email });
-      if (emailExists) {
-        throw HttpError.conflict('Email already exists');
-      }
-
-      const usernameExists = await userRepository.existsBy({ username: user.username });
-      if (usernameExists) {
-        throw HttpError.conflict('Username already exists');
-      }
-
       const userEntity = this.toEntity(user);
-
       await userRepository.save(userEntity);
       await queryRunner.commitTransaction();
 
@@ -74,6 +62,18 @@ export class UserRepository implements IUserRepository {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  async existsByEmail(email: string): Promise<boolean> {
+    const userRepository = this.database.getRepository(UserEntity);
+
+    return userRepository.existsBy({ email });
+  }
+
+  async existsByUsername(username: string): Promise<boolean> {
+    const userRepository = this.database.getRepository(UserEntity);
+
+    return userRepository.existsBy({ username });
   }
 
   private toUser(user: UserEntity): User {

@@ -1,10 +1,9 @@
-import request from 'supertest';
-
-import { createTestEnvironment } from '@/tests/helpers/tests-helpers';
+import { createTestEnvironment } from '@/tests/helpers/test-helpers';
 import type { TestEnvironment } from '@/tests/helpers/test-environment';
 
 let testEnv: TestEnvironment;
 beforeAll(async () => {
+  // We don't need to connect to the database for this test
   testEnv = await createTestEnvironment({ connectDatabase: false });
 });
 
@@ -14,7 +13,7 @@ afterAll(async () => {
 
 describe('GET /health', () => {
   test('Return a 200', async () => {
-    const res = await request(testEnv.server).get('/health');
+    const res = await testEnv.request().get('/health');
     expect(res.statusCode).toEqual(200);
   });
 });

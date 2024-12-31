@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 
 import type { ILogger } from '@/core/logger';
 
-// Logger that does nothing, used for testing to not pollute the console
+// Logger that does nothing, can be used in tests for example to avoid polluting the console
 @injectable()
 export class BrokenLogger implements ILogger {
   debug(): void {}

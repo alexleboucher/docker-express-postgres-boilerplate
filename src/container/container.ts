@@ -53,7 +53,6 @@ export class ContainerBuilder {
 
   registerOnlyDatabase() {
     this.registerServices({ onlyDatabase: true });
-
     return this;
   }
 

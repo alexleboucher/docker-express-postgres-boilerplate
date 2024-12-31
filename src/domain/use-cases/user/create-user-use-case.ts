@@ -15,8 +15,18 @@ export type CreateUserCasePayload = {
   password: string;
 };
 
+type CreateUserCaseFailureReason = 'EmailAlreadyExists' | 'UsernameAlreadyExists' | 'UnknownError';
+export type CreateUserCaseFailure = {
+  reason: CreateUserCaseFailureReason;
+  error: Error;
+};
+
+export type CreateUserCaseSuccess = {
+  user: User;
+};
+
 @injectable()
-export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, User> {
+export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, CreateUserCaseSuccess, CreateUserCaseFailure> {
   constructor(
     @inject(CORE_DI_TYPES.IDGenerator) private readonly idGenerator: IIDGenerator,
     @inject(CORE_DI_TYPES.Time) private readonly time: ITime,
@@ -26,6 +36,22 @@ export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, User> 
 
   async execute(payload: CreateUserCasePayload) {
     try {
+      const emailExists = await this.userRepository.existsByEmail(payload.email);
+      if (emailExists) {
+        return new Failure<CreateUserCaseFailure>({
+          reason: 'EmailAlreadyExists',
+          error: new Error('Email already exists'),
+        });
+      }
+
+      const usernameExists = await this.userRepository.existsByUsername(payload.username);
+      if (usernameExists) {
+        return new Failure<CreateUserCaseFailure>({
+          reason: 'UsernameAlreadyExists',
+          error: new Error('Username already exists'),
+        });
+      }
+
       const hashPassword = await this.encryptor.hashPassword(payload.password);
 
       const user = new User({
@@ -39,9 +65,12 @@ export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, User> 
 
       const newUser = await this.userRepository.create(user);
 
-      return new Success(newUser);
+      return new Success({ user: newUser });
     } catch (error) {
-      return new Failure(error as Error);
+      return new Failure<CreateUserCaseFailure>({
+        reason: 'UnknownError',
+        error: error as Error,
+      });
     }
   }
 }

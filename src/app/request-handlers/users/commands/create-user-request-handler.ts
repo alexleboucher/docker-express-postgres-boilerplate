@@ -6,7 +6,8 @@ import type { IRequestHandler } from '@/app/request-handlers';
 import type { IUseCase } from '@/core/use-case';
 import { USE_CASES_DI_TYPES } from '@/container/di-types';
 import type { CreateUserCasePayload } from '@/domain/use-cases/user/';
-import type { User } from '@/domain/models';
+import type { CreateUserCaseFailure, CreateUserCaseSuccess } from '@/domain/use-cases/user/create-user-use-case';
+import { HttpError } from '@/app/http-error';
 
 type ResponseBody = {
   id: string;
@@ -23,7 +24,7 @@ const payloadSchema = z.object({
 @injectable()
 export class CreateUserRequestHandler implements IRequestHandler {
   constructor(
-    @inject(USE_CASES_DI_TYPES.CreateUserUseCase) private readonly createUserUseCase: IUseCase<CreateUserCasePayload, User>,
+    @inject(USE_CASES_DI_TYPES.CreateUserUseCase) private readonly createUserUseCase: IUseCase<CreateUserCasePayload, CreateUserCaseSuccess, CreateUserCaseFailure>,
   ) {}
 
   async handle(req: Request, res: Response<ResponseBody>) {
@@ -36,7 +37,7 @@ export class CreateUserRequestHandler implements IRequestHandler {
     });
 
     if (result.isSuccess()) {
-      const user = result.value;
+      const user = result.value.user;
 
       const response: ResponseBody = {
         id: user.id,
@@ -46,8 +47,17 @@ export class CreateUserRequestHandler implements IRequestHandler {
 
       res.status(201).send(response);
       return;
-    } else {
-      throw result.error;
+    } else if (result.isFailure()) {
+      const failure = result.failure;
+
+      switch (failure.reason) {
+        case 'EmailAlreadyExists':
+          throw HttpError.conflict('Email already exists');
+        case 'UsernameAlreadyExists':
+          throw HttpError.conflict('Username already exists');
+        case 'UnknownError':
+          throw failure.error;
+      }
     }
   }
 }

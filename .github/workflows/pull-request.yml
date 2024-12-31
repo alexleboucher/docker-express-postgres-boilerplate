@@ -60,7 +60,7 @@ jobs:
         run: yarn build
 
   tests:
-    name: tests
+    name: Tests
     runs-on: ubuntu-latest
 
     services:

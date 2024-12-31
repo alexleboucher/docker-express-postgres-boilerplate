@@ -1,10 +1,12 @@
 import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
+import { ZodError } from 'zod';
 
 import { CreateUserRequestHandler } from '@/app/request-handlers/users';
 import type { IUseCase } from '@/core/use-case';
-import { Success } from '@/core/result/result';
+import { Failure, Success } from '@/core/result/result';
 import { User } from '@/domain/models';
+import { HttpError } from '@/app/http-error';
 
 describe('CreateUserRequestHandler', () => {
   test('Call CreateUserUserCase and send success response with user infos', async () => {
@@ -29,7 +31,7 @@ describe('CreateUserRequestHandler', () => {
     });
 
     createUserUseCase.execute.mockResolvedValue(
-      new Success(createdUser),
+      new Success({ user: createdUser }),
     );
 
     const handler = new CreateUserRequestHandler(createUserUseCase);
@@ -46,5 +48,67 @@ describe('CreateUserRequestHandler', () => {
       username: createdUser.username,
       email: createdUser.email,
     });
+  });
+
+  test('Throw zod error if email is not valid', async () => {
+    const req = {
+      body: {
+        username: 'test_username',
+        email: 'test@test',
+        password: 'test1234',
+      }
+    } as Request;
+    const res = mock<Response>();
+    res.status.mockReturnThis();
+    const createUserUseCase = mock<IUseCase>();
+
+    const handler = new CreateUserRequestHandler(createUserUseCase);
+    await expect(handler.handle(req, res)).rejects.toThrow(ZodError);
+  });
+
+  test('Throw conflict error if email already exists', async () => {
+    const req = {
+      body: {
+        username: 'test_username',
+        email: 'test@test.com',
+        password: 'test1234',
+      }
+    } as Request;
+    const res = mock<Response>();
+    res.status.mockReturnThis();
+    const createUserUseCase = mock<IUseCase>();
+
+    createUserUseCase.execute.mockResolvedValue(
+      new Failure({
+        reason: 'EmailAlreadyExists',
+        error: new Error('Email already exists'),
+      }),
+    );
+
+    const handler = new CreateUserRequestHandler(createUserUseCase);
+    await expect(handler.handle(req, res)).rejects.toStrictEqual(HttpError.conflict('Email already exists'));
+  });
+
+  test('Throw conflict error if username already exists', async () => {
+    const req = {
+      body: {
+        username: 'test_username',
+        email: 'test@test.com',
+        password: 'test1234',
+      }
+    } as Request;
+    const res = mock<Response>();
+    res.status.mockReturnThis();
+    const createUserUseCase = mock<IUseCase>();
+
+    createUserUseCase.execute.mockResolvedValue(
+      new Failure({
+        reason: 'UsernameAlreadyExists',
+        error: new Error('Username already exists'),
+      }),
+    );
+
+    const handler = new CreateUserRequestHandler(createUserUseCase);
+    await expect(handler.handle(req, res)).rejects.toStrictEqual(HttpError.conflict('Username already exists'));
   });
 });
