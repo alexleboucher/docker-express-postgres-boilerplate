@@ -86,14 +86,14 @@ class ServicesContainerBuilder {
         password: mandatoryEnv('DB_PASSWORD'),
         database: mandatoryEnv('DB_NAME'),
       },
-      secret: env('SESSION_SECRET', 'pet-signal-session-secret'),
+      secret: env('SESSION_SECRET', 'session-secret'),
       resave: booleanEnv('SESSION_RESAVE', false),
       saveUninitialized: booleanEnv('SESSION_SAVE_UNINITIALIZED', false),
       cookie: {
         secure: booleanEnv('SESSION_COOKIE_SECURE', false),
         maxAge: integerEnv('SESSION_COOKIE_MAX_AGE', 90 * 24 * 60 * 60 * 1000), // 90 days by default
         httpOnly: booleanEnv('SESSION_COOKIE_HTTP_ONLY', false),
-        sameSite: unionEnv<SessionConfig['cookie']['sameSite']>('SESSION_COOKIE_SAME_SITE', ['strict', 'lax', 'none',], 'lax'),
+        sameSite: unionEnv('SESSION_COOKIE_SAME_SITE', ['strict', 'lax', 'none',], 'lax'),
       },
     };
   }

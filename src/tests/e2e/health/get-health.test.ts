@@ -2,6 +2,7 @@ import { createTestEnvironment } from '@/tests/helpers/test-helpers';
 import type { TestEnvironment } from '@/tests/helpers/test-environment';
 
 let testEnv: TestEnvironment;
+
 beforeAll(async () => {
   // We don't need to connect to the database for this test
   testEnv = await createTestEnvironment({ connectDatabase: false });

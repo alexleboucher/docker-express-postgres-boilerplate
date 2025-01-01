@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <b>A really simple boilerplate to build a REST API with authentication written in TypeScript and using Docker, Express, TypeORM and Passport</b></br>
+  <b>A modern boilerplate for building scalable and maintainable REST APIs with authentication, written in TypeScript. It features Docker, Express, TypeORM, Passport, and integrates Clean Architecture principles with Dependency Injection powered by Inversify.</b></br>
   <sub>Made with ❤️ by <a href="https://github.com/alexleboucher">Alex Le Boucher</a> and <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/graphs/contributors">contributors</a></sub>
 </p>
 
@@ -29,11 +29,21 @@
 
 ## Overview
 
-The main goal of this boilerplate is to setup an Express REST API and add common features like Docker containerization, database connection, authentication, error handling, etc.
+The main goal of this boilerplate is to provide a robust foundation for building a scalable and maintainable REST API with Express, following modern development practices.
 
-Some basic routes for authentication and user creation are already implemented. They can be used to quickly start your project. More info about what is already implemented [here](#existing-routes).
+It integrates common features such as:
 
-End-to-end tests are already implemented. The code coverage is 100%.
+- Docker containerization
+- Database connection (PostgreSQL with TypeORM)
+- Authentication (using Passport)
+- Centralized error handling
+- Clean Architecture principles for better separation of concerns
+- Dependency Injection powered by Inversify for modular and testable code
+
+Some basic routes for authentication and user creation are already implemented, allowing you to quickly start your project. The architecture is designed to be extensible, making it easy to add new features or adapt it to your needs.
+For more details on the already implemented routes, see [API Routes](#api-routes).
+
+End-to-end and unit tests are already implemented, ensuring a robust testing strategy. The code coverage is over 90%, providing high confidence in the stability and reliability of the boilerplate.
 
 Packages are frequently upgraded. You can easily see the packages version status [here](https://docs.google.com/spreadsheets/d/1vIeh02Y_SNqVuoQYIxjEXZTnDHQHr5ctQAk2EgS84KQ/edit?usp=share_link).
 
@@ -43,24 +53,26 @@ Packages are frequently upgraded. You can easily see the packages version status
 
 ## Features
 
-- **Docker containerization** to easily run your code anywhere and don't have to install tools like PostgreSQL on your computer.
+- **Docker containerization** to easily run your code anywhere and avoid installing tools like PostgreSQL on your computer.
 - **Authentication** with [Passport](https://www.passportjs.org/).
 - **Authentication session** thanks to [express-session](https://github.com/expressjs/session) and [connect-pg-simple](https://github.com/voxpelli/node-connect-pg-simple).
 - **Simplified Database Query** managed by [TypeORM](https://github.com/typeorm/typeorm).
-- **Simple but clear Structure** with different layers like routes, controllers, entities, utils, middlewares, config, etc.
 - **Object-oriented database model** with [TypeORM](https://github.com/typeorm/typeorm) entities.
-- **Integrated Testing Tool** with [Jest](https://jestjs.io/fr/docs/getting-started).
-- **E2E API Testing** thanks to [Supertest](https://github.com/ladjs/supertest).
-- **Tests utils** already implemented to simplify tests creation.
-- **Routes protection** with custom middlewares.
-- **Exception Handling** using [http-errors](https://github.com/jshttp/http-errors).
+- **Integrated Testing Tools** with [Jest](https://jestjs.io/fr/docs/getting-started).
+  - **Unit tests** and **end-to-end (E2E) tests** implemented using [Supertest](https://github.com/ladjs/supertest).
+  - **Tests utilities** to simplify the creation of new tests.
+  - **High code coverage** (>90%) to ensure reliability and stability.
+- **Clean Architecture** principles for better separation of concerns and scalability.
+- **Dependency Injection** powered by [Inversify](https://github.com/inversify/InversifyJS), ensuring a modular and testable code structure.
+- **Controller management** with [inversify-express-utils](https://github.com/inversify/inversify-express-utils) for clean and structured route definitions.
+- **Route protection** with custom middleware.
+- **Error handling** with centralized and consistent middleware.
 - **Basic Security Features** with [Helmet](https://helmetjs.github.io/) and [cors](https://github.com/expressjs/cors).
-- **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
-- **Helpful logger** with [morgan](https://github.com/expressjs/morgan).
-- **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm).
-- **Validation utils** thanks to [Validator](https://github.com/validatorjs/validator.js).
+- **Schema validation** thanks to [Zod](https://github.com/colinhacks/zod).
 - **Transactions control** with [TypeORM](https://github.com/typeorm/typeorm).
-- **Entity events** with [TypeORM subscribers](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber).
+- **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
+- **HTTP Request logging** with [morgan](https://github.com/expressjs/morgan).
+- **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm).
 
 ---
 
@@ -73,10 +85,8 @@ Packages are frequently upgraded. You can easily see the packages version status
 - [Environment Variables](#environment-variables)
 - [Authentication](#authentication)
 - [Migrations](#migrations)
-- [Subscribers](#subscribers)
-- [E2E Tests](#e2e-tests)
-- [Logging](#logging)
-- [Existing routes](#existing-routes)
+- [Tests](#tests)
+- [HTTP Request Logging](#http-request-logging)
 - [Common Errors](#common-errors)
 - [Clean Github Templates and Workflows](#clean-github-templates-and-workflows)
 - [Upcoming Features](#upcoming-features)
@@ -88,27 +98,7 @@ Packages are frequently upgraded. You can easily see the packages version status
 
 ## Getting Started
 
-### Step 1: Set up the Development Environment
-
-You need to set up your development environment before you can do anything.
-
-#### Install [Node.js and NPM](https://nodejs.org/en/download/)
-
-- on OSX use [homebrew](http://brew.sh) `brew install node`
-- on Windows use [chocolatey](https://chocolatey.org/) `choco install nodejs`
-
-#### Install yarn globally
-
-```bash
-npm install --global yarn
-```
-
-#### Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
-
-- Install Docker Desktop
-- Run Docker Desktop
-
-### Step 2: Clone the project
+### Step 1: Clone the project
 
 ```bash
 git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
@@ -117,34 +107,52 @@ rm -rf .git # Windows: rd /s /q .git
 yarn install
 ```
 
+**Note:**
 `rm -rf .git` (or `rd /s /q .git` on Windows) deletes the git info of the branch like history.
 
-### Step 3: Copy .env.example file
+### Step 2: Copy `.env.example` file
 
-- on OSX run `cp .env.example .env`
-- on Windows run `copy .env.example .env`
+**macOS/Linux:**
+```bash
+cp .env.example .env
+```
+**Windows:**
+```bash
+copy .env.example .env
+```
 
-### Step 4: Run the server
+### Step 3: Start the server
+
+Start the application in a Docker container and run the development server:
 
 ```bash
 yarn docker:up
 yarn dev
 ```
 
-> This starts a local server using `nodemon`, which will watch for any file changes and will restart the server according to these changes.
-> The server will be running on `http://0.0.0.0:8000` (or `http://localhost:8000`).
+> This starts a local server using `nodemon`, which automatically restarts the server when file changes are detected.
+> The server will run on `http://localhost:8000`.
 
-### Step 5: Test the server
+### Step 4: Test the server
 
-To test the server, you can query `http://localhost:8000/api/health` using [Postman](https://www.postman.com/) or just copy it in the address bar in your browser.
-If the server is running, you should receive `Server is up!` as response.
+To verify the server is running:
+1. Open your browser and navigate to `http://localhost:8000/health`.
+2. Alternatively, use a tool like [Postman](https://www.postman.com/) to query the endpoint.
 
-### Step 6: Create the user database table
+You should see the response:
+```json
+{ "success": true }
+```
 
-To create the `user` database table, you must run the migration.
-Run `yarn migration:run` to run the migration and create the table.
+### Step 5: Create the user database table
 
-### Step 7 (optional): Clean Github templates and workflows
+Create the necessary database tables by running the migrations:
+
+```bash
+yarn migration:run
+```
+
+### Step 6 (optional): Clean Github templates and workflows
 
 The project contains Github templates and workflows. If you don't want to keep them, you can easily delete them by following this [section](#clean-github-templates-and-workflows).
 
@@ -152,272 +160,362 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 ## Scripts
 
-⚠️ Except Docker scripts, all the scripts must be executed in the `api` container shell.
+⚠️ Except Docker scripts, all the scripts must be executed inside the `backend` container shell.
 
 
-### • Docker
+### Docker
 
-- Run `yarn docker:up` to start the containers defined in `docker-compose.yml`. It automatically opens a shell in the `api` container. In this shell, you can run other scrips like `yarn dev`.
-- Run `docker:down` to stop the running containers.
-- Run `docker:shell` to open a shell in `api` container.
-- Run `docker:build` to build an image of your API.
+- Run `yarn docker:up` to start the containers defined in `docker-compose.yml`. It automatically opens a shell in the `backend` container. Inside this shell, you can execute other scripts like `yarn dev`.
+- Run `yarn docker:test:up` to start the containers in test mode.
+- Run `yarn docker:down` to stop all running containers.
+- Run `yarn docker:shell` to open a shell inside the `backend` container.
+- Run `yarn docker:build` to build a Docker image of your API.
 
-### • Install
+### Install
 
 - Install all dependencies with `yarn install`.
 
-### • Running in dev mode
+### Running in dev mode
 
-- Run `yarn dev` to start [nodemon](https://www.npmjs.com/package/nodemon) with ts-node, to serve the app.
-- By default, the server will be running on `http://0.0.0.0:8000` (or `http://localhost:8000`).
+- Run `yarn dev` to start the application in development mode using [nodemon](https://www.npmjs.com/package/nodemon). It automatically reloads the server when file changes are detected. By default, the server will run on `http://localhost:8000`.
 
-### • Build
+### Build
 
-- Run `yarn build` to build the project. The compiled files will be placed in `build/`.
-- Run `yarn start` to run compiled project.
-- Run `yarn type-check` to run type checking.
+- Run `yarn build` to compile the project. The output files will be placed in the `build/` directory.
+- Run `yarn start` to start the compiled project.
+- Run `yarn type-check` to perform type checking.
 
-### • Migrations
-- Run `yarn migration:run` to run non-executed migrations.
-- Run `yarn migration:generate MigrationName` to generate a migration based on entities changes.
-- Run `yarn migration:create MigrationName` to create a empty migration.
-- Run `yarn migration:revert` to revert the last migration. If you want to revert multiple migrations, you can run this command several times.
+### Migrations
 
-### • Linting
-- Run code quality analysis using `yarn lint`. This runs ESLint and displays warning and errors.
-- You can also use `yarn lint:fix` to run ESLint and fix fixable warning and errors.
+- Run `yarn migration:run` to execute all pending migrations.
+- Run `yarn migration:generate MigrationName` to generate a migration based on the current entity changes.
+- Run `yarn migration:create MigrationName` to create an empty migration file.
+- Run `yarn migration:revert` to undo the last executed migration. To revert multiple migrations, execute the command multiple times.
 
-### • Tests
-- Run tests using `yarn test`.
-- Run tests with coverage using `yarn test:coverage`.
+### Linting
+
+- Run `yarn lint` to analyze code quality using ESLint. This displays warnings and errors.
+- Run `yarn lint:fix` to automatically fix linting issues where possible.
+
+### Test
+
+- Run `yarn test` to execute the unit and integration tests.
+- Run `yarn test:coverage` to execute tests and generate a coverage report.
 
 ---
 
 ## API Routes
 
-The route prefix is `/api` by default, but you can change this in the .env file.
-
-| Route                       | Method | Description |
-| --------------------------- | ------ | ----------- |
-| **/api/health**             | GET    | Show `Server is up!` |
-| **/api/users**              | POST   | Create a user |
-| **/api/auth/login**         | POST   | Log a user |
-| **/api/auth/logout**        | POST   | Logout logged user |
-| **/api/auth/authenticated** | GET    | Return authentication status |
+| Method | Route | Description | Body |
+|--------|-------|-------------| ---- |
+| GET    | `/health` | Retures the server health status | None. |
+| POST   | `/users` | Creates a new user. | `username` (min. 5 chars), `email` (valid), `password` (min. 8 chars). |
+| POST   | `/auth/login` | Logs in a user. | `email` and `password`. |
+| POST   | `/auth/logout` | Logs out the currently authenticated user. | None. |
+| GET    | `/auth/authenticated` | Returns the user authentication status | None. |
 
 ---
 
 ## Project Structure
 
-| Name                                        | Description |
-| ------------------------------------------- | ----------- |
-| **__tests__/**                              | Tests |
-| **__tests__/e2e/**                          | End-to-end tests |
-| **__tests__/utils/**                        | Tests utils |
-| **@types/**                                 | Global types definitions |
-| **build/**                                  | Compiled source files will be placed here |
-| **coverage/**                               | Jest coverage results will be placed here |
-| **src/**                                    | Source files |
-| **src/config/**                             | Configuration files |
-| **src/controllers/**                        | REST API Controllers |
-| **src/controllers/[feature]/index.ts**      | Functions for feature routes |
-| **src/controllers/[feature]/validators.ts** | Validation functions for feature routes |
-| **src/entities/**                           | TypeORM entities |
-| **src/middlewares/**                        | Middlewares |
-| **src/migrations/**                         | Migrations files |
-| **src/routes/**                             | REST API Routes |
-| **src/routes/[feature].ts**                 | Feature routes |
-| **src/subscribers/**                        | Entity subscribers |
-| **src/types/**                              | Typescript types |
-| **src/utils/**                              | Utils functions |
-| **src/data-source.ts**                      | TypeORM data source |
-| **src/index.ts**                            | REST API entry point |
+| Name                                          | Description                                   |
+| --------------------------------------------- | --------------------------------------------- |
+| **@types/**                                   | Global types definitions |
+| **build/**                                    | Compiled source files will be placed here |
+| **coverage/**                                 | Jest coverage results will be placed here |
+| **src/**                                      | Source files |
+| **src/app/**                                  | Application layer containing controllers, middlewares, and request handlers. |
+| **src/app/controllers/**                      | REST API controllers implemented with `inversify-express-utils`. |
+| **src/app/middlewares/**                      | Custom Express middlewares for authentication, error handling, etc. |
+| **src/app/request-handlers/**                 | Handlers for processing API requests following the Clean Architecture principles. Organized into commands and queries. |
+| **src/app/server.ts**                         | Express server configuration and initialization. |
+| **src/container/**                            | Dependency Injection container setup with `InversifyJS`. |
+| **src/core/**                                 | Core utilities, interfaces, and helpers used across the project. |
+| **src/domain/**                               | Domain layer containing business logic, models, and interfaces. |
+| **src/domain/models/**                        | Domain models representing business entities. |
+| **src/domain/repositories/**                  | Interfaces for database operations. |
+| **src/domain/services/**                      | Interfaces for domain-level services (e.g., authentication, encryption). |
+| **src/domain/use-cases/**                     | Use cases implementing business logic. |
+| **src/infra/**                                | Infrastructure layer providing implementations for core and domain abstractions. |
+| **src/infra/auth/**                           | Authentication implementations using Passport.js and session management. |
+| **src/infra/database/**                       | Database configuration, models, and migrations. |
+| **src/infra/database/repositories/**          | Concrete implementations of domain repository interfaces using TypeORM. |
+| **src/infra/id-generator/**                   | UUID-based ID generator. |
+| **src/infra/security/**                       | Security utilities like password encryption. |
+| **src/infra/logger/**                         | Logger implementations. |
+| **src/tests/**                                | Test suite, including unit and end-to-end tests. |
+| **src/tests/e2e/**                            | End-to-end tests for API routes. |
+| **src/tests/units/**                          | Unit tests for individual modules and layers. |
+| **src/tests/helpers/**                        | Utilities for simplifying test setup and assertions. |
 
 ---
 
 ## Environment Variables
 
-| Name                | Description | Optional | Default value |
-| ------------------- | ----------- | -------- | ------------- |
-| NODE_ENV            |  Used to state whether an environment is a production, development, test environment, etc. | ✔️ | 
-| HOST                | Server host | ✔️ | 0.0.0.0 |
-| PORT                | Server host port | ❌ |
-| DB_USER             | Database username | ❌ |
-| DB_HOST             | Database host | ❌ |
-| DB_NAME             | Database name | ❌ |
-| DB_PASSWORD         | Database password | ❌ |
-| DB_PORT             | Database host port | ❌ |
-| DB_HOST_PORT        | Database mapped port. On the machine that use Docker, the database will be accessible on this port | ❌ |
-| CORS_ORIGIN_ALLOWED | List of CORS allowed origins | ✔️ |
-| API_ROUTES_PREFIX   | The API routes prefix. Is set to `/api`, all the routes are accessible by querying `/api/...`   | ✔️ |
-| TEST_DB_HOST        | Test database host | ❌
-| TEST_DB_NAME        | Test database name | ❌
-| TEST_DB_HOST_PORT   | Test database mapped port. On the machine that use Docker, the test database will be accessible on this port | ❌
+| Name                       | Description | Optional | Default value |
+| -------------------------- | ------------| -------- | --------------|
+| NODE_ENV                   | Specifies the environment (e.g., production, development, test). | ✔️ | - |
+| HOST                       | Server host. | ✔️ | 0.0.0.0 |
+| PORT                       | Server host port. | ✔️ | 8080 |
+| DB_USER                    | Database username. | ❌ | |
+| DB_HOST                    | Database host. | ❌ | |
+| DB_NAME                    | Database name. | ❌ | |
+| DB_PASSWORD                | Database password. | ❌ | |
+| DB_PORT                    | Database host port. | ❌ | |
+| DB_HOST_PORT               | Database mapped port for accessing the database in Docker. | ❌ | |
+| TEST_DB_HOST               | Test database host. | ❌ | |
+| TEST_DB_NAME               | Test database name. | ❌ | |
+| TEST_DB_PORT               | Test database host port. | ❌ | |
+| TEST_DB_HOST_PORT          | Test database mapped port for accessing the test database in Docker. | ❌ | |
+| CORS_ORIGIN_ALLOWED        | List of allowed origins for CORS. | ✔️ | * |
+| SESSION_SECRET             | Secret key for signing the session ID cookie. | ✔️ | session-secret |
+| SESSION_RESAVE             | Forces the session to be saved back to the session store, even if it was never modified. | ✔️ | false |
+| SESSION_SAVE_UNINITIALIZED | Forces an uninitialized session to be saved to the store. | ✔️ | false |
+| SESSION_COOKIE_SECURE      | Ensures the cookie is only sent over HTTPS. | ✔️ | false |
+| SESSION_COOKIE_MAX_AGE     | Lifetime of the session cookie in milliseconds. | ✔️ | 7776000000 (90 days) |
+| SESSION_COOKIE_HTTP_ONLY   | Ensures the cookie is inaccessible to JavaScript (for XSS protection). | ✔️ | false |
+| SESSION_COOKIE_SAME_SITE   | Controls whether the cookie is sent with cross-site requests. | ✔️ | lax |
+| DB_LOGGING                 | Enables or disables query logging in TypeORM. | ✔️ | false |
+| TYPEORM_ENTITIES           | Path to TypeORM entity files. | ✔️ | src/infra/database/models/**/*.entity.ts |
+| TYPEORM_MIGRATIONS         | Path to TypeORM migration files. | ✔️ | src/infra/database/migrations/**/*.ts |
+| LOGGER_TYPE                | Specifies the type of logger to use | ✔️ | console |
 
 ---
 
 ## Authentication
 
-`Passport.js` is used to handle authentication. This is a flexible and modular authentication middleware that allows you to easily add new authentication strategies like login with Facebook, Google, Github, etc.
+This boilerplate uses `Passport.js` to handle authentication. `Passport.js` is a powerful, flexible, and modular middleware that allows you to implement various authentication strategies, including social logins (e.g., Google, Facebook, GitHub, etc.). 
 
-The `Passport` configuration and functions are located in `src/config/passport.ts`.
+### Configuration
 
-The `serializeUser` defines what data are saved in request session, generally we save the user id.
-The `deserializeUser` allows getting the whole user object and assigning it in `req.user`, so you can easily get the authenticated user with `req.user`. You don't need to explicitly call `deserializeUser` before calling `req.user`.
+The configuration for `Passport` is located in `src/infra/auth/authenticator/passport-authenticator.ts`. This class centralizes the setup of strategies and the implementation of required methods like `serializeUser` and `deserializeUser`.
 
-You can find the Passport docs [here](https://www.passportjs.org/).
+- **`serializeUser`**: Defines what data should be stored in the session. By default, it stores the user ID.  
+- **`deserializeUser`**: Fetches user information based on the session data and assigns it to `req.user`. This makes the authenticated user readily accessible via `req.user` without requiring additional calls.
 
-To protect a route, you can use auth middlewares located in `src/middlewares/auth.ts`.
+You can find detailed documentation on `Passport.js` [here](https://www.passportjs.org/).
 
-To check if a user is authenticated before accessing a route, use `isAuthenticated`:
+### Route Protection
+
+To ensure route security and verify the user's authentication status, this boilerplate provides a custom middleware:  
+**`AuthenticatedMiddleware`**, located in `src/app/middlewares/authenticated-middleware.ts`.
+
+This middleware ensures the user is authenticated before allowing access to the route. It integrates seamlessly with the controllers, as shown in the example below:  
+
 ```typescript
-router.route('/logout').post(isAuthenticated, AuthController.logout);
+@httpPost('/logout', MIDDLEWARES_DI_TYPES.AuthenticatedMiddleware)
+public logout(): void {
+  // Logout logic here
+}
 ```
 
-To check if a user is not authenticated before accessing a route, use `isUnauthenticated`:
-```typescript
-router.route('/login').post(isUnauthenticated, AuthController.login);
-```
+This pattern allows you to secure endpoints declaratively and keeps the authentication logic consistent throughout the project.
+
+### Extending Authentication Strategies
+Adding new strategies is straightforward thanks to Passport's modular design. To include a new strategy:
+
+1. Install the corresponding Passport strategy package (e.g., `passport-google-oauth20`).
+2. Configure the strategy in `passport-authenticator.ts` by adding it to the existing strategies.
+
+This design simplifies the addition of new authentication methods and scales well as your application grows.
 
 ---
 
 ## Migrations
 
-Thanks to TypeORM, you can easily manage your migrations. The executed migrations are stored in a table which allows TypeORM to know which migrations must be executed but also to revert migrations if you need.
+This boilerplate uses **TypeORM** to handle database migrations efficiently. Migrations allow you to track and apply changes to your database schema in a controlled and versioned manner.  
 
-⚠️ The migrations scripts must be executed in the `api` container shell.
+All executed migrations are recorded in a dedicated database table, which enables TypeORM to:  
+- Identify pending migrations that need to be executed.  
+- Revert specific migrations if necessary.  
 
-### Create a migration
+⚠️ **Important**: All migration commands must be executed from within the `backend` container shell.
 
-To create a migration, run `yarn migration:create MigrationName`. It will create an empty migration in `src/migrations`. The migration file have two functions : `up` and `down`. `up` is executed when you run the migration. `down` is executed when you revert the migration.
+### Creating a migration
 
-### Generate a migration
+To create a new migration, run the following command:  
+```bash
+yarn migration:create MigrationName
+```
 
-To generate a migration based on entities' changes, run `yarn migration:generate MigrationName`, it will create a migration in `src/migrations`. The migration is automatically generated based on your entities compared to your actual database.
+This will create an empty migration file in src/infra/database/migrations/. A migration file contains two functions:
 
-For example, you can try by adding a property `firstName` in the `User` entity:
+- `up`: Defines the changes to be applied to the database when the migration is executed.
+- `down`: Defines how to revert the changes applied by the `up` function.
+
+You must manually define the logic for both functions when creating an empty migration.
+
+### Generating a migration
+TypeORM also allows you to generate migrations automatically based on changes in your entities. To generate a migration:
+```bash
+yarn migration:generate MigrationName
+```
+
+This will create a migration file in `src/infra/database/migrations/`. The content of the migration will be automatically generated by comparing your updated entities with the current database schema.
+
+**Exemple:**
+1. Add a new property `firstName` to the `User` entity:
 ```typescript
 @Column({ nullable: false, length: 20 })
 firstName!: string;
 ```
-Then, run `yarn migration:generate AddFirstNameInUser`, it will automatically generate a migration to create the new column.
+2. Run:
+```bash
+yarn migration:generate AddFirstNameInUser
+```
+3. A migration will be generated to add the `firstName` column to the `users` table.
 
-### Run migrations
+### Running migrations
 
-To run the migrations that have not been executed yet, run `yarn migration:run`.
+To execute pending migrations and update your database schema:
+```bash
+yarn migration:run
+```
+This will run all migrations that have not yet been applied to the database.
 
-### Revert a migration
+### Reverting migrations
 
-You can revert the last executed migration by running `yarn migration:revert`. If you want to revert multiple migrations, you can run this command several times.
+To revert the last executed migration, run:
+```bash
+yarn migration:revert
+```
+If you need to revert multiple migrations, you can execute this command multiple times. Each execution will revert one migration in reverse order of their execution.
 
 ---
 
-## Subscribers
+## Tests
 
-Subscribers allow us to listen entity events like insert, update, delete, etc and execute a method before or after the event. They are defined in `src/subscribers`.
+Tests are located in `src/tests`.
 
-By default, a subscriber listens to all the entities but it's a good practice to listen to one entity by subscriber. To do that, use the function `listenTo()` and return the entity you want to listen with this subscriber.
+In this boilerplate, [Jest](https://jestjs.io/docs/getting-started) is used to execute the tests.
 
-The subscribers functions take 1 parameter called `event`. In this object, you can find several properties like the concerned entity, the connection object, the query runner or the manager. 
+The tests are divided into two types: **end-to-end tests** and **unit tests**.
 
-If you need to query the database in a subscriber function, use the event manager or event query runner. Otherwise, it will not include the data not commited yet.
+### Running Tests
 
-The subscribers functions can be `async`.
+- **Run all tests:**
+```bash
+yarn test
+```
+Execute this command in the `backend` container shell.
 
-You can find more info about subscribers [here](https://typeorm.io/listeners-and-subscribers#what-is-a-subscriber).
+- **Run tests with coverage:**
+```bash
+yarn test:coverage
+```
+
+- **Run a specific test file:** Add the name or path of the file after the command. For example:
+```bash
+yarn test auth
+```
+
+### End-to-End Tests
+
+#### Overview
+End-to-end (E2E) tests validate the application’s behavior in product-like scenarios. They simulate user workflows and interactions with the API to ensure that the entire system functions as expected.
+
+[E2E tests](https://github.com/ladjs/supertest) are implemented using `supertest` and located in `src/tests/e2e/`.
+
+This project prioritizes **unit testing** over E2E testing. E2E tests primarily cover happy paths and critical features.
+
+#### Creating End-to-End Tests
+
+1. **Setup Test Environment:**
+Create the test environment before executing your tests:
+    ```typescript
+    let testEnv: TestEnvironment;
+
+    beforeAll(async () => {
+      testEnv = await createTestEnvironment();
+    });
+
+    afterAll(async () => {
+      await testEnv.close();
+    });
+    ```
+
+2. **Clear Database (if needed):**
+If the test requires a clean database state, clear the database before each test:
+    ```typescript
+    beforeEach(async () => {
+      await testEnv.clearDatabase();
+    });
+    ```
+
+    If your test does not require database connection (e.g., `/health` or `404` routes), you can disable it:
+    ```typescript
+    testEnv = await createTestEnvironment({ connectDatabase: false });
+    ```
+
+3. **Write Tests:**
+Use `test` to define individual tests within `describe` blocks:
+    ```typescript
+    test('returns a 200 status for /health', async () => {
+      const res = await testEnv.request().get('/health');
+
+      expect(res.statusCode).toEqual(200);
+    });
+    ```
+
+4. **Authenticated Requests:**
+For tests requiring user authentication, create an authenticated agent:
+    ```typescript
+    const { agent } = await testEnv.createAuthenticatedAgent();
+    const res = await agent.get('/auth/authenticated');
+
+    expect(res.body).toEqual({ authenticated: true });
+    ```
+
+### Unit Tests
+
+#### Overview
+Unit tests focus on testing individual components or functions in isolation. They ensure the correctness of the smallest parts of your application, such as use cases, services, or utility functions.
+
+Unit tests are located in `src/tests/unit/`.
+
+#### Creating Unit Tests
+
+1. **Mock Dependencies:**
+Use libraries like [`jest-mock-extended`](https://github.com/marchaos/jest-mock-extended) to create mocks:
+    ```typescript
+    import { mock } from 'jest-mock-extended';
+
+    const userRepository = mock<IUserRepository>();
+    userRepository.existsByEmail.mockResolvedValue(false);
+    ```
+
+2. **Write Tests:**
+Create descriptive test cases within `describe` blocks:
+    ```typescript
+    describe('CreateUserUseCase', () => {
+      test('creates a user successfully', async () => {
+        // Setup mocks and inputs
+        const userRepository = mock<IUserRepository>();
+        userRepository.create.mockResolvedValue(mockedUser);
+
+        const useCase = new CreateUserUseCase(userRepository);
+        const result = await useCase.execute(payload);
+
+        expect(result).toBeInstanceOf(Success);
+      });
+    });
+    ```
+
+3. **Test Failure Scenarios:**
+Include tests for error cases or edge conditions:
+    ```typescript
+    test('fails if email already exists', async () => {
+      userRepository.existsByEmail.mockResolvedValue(true);
+
+      const result = await useCase.execute(payload);
+
+      expect(result).toBeInstanceOf(Failure);
+    });
+    ```
 
 ---
 
-## E2E Tests
-
-### Tests overview
-End-to-end testing is a methodology used to test the functionality and performance of an application under product-like circumstances and data to replicate live settings. The goal is to simulate what a real user scenario looks like from start to finish.
-
-In this project, [Jest](https://jestjs.io/docs/getting-started) and [supertest](https://github.com/ladjs/supertest) are used for the E2E tests.
-
-They are located in `__tests__/e2e/`.
-
-The actual coverage is 100%.
-
-### Commands
-You can run the tests by running `yarn test` in the `api` container shell.
-
-If you want to see the tests' coverage, you can run `yarn test:coverage`.
-
-If you want to run only one test file, you can add the name or path of the file after the command. For example, use `yarn test auth` to run only the auth tests.
-
-### How to create new tests
-To create new tests, you can add tests in an existing test file or create a new test file.
-
-Before all your tests, you need to create the test server:
-```typescript
-let server: Server;
-
-beforeAll(async() => {
-    server = await createTestServer();
-});
-```
-
-And after all your tests, you must close the database connection and the test server:
-```typescript
-afterAll(async () => {
-    await closeDatabase();
-    server.close();
-})
-```
-
-Then, you can create a test suite by using `describe` function.
-
-It is strongly recommended to clean the database after each test to prevent data issues and duplicates:
-```typescript
-afterEach(async () => {
-    await clearDatabase();
-});
-```
-
-Then, you can create a test by using `test` function.
-
-To test a route, you need to use `supertest`: 
-```typescript
-const res = await request(server).get('/api/auth/authenticated');
-```
-To test a route as an authenticated user, use the `createAuthenticatedAgent` function:
-```typescript
-const { agent } = await createAuthenticatedAgent(server);
-const res = await agent.get('/api/auth/authenticated');
-```
-Agents allow maintaining a session between multiple requests.
-
-To check values, you must use `expect` function:
-```typescript
-expect(res.statusCode).toEqual(200);
-```
-
-You can find more info about `Jest` [here](https://jestjs.io/docs/getting-started).
-
-You can find more info about `supertest` [here](https://github.com/ladjs/supertest).
-
-### Tests utils
-Some utils have been created to easily create new tests. They are located in `__tests__/utils/`.
-
-#### `createTestServer` (`testHelpers.ts`)
-This function creates a test server. You can change the port, prevent the database connection or override Express.
-
-#### `closeDatabase` (`testHelpers.ts`)
-This function closes the database connection.
-
-#### `clearDatabase` (`testHelpers.ts`)
-This function clears the database data.
-
-#### `createAuthenticatedAgent` (`testHelpers.ts`)
-This function creates an authenticated agent. Agents allow maintaining a session between multiple requests. You can customize agent user information.
-
-#### `createTestUser` (`userHelpers.ts`)
-This function creates a user and inserts it in the database. You can customize the user information.
-
----
-
-## Logging
+## HTTP Request Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
 You can easily configure it by passing a [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`.
@@ -429,26 +527,11 @@ app.use(morgan('short'));
 
 ---
 
-## Existing Routes
-
-Some basic routes are already implemented. Feel free to use, update or delete them at your conveniance.
-
-You can create a user by using the POST route `/api/users`. The query body must contain a username, an email and a password. The username must contain at least 5 characters, the email must be valid and the password must contain at least 8 characters. The user's password is encrypted.
-
-You can login by using the POST route `/api/auth/login`. The query body must contain a login and a password. The login can be the email or the username of the user.<br/>
-You can access this route only if you are unauthenticated.
-
-You can logout with the POST route `/api/auth/logout`. You can access this route only if you are authenticated.
-
-You can get your authentication status by using the GET route `/api/auth/authenticated`. If you're authenticated, it will send `You are authenticated` as response. Otherwise, it will send `You are not authenticated`.
-
----
-
 ## Common Errors
 
 If you encounter an error when running `yarn docker:up`, make sure Docker Desktop is running.
 
-If you encounter an error when running a script, make sure you ran the script in the `api` container shell.
+If you encounter an error when running a script, make sure you ran the script in the `backend` container shell.
 
 ---
 
@@ -463,14 +546,14 @@ If you don't want to keep the Pull Request template, you can delete the file `pu
 ### Workflows
 
 There are 3 workflows:
-1. The workflow `pull-request` concerns the pull requests. It checks linting, build, runs E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the file `pull-request.yml` in the folder `workflows` in `.github`.
+1. The workflow `pull-request` concerns the pull requests. It checks linting, build, runs tests and sends the coverage to [Codecov](https://about.codecov.io/). If you don't want to keep it, you can delete the file `pull-request.yml` in the folder `workflows` in `.github`.
 
-2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the E2E tests and sends the coverage to [Codecov](https://about.codecov.io/). It has coverage for the main branch. If you don't want to keep it, you can delete the file `merge-main.yml` in the folder `workflows`.
+2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the tests and sends the coverage to [Codecov](https://about.codecov.io/). It has coverage for the main branch. If you don't want to keep it, you can delete the file `main-tests.yml` in the folder `workflows`.
 
-If you want to keep the tests on pull request but don't want to use Codecov, you can delete `merge-main.yml` and only delete the 4 last lines in `pull-request.yml`. You can also delete `codecov.yml`. Its only goal is to fail the Pull Request tests if the code coverage is not 100%.<br>
-But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in you github secrets.
+If you want to keep the tests on pull request but don't want to use Codecov, you can delete `main-tests` and only delete the last step `Upload coverage to Codecov` in `pull-request.yml`. You can also delete `codecov.yml`.<br>
+But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in your github secrets.
 
-3. The workflow `main` is triggered when something is merged or pulled on main. It builds the project and its primary goal is to check if main is building. If you don't want to keep it, you can delete the file `main.yml` in the folder `workflows`.
+3. The workflow `main-build` is triggered when something is merged or pulled on main. It builds the project and its primary goal is to check if main is building. If you don't want to keep it, you can delete the file `main-build.yml` in the folder `workflows`.
 
 ### Github files
 
@@ -494,7 +577,7 @@ You can see the upcoming or in progress features [here](https://github.com/users
 | [Docker](https://www.docker.com/) | Docker is a platform designed to help developers build, share, and run modern applications. We handle the tedious setup, so you can focus on the code. |
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |
 | [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |
-| [validator](https://github.com/validatorjs/validator.js/) | A library of string validators and sanitizers. |
+| [Inversify](https://inversify.io/) | Inversify is a lightweight and flexible inversion of control (IoC) container. It helps in managing dependencies and achieving loose coupling in applications. |
 | [Jest](https://jestjs.io/fr/docs/getting-started/) | Jest is a Testing Framework with a focus on simplicity. |
 | [supertest](https://github.com/ladjs/supertest/) | A library that allows developers and testers to test the APIs. |
 | [Helmet](https://helmetjs.github.io/) | Helmet helps you secure your Express apps by setting various HTTP headers. |

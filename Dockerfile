@@ -9,8 +9,7 @@ RUN yarn build
 FROM node:22-alpine AS server
 WORKDIR /app
 COPY --from=builder ./app/build ./build
-COPY package* ./
-COPY yarn.lock ./
+COPY package.json yarn.lock ./
 RUN yarn install --production
 EXPOSE 8080
 CMD ["yarn", "start"]

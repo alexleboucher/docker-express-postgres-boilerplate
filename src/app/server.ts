@@ -9,10 +9,11 @@ import type { IErrorMiddleware } from '@/app/middlewares';
 import type { IAuthenticator, ISessionManager } from '@/domain/services/auth';
 import { HttpError } from '@/app/http-error';
 import { MIDDLEWARES_DI_TYPES, SERVICES_DI_TYPES } from '@/container/di-types';
+import { env } from '@/core/env';
 
 export const createServer = (container: Container) => {
   const corsOptions = {
-    origin: process.env.CORS_ORIGIN_ALLOWED,
+    origin: env('CORS_ORIGIN_ALLOWED', '*'),
     credentials: true,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   };

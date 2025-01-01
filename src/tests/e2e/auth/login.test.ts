@@ -3,6 +3,7 @@ import type { TestEnvironment } from '@/tests/helpers/test-environment';
 import { createTestUser } from '@/tests/helpers/user-helpers';
 
 let testEnv: TestEnvironment;
+
 beforeAll(async () => {
   testEnv = await createTestEnvironment();
 });
