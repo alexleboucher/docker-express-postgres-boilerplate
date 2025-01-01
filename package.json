@@ -17,10 +17,11 @@
     "docker:down": "docker-compose --profile dev --profile test down",
     "docker:shell": "docker exec -it backend sh",
     "docker:build": "docker build . -t backend",
-    "migration:generate": "sh -c 'ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/infra/database/config/data-source.orm.ts src/infra/database/migrations/$0'",
-    "migration:create": "sh -c 'ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create src/infra/database/migrations/$0'",
-    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/infra/database/config/data-source.orm.ts",
-    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/infra/database/config/data-source.orm.ts"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "sh -c 'yarn typeorm migration:generate -d src/infra/database/config/data-source.orm.ts src/infra/database/migrations/$0'",
+    "migration:create": "sh -c 'yarn typeorm migration:create src/infra/database/migrations/$0'",
+    "migration:revert": "yarn typeorm migration:revert -d src/infra/database/config/data-source.orm.ts",
+    "migration:run": "yarn typeorm migration:run -d src/infra/database/config/data-source.orm.ts"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
