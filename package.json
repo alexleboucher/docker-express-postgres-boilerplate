@@ -3,6 +3,8 @@
   "version": "3.0.0",
   "description": "A boilerplate for Express.js applications with Docker, PostgreSQL, and a pre-built authentication system.",
   "main": "src/app/index.js",
+  "author": "Alexis Le Boucher",
+  "license": "MIT",
   "scripts": {
     "start": "node build/app/index.js",
     "dev": "nodemon -L -r tsconfig-paths/register src/app/index.ts --watch \"src/**/*.{ts,js}\"",
