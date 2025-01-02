@@ -254,7 +254,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 | Name                       | Description | Optional | Default value |
 | -------------------------- | ------------| -------- | --------------|
-| NODE_ENV                   | Specifies the environment (e.g., production, development, test). | ✔️ | - |
+| NODE_ENV                   | Specifies the environment (e.g., production, development, test). | ❌ | |
 | HOST                       | Server host. | ✔️ | 0.0.0.0 |
 | PORT                       | Server host port. | ✔️ | 8080 |
 | DB_USER                    | Database username. | ❌ | |

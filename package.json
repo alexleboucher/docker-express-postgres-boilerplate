@@ -4,7 +4,7 @@
   "description": "A boilerplate for Express.js applications with Docker, PostgreSQL, and a pre-built authentication system.",
   "main": "src/app/index.js",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "node build/app/index.js",
     "dev": "nodemon -L -r tsconfig-paths/register src/app/index.ts --watch \"src/**/*.{ts,js}\"",
     "build": "tsc -p tsconfig.build.json && tsc-alias",
     "type-check": "tsc --noEmit",
@@ -54,7 +54,7 @@
     "@types/express-session": "1.18.1",
     "@types/jest": "29.5.14",
     "@types/morgan": "1.9.9",
-    "@types/node": "22.10.2",
+    "@types/node": "22.10.3",
     "@types/passport": "1.0.17",
     "@types/passport-local": "1.0.38",
     "@types/supertest": "6.0.2",
@@ -70,7 +70,7 @@
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.7.2",
-    "typescript-eslint": "8.18.2"
+    "typescript-eslint": "8.19.0"
   },
   "resolutions": {
     "@types/express": "4.17.21"
