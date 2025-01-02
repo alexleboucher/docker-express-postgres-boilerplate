@@ -4,8 +4,8 @@
 <h1 align="center">Docker Express Postgres Boilerplate</h1>
 
 <p align="center">
-  <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml">
-    <img src="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main.yml/badge.svg?event=push"/>
+  <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main-build.yml">
+    <img src="https://github.com/alexleboucher/docker-express-postgres-boilerplate/actions/workflows/main-build.yml/badge.svg?event=push"/>
   </a>
   <a href="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate" >
     <img src="https://codecov.io/gh/alexleboucher/docker-express-postgres-boilerplate/branch/main/graph/badge.svg?token=FQQ4Z3G1EO"/>
