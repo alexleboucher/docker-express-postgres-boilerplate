@@ -1,4 +1,9 @@
 {
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
   "compilerOptions": {
     "types": ["node", "jest"],
     "target": "ES2020",
@@ -6,7 +11,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "build",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -21,11 +26,14 @@
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
     "typeRoots": ["@types", "./node_modules/@types"],  
+
+    /* Paths */
+    "paths": {
+      "@/*": ["./src/*"]
   },
-  "include": ["src/**/*", "__tests__/**/*"],
+  },
+  "include": ["src/**/*", "src/tests/**/*"],
   "exclude": ["node_modules", "build"],
   "files": ["@types/express/index.d.ts"]
 }

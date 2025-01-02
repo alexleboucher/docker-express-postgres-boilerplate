@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig",
+  "exclude": ["node_modules", "build", "src/tests/**/*"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}

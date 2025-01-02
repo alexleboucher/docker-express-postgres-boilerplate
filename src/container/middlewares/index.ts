@@ -1,0 +1,1 @@
+export { registerMiddlewares } from './container';
