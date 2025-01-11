@@ -2,8 +2,8 @@ import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
 import { ZodError } from 'zod';
 
-import { ErrorMiddleware } from '@/app/middlewares';
-import type { ILogger } from '@/core/logger';
+import type { ILogger } from '@/core/logger/logger.interface';
+import { ErrorMiddleware } from '@/app/middlewares/error-middleware';
 
 describe('ErrorMiddleware', () => {
   test('Send BadRequest error if ZodError is thrown', () => {

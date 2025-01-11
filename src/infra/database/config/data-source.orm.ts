@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { setupContainer } from '@/container/container';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
 import type { IDatabase } from '@/infra/database/database';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
 
 const buildDataSource = async () => {
   const container = await setupContainer({ onlyDatabase: true });

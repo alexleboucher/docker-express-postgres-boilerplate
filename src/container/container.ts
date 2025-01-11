@@ -1,12 +1,16 @@
 import { Container } from 'inversify';
 
-import '@/app/controllers';
-import { registerMiddlewares } from '@/container/middlewares';
-import { registerRepositories } from '@/container/repositories';
-import { registerUseCases } from '@/container/use-cases';
-import { registerRequestHandlers } from '@/container/request-handlers';
-import { registerServices } from '@/container/services';
-import { registerCore } from '@/container/core';
+import { registerCore } from '@/container/core/container';
+import { registerServices } from '@/container/services/container';
+import { registerRepositories } from '@/container/repositories/container';
+import { registerMiddlewares } from '@/container/middlewares/container';
+import { registerUseCases } from '@/container/use-cases/container';
+import { registerRequestHandlers } from '@/container/request-handlers/container';
+
+// Import controllers to register them
+import '@/app/controllers/auth/auth-controller';
+import '@/app/controllers/health/health-controller';
+import '@/app/controllers/users/users-controller';
 
 type ContainerRegisterAction = (container: Container) => void | Promise<void>;
 

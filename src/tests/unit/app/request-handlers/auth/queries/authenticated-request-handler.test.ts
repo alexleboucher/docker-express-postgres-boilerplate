@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
 
-import type { IAuthenticator } from '@/domain/services/auth';
-import { AuthenticatedRequestHandler } from '@/app/request-handlers/auth';
+import { AuthenticatedRequestHandler } from '@/app/request-handlers/auth/queries/authenticated-request-handler';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
 
 describe('AuthenticatedRequestHandler', () => {
   test('Send authenticated true', () => {

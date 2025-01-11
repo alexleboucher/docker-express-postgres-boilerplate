@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
 
-import type { IAuthenticator } from '@/domain/services/auth';
-import { LogoutRequestHandler } from '@/app/request-handlers/auth';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
+import { LogoutRequestHandler } from '@/app/request-handlers/auth/commands/logout-request-handler';
 
 describe('LogoutRequestHandler', () => {
   test('Call authenticator logout and send success response', async () => {

@@ -2,10 +2,10 @@ import { inject, injectable } from 'inversify';
 import { z } from 'zod';
 import type { Request, Response, NextFunction } from 'express';
 
-import type { IRequestHandler } from '@/app/request-handlers';
-import type { IAuthenticator } from '@/domain/services/auth';
+import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
 import { HttpError } from '@/app/http-error';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
 
 type ResponseBody = {
   id: string;

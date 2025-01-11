@@ -1,6 +1,6 @@
-import type { ContainerBuilder } from '@/container';
-import { REPOSITORIES_DI_TYPES } from '@/container/di-types';
-import type { IUserRepository } from '@/domain/repositories';
+import type { ContainerBuilder } from '@/container/container';
+import { REPOSITORIES_DI_TYPES } from '@/container/repositories/di-types';
+import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
 import { UserRepository } from '@/infra/database/repositories/user-repository';
 
 export const registerRepositories = (containerBuilder: ContainerBuilder) => {

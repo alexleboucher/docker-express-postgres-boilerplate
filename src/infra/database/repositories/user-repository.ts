@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
 
-import { User } from '@/domain/models';
-import type { IUserRepository } from '@/domain/repositories';
-import type { IEncryptor } from '@/domain/services/security';
-import { UserEntity } from '@/infra/database/models';
-import type { IDatabase } from '@/infra/database';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import { User } from '@/domain/models/user';
+import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
+import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
+import type { IDatabase } from '@/infra/database/database';
+import { UserEntity } from '@/infra/database/models/user.entity';
 
 @injectable()
 export class UserRepository implements IUserRepository {

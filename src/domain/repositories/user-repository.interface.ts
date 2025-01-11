@@ -1,4 +1,4 @@
-import type { User } from '@/domain/models';
+import type { User } from '@/domain/models/user';
 
 export interface IUserRepository {
   findOneByEmailPassword(login: string, password: string): Promise<User | null>;

@@ -1,9 +1,11 @@
-import { CORE_DI_TYPES, REPOSITORIES_DI_TYPES, SERVICES_DI_TYPES } from '@/container/di-types';
-import type { TestEnvironment } from './test-environment';
-import type { IUserRepository } from '@/domain/repositories';
-import { User } from '@/domain/models';
-import type { IIDGenerator } from '@/core/id';
-import type { IEncryptor } from '@/domain/services/security';
+import { CORE_DI_TYPES } from '@/container/core/di-types';
+import { REPOSITORIES_DI_TYPES } from '@/container/repositories/di-types';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { IIDGenerator } from '@/core/id/id-generator.interface';
+import { User } from '@/domain/models/user';
+import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
+import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
+import type { TestEnvironment } from '@/tests/helpers/test-environment';
 
 export interface CreateTestUserOptions {
   id?: string;

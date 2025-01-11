@@ -1,1 +1,0 @@
-export { registerServices } from './container';

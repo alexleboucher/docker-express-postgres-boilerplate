@@ -3,9 +3,9 @@ import { inject, injectable } from 'inversify';
 import { ZodError } from 'zod';
 import type { NextFunction, Request, Response } from 'express';
 
+import { CORE_DI_TYPES } from '@/container/core/di-types';
+import type { ILogger } from '@/core/logger/logger.interface';
 import { HttpError } from '@/app/http-error';
-import type { ILogger } from '@/core/logger';
-import { CORE_DI_TYPES } from '@/container/di-types';
 
 type FormatedError = {
   message: string;

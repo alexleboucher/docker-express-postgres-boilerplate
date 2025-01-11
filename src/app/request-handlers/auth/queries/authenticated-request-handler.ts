@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
 import type { Request, Response } from 'express';
 
-import type { IRequestHandler } from '@/app/request-handlers';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
-import type { IAuthenticator } from '@/domain/services/auth';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
 
 type ResponseBody = {
   authenticated: boolean;

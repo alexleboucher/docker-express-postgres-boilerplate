@@ -1,1 +1,0 @@
-export type { IRequestHandler } from './request-handler.interface';

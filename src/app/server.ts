@@ -5,11 +5,13 @@ import { InversifyExpressServer } from 'inversify-express-utils';
 import morgan from 'morgan';
 import { json, urlencoded } from 'express';
 
-import type { IErrorMiddleware } from '@/app/middlewares';
-import type { IAuthenticator, ISessionManager } from '@/domain/services/auth';
+import { env } from '@/core/env/env';
+import type { ISessionManager } from '@/domain/services/auth/session-manager.interface';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
+import { MIDDLEWARES_DI_TYPES } from '@/container/middlewares/di-types';
 import { HttpError } from '@/app/http-error';
-import { MIDDLEWARES_DI_TYPES, SERVICES_DI_TYPES } from '@/container/di-types';
-import { env } from '@/core/env';
+import type { IErrorMiddleware } from '@/app/middlewares/error-middleware';
 
 export const createServer = (container: Container) => {
   const corsOptions = {

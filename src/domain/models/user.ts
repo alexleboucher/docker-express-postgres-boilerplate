@@ -1,4 +1,4 @@
-import type { Id } from '@/core/id';
+import type { Id } from '@/core/id/id';
 
 export type UserId = Id<'User'>;
 

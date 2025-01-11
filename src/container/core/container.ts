@@ -1,12 +1,13 @@
-import type { ContainerBuilder } from '@/container';
+import type { ContainerBuilder } from '@/container/container';
 import { CORE_DI_TYPES } from '@/container/core/di-types';
-import { unionEnv } from '@/core/env';
-import type { IIDGenerator } from '@/core/id';
-import type { ILogger } from '@/core/logger';
-import type { ITime } from '@/core/time';
-import { UUIDGenerator } from '@/infra/id-generator';
-import { BrokenLogger, ConsoleLogger } from '@/infra/logger';
-import { SystemTime } from '@/infra/time';
+import { unionEnv } from '@/core/env/env';
+import type { IIDGenerator } from '@/core/id/id-generator.interface';
+import type { ILogger } from '@/core/logger/logger.interface';
+import type { ITime } from '@/core/time/time.interface';
+import { UUIDGenerator } from '@/infra/id-generator/uuid-generator';
+import { BrokenLogger } from '@/infra/logger/broken-logger';
+import { ConsoleLogger } from '@/infra/logger/console-logger';
+import { SystemTime } from '@/infra/time/system-time';
 
 export const registerCore = (containerBuilder: ContainerBuilder) => {
   const builder = new CoreContainerBuilder(containerBuilder)

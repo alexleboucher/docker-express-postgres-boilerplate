@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
 
-import type { IAuthenticator } from '@/domain/services/auth';
-import { AuthenticatedMiddleware } from '@/app/middlewares';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
+import { AuthenticatedMiddleware } from '@/app/middlewares/authenticated-middleware';
 import { HttpError } from '@/app/http-error';
 
 describe('AuthenticatedMiddleware', () => {

@@ -1,1 +1,0 @@
-export { CreateUserRequestHandler } from './create-user-request-handler';

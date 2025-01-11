@@ -1,10 +1,10 @@
 import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
 
-import type { IAuthenticator } from '@/domain/services/auth';
-import { LoginRequestHandler } from '@/app/request-handlers/auth';
-import { User } from '@/domain/models';
 import { HttpError } from '@/app/http-error';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
+import { User } from '@/domain/models/user';
+import { LoginRequestHandler } from '@/app/request-handlers/auth/commands/login-request-handler';
 
 describe('LoginRequestHandler', () => {
   test('Send user infos after login', async () => {
