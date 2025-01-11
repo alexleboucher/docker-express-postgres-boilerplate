@@ -2,9 +2,10 @@ import type { Container } from 'inversify';
 import type { Server } from 'http';
 import request from 'supertest';
 
-import type { IDatabase } from '@/infra/database';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
-import { createTestUser, type CreateTestUserOptions } from './user-helpers';
+import type { IDatabase } from '@/infra/database/database';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { CreateTestUserOptions } from '@/tests/helpers/user-helpers';
+import { createTestUser } from '@/tests/helpers/user-helpers';
 
 export class TestEnvironment {
   server: Server;

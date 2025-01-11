@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { injectable } from 'inversify';
 
-import type { IEncryptor } from '@/domain/services/security';
+import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
 
 type EncryptorConfig = {
   saltRounds: number;

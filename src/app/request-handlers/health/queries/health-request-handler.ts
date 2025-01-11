@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import type { Request, Response } from 'express';
 
-import type { IRequestHandler } from '@/app/request-handlers';
+import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
 
 type ResponseBody = {
   success: boolean;

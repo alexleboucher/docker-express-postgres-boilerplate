@@ -2,8 +2,9 @@ import { inject } from 'inversify';
 import { BaseHttpController, controller, httpGet, httpPost } from 'inversify-express-utils';
 import type { NextFunction, Request, Response } from 'express';
 
-import type { IRequestHandler } from '@/app/request-handlers';
-import { MIDDLEWARES_DI_TYPES, REQUEST_HANDLERS_DI_TYPES } from '@/container/di-types';
+import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
+import { REQUEST_HANDLERS_DI_TYPES } from '@/container/request-handlers/di-types';
+import { MIDDLEWARES_DI_TYPES } from '@/container/middlewares/di-types';
 
 // The auth routes are a bit different from the other routes in the way that they don't call a use case
 // but the authenticator directly because req, res and next are needed and it's not the responsibility

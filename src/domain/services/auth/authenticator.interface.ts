@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import type { User } from '@/domain/models';
+import type { User } from '@/domain/models/user';
 
 export type AuthenticateResponse = {
   err?: any;

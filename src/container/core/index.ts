@@ -1,1 +1,0 @@
-export { registerCore } from './container';

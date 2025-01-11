@@ -1,7 +1,7 @@
-import type { ContainerBuilder } from '@/container';
-import { USE_CASES_DI_TYPES } from '@/container/di-types';
-import type { IUseCase } from '@/core/use-case';
-import { CreateUserUseCase } from '@/domain/use-cases/user';
+import type { ContainerBuilder } from '@/container/container';
+import { USE_CASES_DI_TYPES } from '@/container/use-cases/di-types';
+import type { IUseCase } from '@/core/use-case/use-case.interface';
+import { CreateUserUseCase } from '@/domain/use-cases/user/create-user-use-case';
 
 export const registerUseCases = (containerBuilder: ContainerBuilder) => {
   const builder = new UseCasesContainerBuilder(containerBuilder)

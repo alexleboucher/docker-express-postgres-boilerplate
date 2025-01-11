@@ -1,8 +1,10 @@
 import type { BaseMiddleware } from 'inversify-express-utils';
 
-import { AuthenticatedMiddleware, ErrorMiddleware, type IErrorMiddleware } from '@/app/middlewares';
-import type { ContainerBuilder } from '@/container';
-import { MIDDLEWARES_DI_TYPES } from '@/container/di-types';
+import type { ContainerBuilder } from '@/container/container';
+import { MIDDLEWARES_DI_TYPES } from '@/container/middlewares/di-types';
+import { AuthenticatedMiddleware } from '@/app/middlewares/authenticated-middleware';
+import type { IErrorMiddleware } from '@/app/middlewares/error-middleware';
+import { ErrorMiddleware } from '@/app/middlewares/error-middleware';
 
 export const registerMiddlewares = (containerBuilder: ContainerBuilder) => {
   const builder = new MiddlewaresContainerBuilder(containerBuilder)

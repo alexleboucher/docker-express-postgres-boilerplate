@@ -3,10 +3,11 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import type { NextFunction, Request, Response } from 'express';
 
-import type { IUserRepository } from '@/domain/repositories';
-import type { IAuthenticator, AuthenticateResponse } from '@/domain/services/auth';
-import { RequestUser, type User } from '@/domain/models';
-import { REPOSITORIES_DI_TYPES } from '@/container/di-types';
+import { REPOSITORIES_DI_TYPES } from '@/container/repositories/di-types';
+import { RequestUser } from '@/domain/models/request-user';
+import type { User } from '@/domain/models/user';
+import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
+import type { IAuthenticator, AuthenticateResponse } from '@/domain/services/auth/authenticator.interface';
 
 @injectable()
 export class PassportAuthenticator implements IAuthenticator {

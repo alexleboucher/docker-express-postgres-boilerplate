@@ -2,7 +2,7 @@ import pgSession from 'connect-pg-simple';
 import session, { type CookieOptions, type SessionOptions } from 'express-session';
 import { injectable } from 'inversify';
 
-import type { ISessionManager } from '@/domain/services/auth';
+import type { ISessionManager } from '@/domain/services/auth/session-manager.interface';
 
 type SessionStoreConfig = {
   host: string;

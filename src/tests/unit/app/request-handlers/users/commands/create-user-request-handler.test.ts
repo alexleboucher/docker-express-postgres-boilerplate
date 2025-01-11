@@ -2,11 +2,11 @@ import { mock } from 'jest-mock-extended';
 import type { Request, Response } from 'express';
 import { ZodError } from 'zod';
 
-import { CreateUserRequestHandler } from '@/app/request-handlers/users';
-import type { IUseCase } from '@/core/use-case';
+import type { IUseCase } from '@/core/use-case/use-case.interface';
+import { User } from '@/domain/models/user';
 import { Failure, Success } from '@/core/result/result';
-import { User } from '@/domain/models';
 import { HttpError } from '@/app/http-error';
+import { CreateUserRequestHandler } from '@/app/request-handlers/users/commands/create-user-request-handler';
 
 describe('CreateUserRequestHandler', () => {
   test('Call CreateUserUserCase and send success response with user infos', async () => {

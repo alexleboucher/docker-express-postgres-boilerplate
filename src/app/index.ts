@@ -3,11 +3,12 @@ import 'reflect-metadata';
 dotenv.config();
 
 import { createServer } from '@/app/server';
-import { setupContainer } from '@/container';
-import { env } from '@/core/env';
-import type { IDatabase } from '@/infra/database';
-import { CORE_DI_TYPES, SERVICES_DI_TYPES } from '@/container/di-types';
-import type { ILogger } from '@/core/logger';
+import { env } from '@/core/env/env';
+import { setupContainer } from '@/container/container';
+import type { IDatabase } from '@/infra/database/database';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import { CORE_DI_TYPES } from '@/container/core/di-types';
+import type { ILogger } from '@/core/logger/logger.interface';
 
 const host = env('HOST', '0.0.0.0');
 const port = env('PORT', '8080');

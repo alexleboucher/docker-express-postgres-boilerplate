@@ -2,9 +2,9 @@ import { inject, injectable } from 'inversify';
 import { BaseMiddleware } from 'inversify-express-utils';
 import type { NextFunction, Request, Response } from 'express';
 
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
 import { HttpError } from '@/app/http-error';
-import type { IAuthenticator } from '@/domain/services/auth';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
 
 @injectable()
 export class AuthenticatedMiddleware extends BaseMiddleware {

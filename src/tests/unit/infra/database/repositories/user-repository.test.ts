@@ -1,11 +1,13 @@
 import { mock } from 'jest-mock-extended';
 import type { Repository } from 'typeorm';
 
-import type { IEncryptor } from '@/domain/services/security';
-import type { UserEntity, IDatabase } from '@/infra/database';
-import { UserRepository } from '@/infra/database';
-import { User } from '@/domain/models';
+
 import { mockTypeOrmQueryRunner } from '@/tests/helpers/test-helpers';
+import type { IDatabase } from '@/infra/database/database';
+import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
+import type { UserEntity } from '@/infra/database/models/user.entity';
+import { UserRepository } from '@/infra/database/repositories/user-repository';
+import { User } from '@/domain/models/user';
 
 describe('UserRepository', () => {
   const mockDependencies = () => ({

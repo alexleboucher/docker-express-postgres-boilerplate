@@ -3,11 +3,11 @@ import * as dotenv from 'dotenv';
 import 'reflect-metadata';
 dotenv.config();
 
-import { createServer } from '@/app/server';
 import { setupContainer } from '@/container/container';
-import type { IDatabase, } from '@/infra/database';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import type { IDatabase } from '@/infra/database/database';
 import { TestEnvironment } from '@/tests/helpers/test-environment';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
+import { createServer } from '@/app/server';
 
 type CreateTestServerOptions = {
   port?: number;

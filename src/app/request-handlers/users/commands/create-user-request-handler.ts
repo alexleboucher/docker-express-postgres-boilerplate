@@ -2,11 +2,10 @@ import { inject, injectable } from 'inversify';
 import { z } from 'zod';
 import type { Request, Response } from 'express';
 
-import type { IRequestHandler } from '@/app/request-handlers';
-import type { IUseCase } from '@/core/use-case';
-import { USE_CASES_DI_TYPES } from '@/container/di-types';
-import type { CreateUserCasePayload } from '@/domain/use-cases/user/';
-import type { CreateUserCaseFailure, CreateUserCaseSuccess } from '@/domain/use-cases/user/create-user-use-case';
+import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
+import type { IUseCase } from '@/core/use-case/use-case.interface';
+import type { CreateUserCaseFailure, CreateUserCasePayload, CreateUserCaseSuccess } from '@/domain/use-cases/user/create-user-use-case';
+import { USE_CASES_DI_TYPES } from '@/container/use-cases/di-types';
 import { HttpError } from '@/app/http-error';
 
 type ResponseBody = {

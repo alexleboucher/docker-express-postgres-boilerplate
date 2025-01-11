@@ -1,9 +1,11 @@
-import type { IRequestHandler } from '@/app/request-handlers';
-import { AuthenticatedRequestHandler, LoginRequestHandler, LogoutRequestHandler } from '@/app/request-handlers/auth';
-import { HealthRequestHandler } from '@/app/request-handlers/health';
-import { CreateUserRequestHandler } from '@/app/request-handlers/users';
-import type { ContainerBuilder } from '@/container';
-import { REQUEST_HANDLERS_DI_TYPES } from '@/container/di-types';
+import { LoginRequestHandler } from '@/app/request-handlers/auth/commands/login-request-handler';
+import { LogoutRequestHandler } from '@/app/request-handlers/auth/commands/logout-request-handler';
+import { AuthenticatedRequestHandler } from '@/app/request-handlers/auth/queries/authenticated-request-handler';
+import { HealthRequestHandler } from '@/app/request-handlers/health/queries/health-request-handler';
+import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
+import { CreateUserRequestHandler } from '@/app/request-handlers/users/commands/create-user-request-handler';
+import type { ContainerBuilder } from '@/container/container';
+import { REQUEST_HANDLERS_DI_TYPES } from '@/container/request-handlers/di-types';
 
 export const registerRequestHandlers = (containerBuilder: ContainerBuilder) => {
   const builder = new RequestHandlersContainerBuilder(containerBuilder)

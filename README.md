@@ -397,7 +397,7 @@ The tests are divided into two types: **end-to-end tests** and **unit tests**.
 ```bash
 yarn test
 ```
-Execute this command in the `backend` container shell.
+Execute this command in the `backend` container shell after running command `yarn docker:test:up`
 
 - **Run tests with coverage:**
 ```bash

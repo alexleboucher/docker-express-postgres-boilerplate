@@ -1,14 +1,16 @@
-import type { BuildContainerOptions, ContainerBuilder } from '@/container';
-import { SERVICES_DI_TYPES } from '@/container/di-types';
-import { booleanEnv, env, integerEnv, mandatoryEnv, mandatoryIntegerEnv, unionEnv } from '@/core/env';
-import type { IAuthenticator, ISessionManager } from '@/domain/services/auth';
-import type { IEncryptor } from '@/domain/services/security';
-import { PassportAuthenticator } from '@/infra/auth/authenticator';
-import type { SessionConfig } from '@/infra/auth/session';
-import { ExpressSessionManager } from '@/infra/auth/session';
-import type { DatabaseConfig, IDatabase } from '@/infra/database';
-import { Database } from '@/infra/database';
-import { BcryptEncryptor } from '@/infra/security/encryptor';
+import type { BuildContainerOptions, ContainerBuilder } from '@/container/container';
+import { SERVICES_DI_TYPES } from '@/container/services/di-types';
+import { integerEnv, mandatoryEnv, mandatoryIntegerEnv, booleanEnv, unionEnv, env } from '@/core/env/env';
+import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
+import type { ISessionManager } from '@/domain/services/auth/session-manager.interface';
+import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
+import { PassportAuthenticator } from '@/infra/auth/authenticator/passport-authenticator';
+import type { SessionConfig } from '@/infra/auth/session/express-session-manager';
+import { ExpressSessionManager } from '@/infra/auth/session/express-session-manager';
+import type { IDatabase, DatabaseConfig } from '@/infra/database/database';
+import { Database } from '@/infra/database/database';
+import { BcryptEncryptor } from '@/infra/security/encryptor/bcrypt-encryptor';
+
 
 export const registerServices = (containerBuilder: ContainerBuilder, options?: BuildContainerOptions) => {
   let builder;

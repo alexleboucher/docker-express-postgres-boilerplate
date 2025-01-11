@@ -1,7 +1,7 @@
 /* eslint-disable no-console -- We are using console for logging */
 import { injectable } from 'inversify';
 
-import type { ILogger } from '@/core/logger';
+import type { ILogger } from '@/core/logger/logger.interface';
 
 @injectable()
 export class ConsoleLogger implements ILogger {

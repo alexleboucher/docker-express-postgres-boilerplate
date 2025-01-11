@@ -1,13 +1,13 @@
 import { mock } from 'jest-mock-extended';
 
-import type { IIDGenerator } from '@/core/id';
-import type { ITime } from '@/core/time';
-import type { IUserRepository } from '@/domain/repositories';
-import type { IEncryptor } from '@/domain/services/security';
-import type { CreateUserCasePayload } from '@/domain/use-cases/user';
-import { CreateUserUseCase } from '@/domain/use-cases/user';
-import { User } from '@/domain/models';
 import { Failure, Success } from '@/core/result/result';
+import type { IIDGenerator } from '@/core/id/id-generator.interface';
+import type { ITime } from '@/core/time/time.interface';
+import { User } from '@/domain/models/user';
+import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
+import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
+import type { CreateUserCasePayload } from '@/domain/use-cases/user/create-user-use-case';
+import { CreateUserUseCase } from '@/domain/use-cases/user/create-user-use-case';
 
 describe('CreateUserUseCase', () => {
   test('Call encryptor, call repository and send success reponse', async () => {
