@@ -550,7 +550,7 @@ There are 3 workflows:
 
 2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the tests and sends the coverage to [Codecov](https://about.codecov.io/). It has coverage for the main branch. If you don't want to keep it, you can delete the file `main-tests.yml` in the folder `workflows`.
 
-If you want to keep the tests on pull request but don't want to use Codecov, you can delete `main-tests` and only delete the last step `Upload coverage to Codecov` in `pull-request.yml`. You can also delete `codecov.yml`.<br>
+If you want to keep the tests on pull request but don't want to use Codecov, you can delete `main-tests` and only delete the last step `Upload coverage to Codecov` in `pull-request.yml`.<br>
 But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in your github secrets.
 
 3. The workflow `main-build` is triggered when something is merged or pulled on main. It builds the project and its primary goal is to check if main is building. If you don't want to keep it, you can delete the file `main-build.yml` in the folder `workflows`.
