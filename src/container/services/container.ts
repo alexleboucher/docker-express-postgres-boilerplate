@@ -1,12 +1,11 @@
 import type { BuildContainerOptions, ContainerBuilder } from '@/container/container';
+import { REPOSITORIES_DI_TYPES } from '@/container/repositories/di-types';
 import { SERVICES_DI_TYPES } from '@/container/services/di-types';
-import { integerEnv, mandatoryEnv, mandatoryIntegerEnv, booleanEnv, unionEnv, env } from '@/core/env/env';
+import { integerEnv, mandatoryEnv, mandatoryIntegerEnv, booleanEnv, env } from '@/core/env/env';
+import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
 import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
-import type { ISessionManager } from '@/domain/services/auth/session-manager.interface';
 import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
-import { PassportAuthenticator } from '@/infra/auth/authenticator/passport-authenticator';
-import type { SessionConfig } from '@/infra/auth/session/express-session-manager';
-import { ExpressSessionManager } from '@/infra/auth/session/express-session-manager';
+import { JwtAuthenticator } from '@/infra/auth/authenticator/jwt-authenticator';
 import type { IDatabase, DatabaseConfig } from '@/infra/database/database';
 import { Database } from '@/infra/database/database';
 import { BcryptEncryptor } from '@/infra/security/encryptor/bcrypt-encryptor';
@@ -46,13 +45,15 @@ class ServicesContainerBuilder {
   }
 
   private registerAuthServices() {
-    const config = this.getSessionManagerConfig();
+    const config = {
+      secret: mandatoryEnv('JWT_SECRET'),
+      expiresInSeconds: integerEnv('JWT_EXPIRES_IN_SECONDS', 86400), // 1 day in seconds (default)
+    };
     this.containerBuilder.registerActions.push((container) => {
-      container.bind<ISessionManager>(SERVICES_DI_TYPES.SessionManager).toDynamicValue(() => new ExpressSessionManager(config)).inSingletonScope();
-    });
-
-    this.containerBuilder.registerActions.push((container) => {
-      container.bind<IAuthenticator>(SERVICES_DI_TYPES.Authenticator).to(PassportAuthenticator).inSingletonScope();
+      container.bind<IAuthenticator>(SERVICES_DI_TYPES.Authenticator).toDynamicValue(() => new JwtAuthenticator(
+        config,
+        container.get<IUserRepository>(REPOSITORIES_DI_TYPES.UserRepository),
+      )).inSingletonScope();
     });
 
     return this;
@@ -75,29 +76,6 @@ class ServicesContainerBuilder {
     });
 
     return this;
-  }
-
-  private getSessionManagerConfig(): SessionConfig {
-    const nodeEnv = mandatoryEnv('NODE_ENV');
-
-    return {
-      storeConfig: nodeEnv === 'test' ? undefined : {
-        host: mandatoryEnv('DB_HOST'),
-        port: mandatoryIntegerEnv('DB_PORT'),
-        user: mandatoryEnv('DB_USER'),
-        password: mandatoryEnv('DB_PASSWORD'),
-        database: mandatoryEnv('DB_NAME'),
-      },
-      secret: env('SESSION_SECRET', 'session-secret'),
-      resave: booleanEnv('SESSION_RESAVE', false),
-      saveUninitialized: booleanEnv('SESSION_SAVE_UNINITIALIZED', false),
-      cookie: {
-        secure: booleanEnv('SESSION_COOKIE_SECURE', false),
-        maxAge: integerEnv('SESSION_COOKIE_MAX_AGE', 90 * 24 * 60 * 60 * 1000), // 90 days by default
-        httpOnly: booleanEnv('SESSION_COOKIE_HTTP_ONLY', false),
-        sameSite: unionEnv('SESSION_COOKIE_SAME_SITE', ['strict', 'lax', 'none',], 'lax'),
-      },
-    };
   }
 
   private getDatabaseConfig(): DatabaseConfig {

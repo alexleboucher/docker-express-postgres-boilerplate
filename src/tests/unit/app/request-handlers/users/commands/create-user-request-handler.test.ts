@@ -9,7 +9,7 @@ import { HttpError } from '@/app/http-error';
 import { CreateUserRequestHandler } from '@/app/request-handlers/users/commands/create-user-request-handler';
 
 describe('CreateUserRequestHandler', () => {
-  test('Call CreateUserUserCase and send success response with user infos', async () => {
+  test('Call CreateUserUseCase and send success response with user infos', async () => {
     const req = {
       body: {
         username: 'test_username',
