@@ -4,7 +4,7 @@ import type { Request, Response } from 'express';
 
 import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
 import type { IUseCase } from '@/core/use-case/use-case.interface';
-import type { CreateUserCaseFailure, CreateUserCasePayload, CreateUserCaseSuccess } from '@/domain/use-cases/user/create-user-use-case';
+import type { CreateUserUseCaseFailure, CreateUserUseCasePayload, CreateUserUseCaseSuccess } from '@/domain/use-cases/user/create-user-use-case';
 import { USE_CASES_DI_TYPES } from '@/container/use-cases/di-types';
 import { HttpError } from '@/app/http-error';
 
@@ -23,7 +23,7 @@ const payloadSchema = z.object({
 @injectable()
 export class CreateUserRequestHandler implements IRequestHandler {
   constructor(
-    @inject(USE_CASES_DI_TYPES.CreateUserUseCase) private readonly createUserUseCase: IUseCase<CreateUserCasePayload, CreateUserCaseSuccess, CreateUserCaseFailure>,
+    @inject(USE_CASES_DI_TYPES.CreateUserUseCase) private readonly createUserUseCase: IUseCase<CreateUserUseCasePayload, CreateUserUseCaseSuccess, CreateUserUseCaseFailure>,
   ) {}
 
   async handle(req: Request, res: Response<ResponseBody>) {

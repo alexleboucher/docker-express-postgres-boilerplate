@@ -30,9 +30,12 @@ describe('POST auth/login', () => {
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual({
-      id: expect.any(String),
-      username,
-      email,
+      user: {
+        id: expect.any(String),
+        username,
+        email,
+      },
+      token: expect.any(String),
     });
   });
 });

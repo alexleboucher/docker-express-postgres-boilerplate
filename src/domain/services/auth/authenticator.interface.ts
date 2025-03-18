@@ -1,15 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { User } from '@/domain/models/user';
 
 export type AuthenticateResponse = {
-  err?: any;
-  user?: User | false | null;
+  success: true;
+  user: User;
+  token: string;
+} | {
+  success: false;
+};
+
+export type GetAuthenticatedUserResponse = {
+  success: true;
+  user: User;
+} | {
+  success: false;
+  reason: 'InvalidToken' | 'UserNotFound';
 };
 
 export interface IAuthenticator {
-  configure: () => void;
-  session: () => any;
-  authenticateLocal: (req: any, res: any, next: any) => Promise<AuthenticateResponse>;
-  isAuthenticated: (req: any) => boolean;
-  logout: (req: any) => Promise<void>;
+  authenticate: (email: string, password: string) => Promise<AuthenticateResponse>;
+  getAuthenticatedUser: (token: string) => Promise<GetAuthenticatedUserResponse>;
 }
