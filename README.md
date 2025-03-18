@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <b>A modern boilerplate for building scalable and maintainable REST APIs with authentication, written in TypeScript. It features Docker, Express, TypeORM, Passport, and integrates Clean Architecture principles with Dependency Injection powered by Inversify.</b></br>
+  <b>A modern boilerplate for building scalable and maintainable REST APIs with authentication, written in TypeScript. It features Docker, Express, TypeORM, jsonwebtoken for authentication by JWT, and integrates Clean Architecture principles with Dependency Injection powered by Inversify.</b></br>
   <sub>Made with ❤️ by <a href="https://github.com/alexleboucher">Alex Le Boucher</a> and <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/graphs/contributors">contributors</a></sub>
 </p>
 
@@ -35,7 +35,7 @@ It integrates common features such as:
 
 - Docker containerization
 - Database connection (PostgreSQL with TypeORM)
-- Authentication (using Passport)
+- Authentication (using jsonwebtoken)
 - Centralized error handling
 - Clean Architecture principles for better separation of concerns
 - Dependency Injection powered by Inversify for modular and testable code
@@ -54,8 +54,7 @@ Packages are frequently upgraded. You can easily see the packages version status
 ## Features
 
 - **Docker containerization** to easily run your code anywhere and avoid installing tools like PostgreSQL on your computer.
-- **Authentication** with [Passport](https://www.passportjs.org/).
-- **Authentication session** thanks to [express-session](https://github.com/expressjs/session) and [connect-pg-simple](https://github.com/voxpelli/node-connect-pg-simple).
+- **Authentication by JWT** with [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken).
 - **Simplified Database Query** managed by [TypeORM](https://github.com/typeorm/typeorm).
 - **Object-oriented database model** with [TypeORM](https://github.com/typeorm/typeorm) entities.
 - **Integrated Testing Tools** with [Jest](https://jestjs.io/fr/docs/getting-started).
@@ -211,7 +210,6 @@ The project contains Github templates and workflows. If you don't want to keep t
 | GET    | `/health` | Retures the server health status | None. |
 | POST   | `/users` | Creates a new user. | `username` (min. 5 chars), `email` (valid), `password` (min. 8 chars). |
 | POST   | `/auth/login` | Logs in a user. | `email` and `password`. |
-| POST   | `/auth/logout` | Logs out the currently authenticated user. | None. |
 | GET    | `/auth/authenticated` | Returns the user authentication status | None. |
 
 ---
@@ -237,7 +235,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 | **src/domain/services/**                      | Interfaces for domain-level services (e.g., authentication, encryption). |
 | **src/domain/use-cases/**                     | Use cases implementing business logic. |
 | **src/infra/**                                | Infrastructure layer providing implementations for core and domain abstractions. |
-| **src/infra/auth/**                           | Authentication implementations using Passport.js and session management. |
+| **src/infra/auth/**                           | Authentication implementations |
 | **src/infra/database/**                       | Database configuration, models, and migrations. |
 | **src/infra/database/repositories/**          | Concrete implementations of domain repository interfaces using TypeORM. |
 | **src/infra/id-generator/**                   | UUID-based ID generator. |
@@ -267,14 +265,9 @@ The project contains Github templates and workflows. If you don't want to keep t
 | TEST_DB_NAME               | Test database name. | ❌ | |
 | TEST_DB_PORT               | Test database host port. | ❌ | |
 | TEST_DB_HOST_PORT          | Test database mapped port for accessing the test database in Docker. | ❌ | |
+| JWT_SECRET                 | Secret used to encryot JSON web tokens. | ❌ | |
+| JWT_EXPIRES_IN_SECONDS     | Number of seconds before JWT tokens expire. | ✔️ | 86400 |
 | CORS_ORIGIN_ALLOWED        | List of allowed origins for CORS. | ✔️ | * |
-| SESSION_SECRET             | Secret key for signing the session ID cookie. | ✔️ | session-secret |
-| SESSION_RESAVE             | Forces the session to be saved back to the session store, even if it was never modified. | ✔️ | false |
-| SESSION_SAVE_UNINITIALIZED | Forces an uninitialized session to be saved to the store. | ✔️ | false |
-| SESSION_COOKIE_SECURE      | Ensures the cookie is only sent over HTTPS. | ✔️ | false |
-| SESSION_COOKIE_MAX_AGE     | Lifetime of the session cookie in milliseconds. | ✔️ | 7776000000 (90 days) |
-| SESSION_COOKIE_HTTP_ONLY   | Ensures the cookie is inaccessible to JavaScript (for XSS protection). | ✔️ | false |
-| SESSION_COOKIE_SAME_SITE   | Controls whether the cookie is sent with cross-site requests. | ✔️ | lax |
 | DB_LOGGING                 | Enables or disables query logging in TypeORM. | ✔️ | false |
 | TYPEORM_ENTITIES           | Path to TypeORM entity files. | ✔️ | src/infra/database/models/**/*.entity.ts |
 | TYPEORM_MIGRATIONS         | Path to TypeORM migration files. | ✔️ | src/infra/database/migrations/**/*.ts |
@@ -284,16 +277,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 ## Authentication
 
-This boilerplate uses `Passport.js` to handle authentication. `Passport.js` is a powerful, flexible, and modular middleware that allows you to implement various authentication strategies, including social logins (e.g., Google, Facebook, GitHub, etc.). 
-
-### Configuration
-
-The configuration for `Passport` is located in `src/infra/auth/authenticator/passport-authenticator.ts`. This class centralizes the setup of strategies and the implementation of required methods like `serializeUser` and `deserializeUser`.
-
-- **`serializeUser`**: Defines what data should be stored in the session. By default, it stores the user ID.  
-- **`deserializeUser`**: Fetches user information based on the session data and assigns it to `req.user`. This makes the authenticated user readily accessible via `req.user` without requiring additional calls.
-
-You can find detailed documentation on `Passport.js` [here](https://www.passportjs.org/).
+This boilerplate uses JSON Web Tokens to handle authentication with `jsonwebtoken`. 
 
 ### Route Protection
 
@@ -303,21 +287,13 @@ To ensure route security and verify the user's authentication status, this boile
 This middleware ensures the user is authenticated before allowing access to the route. It integrates seamlessly with the controllers, as shown in the example below:  
 
 ```typescript
-@httpPost('/logout', MIDDLEWARES_DI_TYPES.AuthenticatedMiddleware)
-public logout(): void {
-  // Logout logic here
+@httpPost('/your-protected-route', MIDDLEWARES_DI_TYPES.AuthenticatedMiddleware)
+public yourProtectedRoute(): void {
+  // yourProtectedRoute logic here
 }
 ```
 
 This pattern allows you to secure endpoints declaratively and keeps the authentication logic consistent throughout the project.
-
-### Extending Authentication Strategies
-Adding new strategies is straightforward thanks to Passport's modular design. To include a new strategy:
-
-1. Install the corresponding Passport strategy package (e.g., `passport-google-oauth20`).
-2. Configure the strategy in `passport-authenticator.ts` by adding it to the existing strategies.
-
-This design simplifies the addition of new authentication methods and scales well as your application grows.
 
 ---
 
@@ -458,10 +434,10 @@ Use `test` to define individual tests within `describe` blocks:
     ```
 
 4. **Authenticated Requests:**
-For tests requiring user authentication, create an authenticated agent:
+For tests requiring user authentication, create an authenticated request:
     ```typescript
-    const { agent } = await testEnv.createAuthenticatedAgent();
-    const res = await agent.get('/auth/authenticated');
+    const request = await testEnv.authenticatedRequest();
+    const res = await request.get('/auth/authenticated');
 
     expect(res.body).toEqual({ authenticated: true });
     ```
@@ -550,7 +526,7 @@ There are 3 workflows:
 
 2. The workflow `main-tests` is triggered when code is merged or pushed on main. It runs the tests and sends the coverage to [Codecov](https://about.codecov.io/). It has coverage for the main branch. If you don't want to keep it, you can delete the file `main-tests.yml` in the folder `workflows`.
 
-If you want to keep the tests on pull request but don't want to use Codecov, you can delete `main-tests` and only delete the last step `Upload coverage to Codecov` in `pull-request.yml`. You can also delete `codecov.yml`.<br>
+If you want to keep the tests on pull request but don't want to use Codecov, you can delete `main-tests` and only delete the last step `Upload coverage to Codecov` in `pull-request.yml`.<br>
 But if you want to use CodeCov, the only thing you need to do is set your `CODECOV_TOKEN` in your github secrets.
 
 3. The workflow `main-build` is triggered when something is merged or pulled on main. It builds the project and its primary goal is to check if main is building. If you don't want to keep it, you can delete the file `main-build.yml` in the folder `workflows`.
@@ -573,7 +549,7 @@ You can see the upcoming or in progress features [here](https://github.com/users
 | --------------------------------- | --------------------------------- |
 | [Express](https://expressjs.com/) | Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. |
 | [TypeORM](http://typeorm.io/#/) | TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework. |
-| [Passport](https://www.passportjs.org/) | Passport is authentication middleware for Node.js. Extremely flexible and modular, Passport can be unobtrusively dropped in to any Express-based web application. |
+| [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) | An implementation of JSON Web Tokens for Node.js that helps you securely transmit information between parties as a JSON object. |
 | [Docker](https://www.docker.com/) | Docker is a platform designed to help developers build, share, and run modern applications. We handle the tedious setup, so you can focus on the code. |
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |
 | [TypeScript](https://www.typescriptlang.org/) | TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. |

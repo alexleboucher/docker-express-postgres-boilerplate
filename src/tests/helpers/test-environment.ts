@@ -36,25 +36,20 @@ export class TestEnvironment {
   }
 
   /**
-   * Create a test agent.
-   * @returns The created agent.
+   * Create a test client.
+   * @returns The created client.
    */
   request() {
     return request(this.server);
   }
 
-  /**
-   * Create an authenticated test agent. A test agent allows to maintain session between multiple requests.
-   * @param testUserOptions - The authenticated user informations. Optional.
-   * @returns The created agent.
-   */
-  async createAuthenticatedAgent(testUserOptions?: CreateTestUserOptions) {
-    const userAgent = request.agent(this.server);
+  async authenticatedRequest(testUserOptions?: CreateTestUserOptions) {
     const user = await createTestUser(this, testUserOptions);
-    await userAgent
+    const agent = request.agent(this.server);
+    const res = await agent
       .post('/auth/login')
       .send({ email: user.email, password: testUserOptions?.password || 'password' });
 
-    return { agent: userAgent, user };
+    return agent.set({ Authorization: `Bearer ${res.body.token}` });
   }
 }

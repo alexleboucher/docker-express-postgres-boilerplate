@@ -17,9 +17,9 @@ describe('GET auth/authenticated', () => {
   });
 
   test('Return true when user is authenticated', async () => {
-    const { agent } = await testEnv.createAuthenticatedAgent();
+    const request = await testEnv.authenticatedRequest();
 
-    const res = await agent.get('/auth/authenticated');
+    const res = await request.get('/auth/authenticated');
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual({

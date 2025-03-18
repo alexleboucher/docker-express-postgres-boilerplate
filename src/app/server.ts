@@ -6,12 +6,10 @@ import morgan from 'morgan';
 import { json, urlencoded } from 'express';
 
 import { env } from '@/core/env/env';
-import type { ISessionManager } from '@/domain/services/auth/session-manager.interface';
-import { SERVICES_DI_TYPES } from '@/container/services/di-types';
-import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
 import { MIDDLEWARES_DI_TYPES } from '@/container/middlewares/di-types';
 import { HttpError } from '@/app/http-error';
 import type { IErrorMiddleware } from '@/app/middlewares/error-middleware';
+import type { ICurrentUserMiddleware } from '@/app/middlewares/current-user-middleware';
 
 export const createServer = (container: Container) => {
   const corsOptions = {
@@ -30,12 +28,8 @@ export const createServer = (container: Container) => {
     app.use(helmet());
     app.set('json spaces', 2);
 
-    const session = container.get<ISessionManager>(SERVICES_DI_TYPES.SessionManager);
-    app.use(session.configure());
-
-    const authenticator = container.get<IAuthenticator>(SERVICES_DI_TYPES.Authenticator);
-    authenticator.configure();
-    app.use(authenticator.session());
+    const currentUserMiddleware = container.get<ICurrentUserMiddleware>(MIDDLEWARES_DI_TYPES.CurrentUserMiddleware);
+    app.use(currentUserMiddleware.handler.bind(currentUserMiddleware));
   });
 
   server.setErrorConfig((app) => {

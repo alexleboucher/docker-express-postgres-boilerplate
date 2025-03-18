@@ -11,24 +11,24 @@ import { User } from '@/domain/models/user';
 import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
 import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
 
-export type CreateUserCasePayload = {
+export type CreateUserUseCasePayload = {
   email: string;
   username: string;
   password: string;
 };
 
-type CreateUserCaseFailureReason = 'EmailAlreadyExists' | 'UsernameAlreadyExists' | 'UnknownError';
-export type CreateUserCaseFailure = {
-  reason: CreateUserCaseFailureReason;
+type CreateUserUseCaseFailureReason = 'EmailAlreadyExists' | 'UsernameAlreadyExists' | 'UnknownError';
+export type CreateUserUseCaseFailure = {
+  reason: CreateUserUseCaseFailureReason;
   error: Error;
 };
 
-export type CreateUserCaseSuccess = {
+export type CreateUserUseCaseSuccess = {
   user: User;
 };
 
 @injectable()
-export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, CreateUserCaseSuccess, CreateUserCaseFailure> {
+export class CreateUserUseCase implements IUseCase<CreateUserUseCasePayload, CreateUserUseCaseSuccess, CreateUserUseCaseFailure> {
   constructor(
     @inject(CORE_DI_TYPES.IDGenerator) private readonly idGenerator: IIDGenerator,
     @inject(CORE_DI_TYPES.Time) private readonly time: ITime,
@@ -36,11 +36,11 @@ export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, Create
     @inject(REPOSITORIES_DI_TYPES.UserRepository) private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(payload: CreateUserCasePayload) {
+  async execute(payload: CreateUserUseCasePayload) {
     try {
       const emailExists = await this.userRepository.existsByEmail(payload.email);
       if (emailExists) {
-        return new Failure<CreateUserCaseFailure>({
+        return new Failure<CreateUserUseCaseFailure>({
           reason: 'EmailAlreadyExists',
           error: new Error('Email already exists'),
         });
@@ -48,7 +48,7 @@ export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, Create
 
       const usernameExists = await this.userRepository.existsByUsername(payload.username);
       if (usernameExists) {
-        return new Failure<CreateUserCaseFailure>({
+        return new Failure<CreateUserUseCaseFailure>({
           reason: 'UsernameAlreadyExists',
           error: new Error('Username already exists'),
         });
@@ -69,7 +69,7 @@ export class CreateUserUseCase implements IUseCase<CreateUserCasePayload, Create
 
       return new Success({ user: newUser });
     } catch (error) {
-      return new Failure<CreateUserCaseFailure>({
+      return new Failure<CreateUserUseCaseFailure>({
         reason: 'UnknownError',
         error: error as Error,
       });

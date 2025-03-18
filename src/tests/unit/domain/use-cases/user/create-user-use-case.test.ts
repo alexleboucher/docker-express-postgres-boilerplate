@@ -6,7 +6,7 @@ import type { ITime } from '@/core/time/time.interface';
 import { User } from '@/domain/models/user';
 import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
 import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
-import type { CreateUserCasePayload } from '@/domain/use-cases/user/create-user-use-case';
+import type { CreateUserUseCasePayload } from '@/domain/use-cases/user/create-user-use-case';
 import { CreateUserUseCase } from '@/domain/use-cases/user/create-user-use-case';
 
 describe('CreateUserUseCase', () => {
@@ -34,7 +34,7 @@ describe('CreateUserUseCase', () => {
 
     const useCase = new CreateUserUseCase(idGenerator, time, encryptor, userRepository);
 
-    const payload: CreateUserCasePayload = {
+    const payload: CreateUserUseCasePayload = {
       email: 'test@test.com',
       username: 'test_username',
       password: 'test_password',
@@ -57,7 +57,7 @@ describe('CreateUserUseCase', () => {
 
     const useCase = new CreateUserUseCase(idGenerator, time, encryptor, userRepository);
 
-    const payload: CreateUserCasePayload = {
+    const payload: CreateUserUseCasePayload = {
       email: 'test@test.com',
       username: 'test_username',
       password: 'test_password',
@@ -81,7 +81,7 @@ describe('CreateUserUseCase', () => {
 
     const useCase = new CreateUserUseCase(idGenerator, time, encryptor, userRepository);
 
-    const payload: CreateUserCasePayload = {
+    const payload: CreateUserUseCasePayload = {
       email: 'test@test.com',
       username: 'test_username',
       password: 'test_password',

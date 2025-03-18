@@ -1,5 +1,4 @@
 import { LoginRequestHandler } from '@/app/request-handlers/auth/commands/login-request-handler';
-import { LogoutRequestHandler } from '@/app/request-handlers/auth/commands/logout-request-handler';
 import { AuthenticatedRequestHandler } from '@/app/request-handlers/auth/queries/authenticated-request-handler';
 import { HealthRequestHandler } from '@/app/request-handlers/health/queries/health-request-handler';
 import type { IRequestHandler } from '@/app/request-handlers/request-handler.interface';
@@ -32,9 +31,6 @@ class RequestHandlersContainerBuilder {
   private registerAuthRequestHandlers() {
     this.containerBuilder.registerActions.push((container) => {
       container.bind<IRequestHandler>(REQUEST_HANDLERS_DI_TYPES.LoginRequestHandler).to(LoginRequestHandler).inSingletonScope();
-    });
-    this.containerBuilder.registerActions.push((container) => {
-      container.bind<IRequestHandler>(REQUEST_HANDLERS_DI_TYPES.LogoutRequestHandler).to(LogoutRequestHandler).inSingletonScope();
     });
     this.containerBuilder.registerActions.push((container) => {
       container.bind<IRequestHandler>(REQUEST_HANDLERS_DI_TYPES.AuthenticatedRequestHandler).to(AuthenticatedRequestHandler).inSingletonScope();
