@@ -265,7 +265,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 | TEST_DB_NAME               | Test database name. | ❌ | |
 | TEST_DB_PORT               | Test database host port. | ❌ | |
 | TEST_DB_HOST_PORT          | Test database mapped port for accessing the test database in Docker. | ❌ | |
-| JWT_SECRET                 | Secret used to encryot JSON web tokens. | ❌ | |
+| JWT_SECRET                 | Secret used to encrypt JSON web tokens. | ❌ | |
 | JWT_EXPIRES_IN_SECONDS     | Number of seconds before JWT tokens expire. | ✔️ | 86400 |
 | CORS_ORIGIN_ALLOWED        | List of allowed origins for CORS. | ✔️ | * |
 | DB_LOGGING                 | Enables or disables query logging in TypeORM. | ✔️ | false |
