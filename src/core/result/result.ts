@@ -21,14 +21,14 @@ export class Result<TValue, TFailure extends { error: Error }> {
 }
 
 export class Success<T> extends Result<T, never> {
-  value!: T;
+  declare value: T;
   constructor(value: T) {
     super({ value });
   }
 }
 
 export class Failure<TFailure extends { error: Error }> extends Result<never, TFailure> {
-  failure!: TFailure;
+  declare failure: TFailure;
   constructor(failure: TFailure) {
     super({ failure });
   }
