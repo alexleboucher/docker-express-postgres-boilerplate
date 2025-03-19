@@ -7,10 +7,7 @@ import { registerMiddlewares } from '@/container/middlewares/container';
 import { registerUseCases } from '@/container/use-cases/container';
 import { registerRequestHandlers } from '@/container/request-handlers/container';
 
-// Import controllers to register them
-import '@/app/controllers/auth/auth-controller';
-import '@/app/controllers/health/health-controller';
-import '@/app/controllers/users/users-controller';
+import { registerRouters } from '@/container/routers/container';
 
 type ContainerRegisterAction = (container: Container) => void | Promise<void>;
 
@@ -46,11 +43,12 @@ export class ContainerBuilder {
   register(): ContainerBuilder {
     this
       .registerCore()
-      .registerServices()
-      .registerRepositories()
       .registerMiddlewares()
+      .registerRouters()
+      .registerRequestHandlers()
       .registerUseCases()
-      .registerRequestHandlers();
+      .registerServices()
+      .registerRepositories();
 
     return this;
   }
@@ -82,5 +80,9 @@ export class ContainerBuilder {
 
   private registerRequestHandlers() {
     return registerRequestHandlers(this);
+  }
+
+  private registerRouters() {
+    return registerRouters(this);
   }
 }

@@ -24,7 +24,7 @@ export const registerServices = (containerBuilder: ContainerBuilder, options?: B
 };
 
 /**
- * This class is used to register all the use cases in the container
+ * This class is used to register all the services in the container
  */
 class ServicesContainerBuilder {
   constructor(private readonly containerBuilder: ContainerBuilder) {}

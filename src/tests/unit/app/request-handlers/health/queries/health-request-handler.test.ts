@@ -9,7 +9,7 @@ describe('HealthRequestHandler', () => {
     const res = mock<Response>();
 
     const handler = new HealthRequestHandler();
-    handler.handle(req, res);
+    handler.handler(req, res);
 
     expect(res.send).toHaveBeenCalledWith({
       success: true,

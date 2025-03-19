@@ -32,7 +32,7 @@ export const createTestEnvironment = async (options?: CreateTestServerOptions): 
     await database.initialize();
   }
 
-  return new TestEnvironment(server.build().listen(port), container);
+  return new TestEnvironment(server.listen(port), container);
 };
 
 /**

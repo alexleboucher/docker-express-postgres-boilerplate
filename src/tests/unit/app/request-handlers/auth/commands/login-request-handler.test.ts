@@ -35,7 +35,7 @@ describe('LoginRequestHandler', () => {
     );
 
     const handler = new LoginRequestHandler(loginUseCase);
-    await handler.handle(req, res, next);
+    await handler.handler(req, res, next);
 
     expect(res.send).toHaveBeenCalledWith({
       user: {
@@ -67,6 +67,6 @@ describe('LoginRequestHandler', () => {
     );
 
     const handler = new LoginRequestHandler(loginUseCase);
-    await expect(handler.handle(req, res, next)).rejects.toStrictEqual(HttpError.unauthorized('Incorrect credentials'));
+    await expect(handler.handler(req, res, next)).rejects.toStrictEqual(HttpError.unauthorized('Incorrect credentials'));
   });
 });
