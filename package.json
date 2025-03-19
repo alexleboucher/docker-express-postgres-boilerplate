@@ -45,7 +45,7 @@
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "4.4.1",
     "@eslint/js": "9.22.0",
-    "@stylistic/eslint-plugin": "2.12.1",
+    "@stylistic/eslint-plugin": "4.2.0",
     "@types/bcryptjs": "3.0.0",
     "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
