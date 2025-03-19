@@ -19,7 +19,7 @@ setupContainer().then((container) => {
   const logger = container.get<ILogger>(CORE_DI_TYPES.Logger);
   database.initialize()
     .then(() => {
-      server.build().listen({ host, port }, () => {
+      server.listen({ host, port }, () => {
         logger.info(`⚡️ Server is running at http://${host}:${port}`);
       });
     })

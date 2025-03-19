@@ -14,7 +14,7 @@ export const registerRequestHandlers = (containerBuilder: ContainerBuilder) => {
 };
 
 /**
- * This class is used to register all the use cases in the container
+ * This class is used to register all the request handlers in the container
  */
 class RequestHandlersContainerBuilder {
   constructor(private readonly containerBuilder: ContainerBuilder) {}

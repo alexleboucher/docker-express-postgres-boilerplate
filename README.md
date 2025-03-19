@@ -63,7 +63,6 @@ Packages are frequently upgraded. You can easily see the packages version status
   - **High code coverage** (>90%) to ensure reliability and stability.
 - **Clean Architecture** principles for better separation of concerns and scalability.
 - **Dependency Injection** powered by [Inversify](https://github.com/inversify/InversifyJS), ensuring a modular and testable code structure.
-- **Controller management** with [inversify-express-utils](https://github.com/inversify/inversify-express-utils) for clean and structured route definitions.
 - **Route protection** with custom middleware.
 - **Error handling** with centralized and consistent middleware.
 - **Basic Security Features** with [Helmet](https://helmetjs.github.io/) and [cors](https://github.com/expressjs/cors).
@@ -223,7 +222,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 | **coverage/**                                 | Jest coverage results will be placed here |
 | **src/**                                      | Source files |
 | **src/app/**                                  | Application layer containing controllers, middlewares, and request handlers. |
-| **src/app/controllers/**                      | REST API controllers implemented with `inversify-express-utils`. |
+| **src/app/routers/**                          | REST API routers. |
 | **src/app/middlewares/**                      | Custom Express middlewares for authentication, error handling, etc. |
 | **src/app/request-handlers/**                 | Handlers for processing API requests following the Clean Architecture principles. Organized into commands and queries. |
 | **src/app/server.ts**                         | Express server configuration and initialization. |
@@ -284,13 +283,13 @@ This boilerplate uses JSON Web Tokens to handle authentication with `jsonwebtoke
 To ensure route security and verify the user's authentication status, this boilerplate provides a custom middleware:  
 **`AuthenticatedMiddleware`**, located in `src/app/middlewares/authenticated-middleware.ts`.
 
-This middleware ensures the user is authenticated before allowing access to the route. It integrates seamlessly with the controllers, as shown in the example below:  
+This middleware ensures the user is authenticated before allowing access to the route. It can be integrated like in the example below:  
 
 ```typescript
-@httpPost('/your-protected-route', MIDDLEWARES_DI_TYPES.AuthenticatedMiddleware)
-public yourProtectedRoute(): void {
-  // yourProtectedRoute logic here
-}
+this.router.route('/your-protected-route').get(
+  this.authenticatedMiddleware.handler.bind(this.authenticatedMiddleware),
+  this.yourProtectedRouteRequestHandler.handle.bind(this.yourProtectedRoute)
+);
 ```
 
 This pattern allows you to secure endpoints declaratively and keeps the authentication logic consistent throughout the project.

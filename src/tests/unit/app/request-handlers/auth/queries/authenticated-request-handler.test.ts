@@ -13,7 +13,7 @@ describe('AuthenticatedRequestHandler', () => {
     const res = mock<Response>();
 
     const handler = new AuthenticatedRequestHandler();
-    handler.handle(req, res);
+    handler.handler(req, res);
 
     expect(res.send).toHaveBeenCalledWith({
       authenticated: true,
@@ -25,7 +25,7 @@ describe('AuthenticatedRequestHandler', () => {
     const res = mock<Response>();
 
     const handler = new AuthenticatedRequestHandler();
-    handler.handle(req, res);
+    handler.handler(req, res);
 
     expect(res.send).toHaveBeenCalledWith({
       authenticated: false,

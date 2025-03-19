@@ -28,9 +28,7 @@ export class LoginRequestHandler implements IRequestHandler {
     @inject(USE_CASES_DI_TYPES.LoginUseCase) private readonly loginUseCase: IUseCase<LoginUseCasePayload, LoginUseCaseSuccess, LoginUseCaseFailure>,
   ) {}
 
-  async handle(req: Request, res: Response<ResponseBody>, next: NextFunction) {
-    // We don't need to get the values because the authenticator will handle the authentication
-    // but we validate the body to ensure the request is well-formed
+  async handler(req: Request, res: Response<ResponseBody>, next: NextFunction) {
     const { email, password } = payloadSchema.parse(req.body);
 
     const result = await this.loginUseCase.execute({ email, password });

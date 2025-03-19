@@ -35,7 +35,7 @@ describe('CreateUserRequestHandler', () => {
     );
 
     const handler = new CreateUserRequestHandler(createUserUseCase);
-    await handler.handle(req, res);
+    await handler.handler(req, res);
 
     expect(createUserUseCase.execute).toHaveBeenCalledWith({
       email: req.body.email,
@@ -63,7 +63,7 @@ describe('CreateUserRequestHandler', () => {
     const createUserUseCase = mock<IUseCase>();
 
     const handler = new CreateUserRequestHandler(createUserUseCase);
-    await expect(handler.handle(req, res)).rejects.toThrow(ZodError);
+    await expect(handler.handler(req, res)).rejects.toThrow(ZodError);
   });
 
   test('Throw conflict error if email already exists', async () => {
@@ -86,7 +86,7 @@ describe('CreateUserRequestHandler', () => {
     );
 
     const handler = new CreateUserRequestHandler(createUserUseCase);
-    await expect(handler.handle(req, res)).rejects.toStrictEqual(HttpError.conflict('Email already exists'));
+    await expect(handler.handler(req, res)).rejects.toStrictEqual(HttpError.conflict('Email already exists'));
   });
 
   test('Throw conflict error if username already exists', async () => {
@@ -109,6 +109,6 @@ describe('CreateUserRequestHandler', () => {
     );
 
     const handler = new CreateUserRequestHandler(createUserUseCase);
-    await expect(handler.handle(req, res)).rejects.toStrictEqual(HttpError.conflict('Username already exists'));
+    await expect(handler.handler(req, res)).rejects.toStrictEqual(HttpError.conflict('Username already exists'));
   });
 });

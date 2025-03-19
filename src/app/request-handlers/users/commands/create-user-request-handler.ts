@@ -26,7 +26,7 @@ export class CreateUserRequestHandler implements IRequestHandler {
     @inject(USE_CASES_DI_TYPES.CreateUserUseCase) private readonly createUserUseCase: IUseCase<CreateUserUseCasePayload, CreateUserUseCaseSuccess, CreateUserUseCaseFailure>,
   ) {}
 
-  async handle(req: Request, res: Response<ResponseBody>) {
+  async handler(req: Request, res: Response<ResponseBody>) {
     const { email, username, password } = payloadSchema.parse(req.body);
 
     const result = await this.createUserUseCase.execute({

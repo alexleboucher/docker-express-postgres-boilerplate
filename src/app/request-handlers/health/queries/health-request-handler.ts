@@ -9,7 +9,7 @@ type ResponseBody = {
 
 @injectable()
 export class HealthRequestHandler implements IRequestHandler {
-  handle(req: Request, res: Response<ResponseBody>) {
+  handler(req: Request, res: Response<ResponseBody>) {
     const response: ResponseBody = {
       success: true,
     };
