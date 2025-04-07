@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify';
-import 'express-async-errors';
 
 import { BaseRouter } from '@/app/routers/base-router';
 import { REQUEST_HANDLERS_DI_TYPES } from '@/container/request-handlers/di-types';
