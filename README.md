@@ -96,7 +96,7 @@ Packages are frequently upgraded. You can easily see the packages version status
 
 ## Getting Started
 
-### Step 1: Clone the project
+### Step 1: Clone the project (or use "Use this template" button on GitHub page)
 
 ```bash
 git clone https://github.com/alexleboucher/docker-express-postgres-boilerplate
