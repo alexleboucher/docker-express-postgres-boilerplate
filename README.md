@@ -125,6 +125,7 @@ Start the application in a Docker container and run the development server:
 
 ```bash
 yarn docker:up
+yarn install
 yarn dev
 ```
 
@@ -171,7 +172,15 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 ### Install
 
-- Install all dependencies with `yarn install`.
+- Run `yarn install` to install all dependencies. This command needs to be executed:
+  1. Locally on your host machine
+  2. Inside the Docker container
+
+  This dual installation is necessary because node_modules are intentionally not shared between host and container to avoid OS compatibility issues.
+
+  > **Important**: The container should generate the final `yarn.lock` file. Either:
+  > - Run `yarn install` in the container last, or
+  > - Use `yarn install --pure-lockfile` locally to prevent updating yarn.lock
 
 ### Running in dev mode
 
