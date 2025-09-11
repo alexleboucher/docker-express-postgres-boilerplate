@@ -4,8 +4,9 @@ import stylistic from '@stylistic/eslint-plugin';
 import jseslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: ['build/*', 'src/infra/database/migrations/*', 'jest.config.ts', '**/tmp/**', '**/coverage/**', 'eslint.config.mjs'],
   },
