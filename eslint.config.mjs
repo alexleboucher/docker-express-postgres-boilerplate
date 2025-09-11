@@ -4,8 +4,9 @@ import stylistic from '@stylistic/eslint-plugin';
 import jseslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: ['build/*', 'src/infra/database/migrations/*', 'jest.config.ts', '**/tmp/**', '**/coverage/**', 'eslint.config.mjs'],
   },
@@ -85,8 +86,9 @@ export default tseslint.config(
       "@stylistic/array-bracket-spacing": ["warn", "never"],
       "@stylistic/array-element-newline": ["warn", "consistent"],
       "@stylistic/arrow-spacing": "warn",
-      "@stylistic/block-spacing": "warn",
-      "@stylistic/brace-style": ["warn", "1tbs", { "allowSingleLine": true }],
+      "@stylistic/object-curly-newline": ["warn", { "multiline": true, "consistent": true }],
+      "@stylistic/object-curly-spacing": ["warn", "always"],
+      "@stylistic/object-property-newline": ["warn", { "allowAllPropertiesOnSameLine": true }],
       "@stylistic/comma-spacing": ["warn", { "before": false, "after": true }],
       "@stylistic/computed-property-spacing": ["warn", "never"],
       "@stylistic/comma-style": ["warn", "last"],
@@ -116,7 +118,6 @@ export default tseslint.config(
       "@stylistic/no-trailing-spaces": "warn",
       "@stylistic/no-whitespace-before-property": "warn",
       "@stylistic/nonblock-statement-body-position": ["warn", "beside"],
-      "@stylistic/object-curly-spacing": ["warn", "always"],
       "@stylistic/quote-props": ["warn", "as-needed"],
       "@stylistic/quotes": ["warn", "single", { "avoidEscape": true }],
       "@stylistic/rest-spread-spacing": "warn",
