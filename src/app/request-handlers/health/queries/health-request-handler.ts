@@ -7,6 +7,15 @@ type ResponseBody = {
   success: boolean;
 };
 
+let a = { a: 'aaaaa', u: 'aaaaa', aaa: 'ffff' };
+
+let b = {
+  a: 'aaaaa',
+  u: 'aaaaa',
+  aaa: 'ffff'
+};
+
+
 @injectable()
 export class HealthRequestHandler implements IRequestHandler {
   handler(req: Request, res: Response<ResponseBody>) {
