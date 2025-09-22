@@ -1,55 +1,59 @@
 import { injectable } from 'inversify';
-import { DataSource, type EntityTarget, type ObjectLiteral, type QueryRunner, type Repository } from 'typeorm';
-import type { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { Pool } from 'pg';
+
+import * as userSchema from './schemas/user';
 
 export type DatabaseConfig = {
-  type: PostgresConnectionOptions['type'];
-  host: PostgresConnectionOptions['host'];
-  port: PostgresConnectionOptions['port'];
-  username: PostgresConnectionOptions['username'];
-  password: PostgresConnectionOptions['password'];
-  database: PostgresConnectionOptions['database'];
-  logging: PostgresConnectionOptions['logging'];
-  migrationsRun: PostgresConnectionOptions['migrationsRun'];
-  entities: PostgresConnectionOptions['entities'];
-  migrations: PostgresConnectionOptions['migrations'];
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+  ssl: boolean;
 };
 
+
+// Helper function to create db instance with proper typing
+const buildDrizzle = (pool: Pool) => drizzle({
+  schema: { ...userSchema },
+  client: pool,
+});
+
 export interface IDatabase {
-  initialize(): Promise<DataSource>;
   destroyIfInitialized(): Promise<void>;
-  getDataSource: () => DataSource;
-  createQueryRunner: () => QueryRunner;
-  getRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): Repository<Entity>;
+  getInstance(): ReturnType<typeof buildDrizzle>;
+  initialize(): Promise<void>;
 }
 
 @injectable()
 export class Database implements IDatabase {
-  private dataSource: DataSource;
+  private instance: ReturnType<typeof buildDrizzle>;
+  private pool: Pool;
 
   constructor(config: DatabaseConfig) {
-    this.dataSource = new DataSource(config);
+    const pool = new Pool({
+      host: config.host,
+      port: config.port,
+      user: config.username,
+      password: config.password,
+      database: config.database,
+      ssl: config.ssl,
+    });
+    this.pool = pool;
+    this.instance = buildDrizzle(pool);
   }
 
-  initialize() {
-    return this.dataSource.initialize();
+  async initialize() {
+    return migrate(this.instance, { migrationsFolder: 'src/infra/database/migrations' });
+  }
+
+  getInstance() {
+    return this.instance;
   }
 
   async destroyIfInitialized() {
-    if (this.dataSource.isInitialized) {
-      await this.dataSource.destroy();
-    }
-  }
-
-  getRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>) {
-    return this.dataSource.getRepository(target);
-  }
-
-  createQueryRunner() {
-    return this.dataSource.createQueryRunner();
-  }
-
-  getDataSource() {
-    return this.dataSource;
+    await this.pool.end();
   }
 }

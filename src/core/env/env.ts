@@ -1,3 +1,7 @@
+import { config } from 'dotenv';
+
+config();
+
 export const env = (key: string, defaultValue: string): string => process.env[key] ?? defaultValue;
 
 export const mandatoryEnv = (key: string): string => {

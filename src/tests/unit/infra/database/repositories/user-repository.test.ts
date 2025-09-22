@@ -1,31 +1,24 @@
 import { mock } from 'jest-mock-extended';
-import type { Repository } from 'typeorm';
 
-
-import { mockTypeOrmQueryRunner } from '@/tests/helpers/test-helpers';
-import type { IDatabase } from '@/infra/database/database';
+import { createMockDrizzleDatabase } from '@/tests/helpers/test-helpers';
 import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
-import type { UserEntity } from '@/infra/database/models/user.entity';
 import { UserRepository } from '@/infra/database/repositories/user-repository';
+import type { UserEntity } from '@/infra/database/schemas/user';
 import { User } from '@/domain/models/user';
 
 describe('UserRepository', () => {
   const mockDependencies = () => ({
-    database: mock<IDatabase>(),
     encryptor: mock<IEncryptor>(),
-    databaseUserRepository: mock<Repository<UserEntity>>(),
+    ...createMockDrizzleDatabase(['userTable', 'postTable'] as const),
   });
 
   describe('findOneById', () => {
     test('Return null if user is not found', async () => {
       const userId = 'id';
 
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.findOne
-        .calledWith(expect.objectContaining({ id: userId }))
-        .mockResolvedValue(null);
+      tables.userTable.findFirst.mockResolvedValue(undefined);
 
       const userRepository = new UserRepository(database, encryptor);
       const user = await userRepository.findOneById(userId);
@@ -35,36 +28,34 @@ describe('UserRepository', () => {
 
     test('Return user if found', async () => {
       const userId = 'id';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.findOneBy
-        .calledWith(expect.objectContaining({ id: userId }))
-        .mockResolvedValue({
-          id: userId,
-          username: 'username',
-          email: 'email',
-          hashPassword: 'hashPassword',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as UserEntity);
+      const now = new Date();
+
+      const userData = {
+        id: userId,
+        username: 'username',
+        email: 'email',
+        hashPassword: 'hashPassword',
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      } as UserEntity;
+      tables.userTable.findFirst.mockResolvedValue(userData);
 
       const userRepository = new UserRepository(database, encryptor);
       const user = await userRepository.findOneById(userId);
 
-      expect(user).not.toBeNull();
+      expect(user).toStrictEqual(new User(userData));
     });
   });
 
   describe('findOneByEmailPassword', () => {
     test('Return null if user is not found', async () => {
       const userEmail = 'email@test.com';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.findOne
-        .calledWith(expect.objectContaining({ where: { email: userEmail } }))
-        .mockResolvedValue(null);
+      tables.userTable.findFirst.mockResolvedValue(undefined);
 
       const userRepository = new UserRepository(database, encryptor);
       const user = await userRepository.findOneByEmailPassword(userEmail, 'password');
@@ -74,12 +65,16 @@ describe('UserRepository', () => {
 
     test('Return null if password is invalid', async () => {
       const userEmail = 'email@test.com';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.findOne
-        .calledWith(expect.objectContaining({ where: { email: userEmail } }))
-        .mockResolvedValue({} as UserEntity);
+      tables.userTable.findFirst.mockResolvedValue({
+        id: 'id',
+        username: 'username',
+        email: userEmail,
+        hashPassword: 'hashPassword',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as UserEntity);
 
       encryptor.comparePassword.mockResolvedValue(false);
 
@@ -91,38 +86,41 @@ describe('UserRepository', () => {
 
     test('Return user if found and password is valid', async () => {
       const userEmail = 'email@test.com';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.findOne
-        .calledWith(expect.objectContaining({ where: { email: userEmail } }))
-        .mockResolvedValue({
-          id: 'id',
-          username: 'username',
-          email: userEmail,
-          hashPassword: 'hashPassword',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as UserEntity);
+      const userData = {
+        id: 'id',
+        username: 'username',
+        email: userEmail,
+        hashPassword: 'hashPassword',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as UserEntity;
+
+      tables.userTable.findFirst.mockResolvedValue(userData);
 
       encryptor.comparePassword.mockResolvedValue(true);
 
       const userRepository = new UserRepository(database, encryptor);
       const user = await userRepository.findOneByEmailPassword(userEmail, 'password');
 
-      expect(user).not.toBeNull();
+      expect(user).toStrictEqual(new User(userData));
     });
   });
 
   describe('existsByEmail', () => {
     test('Return true if user exists', async () => {
       const userEmail = 'email@test.com';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ email: userEmail }))
-        .mockResolvedValue(true);
+      tables.userTable.findFirst.mockResolvedValue({
+        id: 'id',
+        username: 'username',
+        email: userEmail,
+        hashPassword: 'hashPassword',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as UserEntity);
 
       const userRepository = new UserRepository(database, encryptor);
       const exists = await userRepository.existsByEmail(userEmail);
@@ -132,12 +130,9 @@ describe('UserRepository', () => {
 
     test("Return false if user doesn't exist", async () => {
       const userEmail = 'email@test.com';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ email: userEmail }))
-        .mockResolvedValue(false);
+      tables.userTable.findFirst.mockResolvedValue(undefined);
 
       const userRepository = new UserRepository(database, encryptor);
       const exists = await userRepository.existsByEmail(userEmail);
@@ -149,12 +144,16 @@ describe('UserRepository', () => {
   describe('existsByUsername', () => {
     test('Return true if user exists', async () => {
       const userUsername = 'username';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ username: userUsername }))
-        .mockResolvedValue(true);
+      tables.userTable.findFirst.mockResolvedValue({
+        id: 'id',
+        username: userUsername,
+        email: 'email@email.com',
+        hashPassword: 'hashPassword',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
 
       const userRepository = new UserRepository(database, encryptor);
       const exists = await userRepository.existsByUsername(userUsername);
@@ -164,12 +163,9 @@ describe('UserRepository', () => {
 
     test("Return false if user doesn't exist", async () => {
       const userUsername = 'username';
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
+      const { database, encryptor, tables } = mockDependencies();
 
-      database.getRepository.mockReturnValue(databaseUserRepository);
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ username: userUsername }))
-        .mockResolvedValue(false);
+      tables.userTable.findFirst.mockResolvedValue(undefined);
 
       const userRepository = new UserRepository(database, encryptor);
       const exists = await userRepository.existsByUsername(userUsername);
@@ -179,16 +175,6 @@ describe('UserRepository', () => {
   });
 
   describe('create', () => {
-    const mockDependenciesWithQueryRunner = () => {
-      const { database, encryptor, databaseUserRepository } = mockDependencies();
-
-      const queryRunner = mockTypeOrmQueryRunner();
-      queryRunner.manager.getRepository = jest.fn().mockReturnValue(databaseUserRepository);
-      database.createQueryRunner.mockReturnValue(queryRunner);
-
-      return { database, encryptor, databaseUserRepository };
-    };
-
     test('Create user and return it', async () => {
       const user = new User({
         id: 'id',
@@ -200,31 +186,34 @@ describe('UserRepository', () => {
         deletedAt: null,
       });
 
-      const { database, encryptor, databaseUserRepository } = mockDependenciesWithQueryRunner();
+      const { database, encryptor, txInsert, txValues, txReturning } = mockDependencies();
 
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ email: user.email }))
-        .mockResolvedValue(false);
+      // Mock the transaction to return the user data
+      const userData = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        hashPassword: user.hashPassword,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        deletedAt: user.deletedAt,
+      } as UserEntity;
 
-      databaseUserRepository.existsBy
-        .calledWith(expect.objectContaining({ username: user.username }))
-        .mockResolvedValue(false);
-
-      databaseUserRepository.save
-        .calledWith(expect.objectContaining({ email: user.email }))
-        .mockResolvedValue({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          hashPassword: user.hashPassword,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-          deletedAt: null,
-        });
+      txReturning.mockResolvedValue([userData]);
 
       const userRepository = new UserRepository(database, encryptor);
       const createdUser = await userRepository.create(user);
 
+      expect(txInsert).toHaveBeenCalled();
+      expect(txValues).toHaveBeenCalledWith({
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        hashPassword: user.hashPassword,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        deletedAt: user.deletedAt,
+      });
       expect(createdUser).toStrictEqual(user);
     });
   });

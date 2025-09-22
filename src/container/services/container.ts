@@ -1,7 +1,7 @@
 import type { BuildContainerOptions, ContainerBuilder } from '@/container/container';
 import { REPOSITORIES_DI_TYPES } from '@/container/repositories/di-types';
 import { SERVICES_DI_TYPES } from '@/container/services/di-types';
-import { integerEnv, mandatoryEnv, mandatoryIntegerEnv, booleanEnv, env } from '@/core/env/env';
+import { booleanEnv, integerEnv, mandatoryEnv, mandatoryIntegerEnv } from '@/core/env/env';
 import type { IUserRepository } from '@/domain/repositories/user-repository.interface';
 import type { IAuthenticator } from '@/domain/services/auth/authenticator.interface';
 import type { IEncryptor } from '@/domain/services/security/encryptor.interface';
@@ -81,17 +81,20 @@ class ServicesContainerBuilder {
   private getDatabaseConfig(): DatabaseConfig {
     const isTest = mandatoryEnv('NODE_ENV') === 'test';
 
+    const host = isTest ? mandatoryEnv('TEST_DB_HOST') : mandatoryEnv('DB_HOST');
+    const port = isTest ? mandatoryIntegerEnv('TEST_DB_PORT') : mandatoryIntegerEnv('DB_PORT');
+    const username = mandatoryEnv('DB_USER');
+    const password = mandatoryEnv('DB_PASSWORD');
+    const database = isTest ? mandatoryEnv('TEST_DB_NAME') : mandatoryEnv('DB_NAME');
+    const ssl = isTest ? false : booleanEnv('DB_SSL', false);
+
     return {
-      type: 'postgres',
-      host: isTest ? mandatoryEnv('TEST_DB_HOST') : mandatoryEnv('DB_HOST'),
-      port: isTest ? mandatoryIntegerEnv('TEST_DB_PORT') : mandatoryIntegerEnv('DB_PORT'),
-      username: mandatoryEnv('DB_USER'),
-      password: mandatoryEnv('DB_PASSWORD'),
-      database: isTest ? mandatoryEnv('TEST_DB_NAME') : mandatoryEnv('DB_NAME'),
-      logging: booleanEnv('DB_LOGGING', false),
-      migrationsRun: isTest,
-      entities: [env('TYPEORM_ENTITIES', 'src/infra/database/models/**/*.entity.ts')],
-      migrations: [env('TYPEORM_MIGRATIONS', 'src/infra/database/migrations/**/*.ts')],
+      host,
+      port,
+      username,
+      password,
+      database,
+      ssl,
     };
   }
 }
