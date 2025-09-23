@@ -1,6 +1,7 @@
 import type { Container } from 'inversify';
 import type { Server } from 'http';
 import request from 'supertest';
+import { sql } from 'drizzle-orm';
 
 import type { IDatabase } from '@/infra/database/database';
 import { SERVICES_DI_TYPES } from '@/container/services/di-types';
@@ -30,9 +31,20 @@ export class TestEnvironment {
    */
   async clearDatabase() {
     const database = this.container.get<IDatabase>(SERVICES_DI_TYPES.Database);
-    const dataSource = database.getDataSource();
-    const entities = dataSource.entityMetadatas.map((entity) => `"${entity.tableName}"`).join(', ');
-    await dataSource.query(`TRUNCATE ${entities} CASCADE;`);
+    const db = database.getInstance();
+
+    const query = sql`SELECT table_name
+      FROM information_schema.tables
+      WHERE table_schema = 'public'
+        AND table_type = 'BASE TABLE';
+    `;
+
+    const results = await db.execute(query); // retrieve tables
+
+    const tableNames = results.rows.map((row) => `"${row.table_name}"`).join(', ');
+
+    const truncateQuery = sql.raw(`TRUNCATE TABLE ${tableNames} CASCADE;`);
+    await db.execute(truncateQuery); // Truncate (clear all the data) the table
   }
 
   /**

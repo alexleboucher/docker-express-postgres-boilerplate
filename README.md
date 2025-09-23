@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <b>A modern boilerplate for building scalable and maintainable REST APIs with authentication, written in TypeScript. It features Docker, Express, TypeORM, jsonwebtoken for authentication by JWT, and integrates Clean Architecture principles with Dependency Injection powered by Inversify.</b></br>
+  <b>A modern boilerplate for building scalable and maintainable REST APIs with authentication, written in TypeScript. It features Docker, Express, Drizzle, jsonwebtoken for authentication by JWT, and integrates Clean Architecture principles with Dependency Injection powered by Inversify.</b></br>
   <sub>Made with ❤️ by <a href="https://github.com/alexleboucher">Alex Le Boucher</a> and <a href="https://github.com/alexleboucher/docker-express-postgres-boilerplate/graphs/contributors">contributors</a></sub>
 </p>
 
@@ -34,7 +34,7 @@ The main goal of this boilerplate is to provide a robust foundation for building
 It integrates common features such as:
 
 - Docker containerization
-- Database connection (PostgreSQL with TypeORM)
+- Database connection (PostgreSQL with Drizzle ORM)
 - Authentication (using jsonwebtoken)
 - Centralized error handling
 - Clean Architecture principles for better separation of concerns
@@ -55,8 +55,8 @@ Packages are frequently upgraded. You can easily see the packages version status
 
 - **Docker containerization** to easily run your code anywhere and avoid installing tools like PostgreSQL on your computer.
 - **Authentication by JWT** with [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken).
-- **Simplified Database Query** managed by [TypeORM](https://github.com/typeorm/typeorm).
-- **Object-oriented database model** with [TypeORM](https://github.com/typeorm/typeorm) entities.
+- **Type-safe Database Queries** managed by [Drizzle ORM](https://orm.drizzle.team).
+- **Schema-first database models** with [Drizzle ORM](https://orm.drizzle.team) for excellent TypeScript integration.
 - **Integrated Testing Tools** with [Jest](https://jestjs.io/fr/docs/getting-started).
   - **Unit tests** and **end-to-end (E2E) tests** implemented using [Supertest](https://github.com/ladjs/supertest).
   - **Tests utilities** to simplify the creation of new tests.
@@ -67,10 +67,10 @@ Packages are frequently upgraded. You can easily see the packages version status
 - **Error handling** with centralized and consistent middleware.
 - **Basic Security Features** with [Helmet](https://helmetjs.github.io/) and [cors](https://github.com/expressjs/cors).
 - **Schema validation** thanks to [Zod](https://github.com/colinhacks/zod).
-- **Transactions control** with [TypeORM](https://github.com/typeorm/typeorm).
-- **Configurated Code Linter** with [ESLint](https://eslint.org/) and common rules.
+- **Database transactions** with [Drizzle ORM](https://orm.drizzle.team).
+- **Configured Code Linter** with [ESLint](https://eslint.org/) and common rules.
 - **HTTP Request logging** with [morgan](https://github.com/expressjs/morgan).
-- **Migration generation** based on entity changes thanks to [TypeORM](https://github.com/typeorm/typeorm).
+- **Automatic migration generation** based on schema changes with [Drizzle Kit](https://kit.drizzle.team).
 
 ---
 
@@ -85,7 +85,7 @@ Packages are frequently upgraded. You can easily see the packages version status
 - [Migrations](#migrations)
 - [Tests](#tests)
 - [HTTP Request Logging](#http-request-logging)
-- [Common Errors](#common-errors)
+- [Troubleshooting](#troubleshooting)
 - [Clean Github Templates and Workflows](#clean-github-templates-and-workflows)
 - [Upcoming Features](#upcoming-features)
 - [Further Documentations](#further-documentations)
@@ -131,6 +131,8 @@ yarn dev
 
 > This starts a local server using `nodemon`, which automatically restarts the server when file changes are detected.
 > The server will run on `http://localhost:8000`.
+> 
+> **Note**: The `yarn docker:up` command will automatically open a shell inside the backend container where you should run the subsequent commands.
 
 ### Step 4: Test the server
 
@@ -143,15 +145,7 @@ You should see the response:
 { "success": true }
 ```
 
-### Step 5: Create the user database table
-
-Create the necessary database tables by running the migrations:
-
-```bash
-yarn migration:run
-```
-
-### Step 6 (optional): Clean Github templates and workflows
+### Step 5 (optional): Clean Github templates and workflows
 
 The project contains Github templates and workflows. If you don't want to keep them, you can easily delete them by following this [section](#clean-github-templates-and-workflows).
 
@@ -194,10 +188,8 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 ### Migrations
 
-- Run `yarn migration:run` to execute all pending migrations.
-- Run `yarn migration:generate MigrationName` to generate a migration based on the current entity changes.
-- Run `yarn migration:create MigrationName` to create an empty migration file.
-- Run `yarn migration:revert` to undo the last executed migration. To revert multiple migrations, execute the command multiple times.
+- Run `yarn migration:run` to execute all pending migrations
+- Run `yarn migration:generate MigrationName` to generate a migration based on the current schema changes.
 
 ### Linting
 
@@ -215,7 +207,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 | Method | Route | Description | Body |
 |--------|-------|-------------| ---- |
-| GET    | `/health` | Retures the server health status | None. |
+| GET    | `/health` | Returns the server health status | None. |
 | POST   | `/users` | Creates a new user. | `username` (min. 5 chars), `email` (valid), `password` (min. 8 chars). |
 | POST   | `/auth/login` | Logs in a user. | `email` and `password`. |
 | GET    | `/auth/authenticated` | Returns the user authentication status | None. |
@@ -245,13 +237,15 @@ The project contains Github templates and workflows. If you don't want to keep t
 | **src/infra/**                                | Infrastructure layer providing implementations for core and domain abstractions. |
 | **src/infra/auth/**                           | Authentication implementations |
 | **src/infra/database/**                       | Database configuration, models, and migrations. |
-| **src/infra/database/repositories/**          | Concrete implementations of domain repository interfaces using TypeORM. |
+| **src/infra/database/config/**                | Database configuration files for Drizzle scripts. |
+| **src/infra/database/repositories/**          | Concrete implementations of domain repository interfaces. |
+| **src/infra/database/schemas/**               | Database schema definitions (e.g., user table schema). |
 | **src/infra/id-generator/**                   | UUID-based ID generator. |
 | **src/infra/security/**                       | Security utilities like password encryption. |
 | **src/infra/logger/**                         | Logger implementations. |
 | **src/tests/**                                | Test suite, including unit and end-to-end tests. |
 | **src/tests/e2e/**                            | End-to-end tests for API routes. |
-| **src/tests/units/**                          | Unit tests for individual modules and layers. |
+| **src/tests/unit/**                           | Unit tests for individual modules and layers. |
 | **src/tests/helpers/**                        | Utilities for simplifying test setup and assertions. |
 
 ---
@@ -263,23 +257,22 @@ The project contains Github templates and workflows. If you don't want to keep t
 | NODE_ENV                   | Specifies the environment (e.g., production, development, test). | ❌ | |
 | HOST                       | Server host. | ✔️ | 0.0.0.0 |
 | PORT                       | Server host port. | ✔️ | 8080 |
+| CORS_ORIGIN_ALLOWED        | List of allowed origins for CORS. | ✔️ | * |
+| LOGGER_TYPE                | Specifies the type of logger to use | ✔️ | console |
+| JWT_SECRET                 | Secret used to encrypt JSON web tokens. | ❌ | |
+| JWT_EXPIRES_IN_SECONDS     | Number of seconds before JWT tokens expire. | ✔️ | 86400 |
 | DB_USER                    | Database username. | ❌ | |
-| DB_HOST                    | Database host. | ❌ | |
-| DB_NAME                    | Database name. | ❌ | |
 | DB_PASSWORD                | Database password. | ❌ | |
+| DB_NAME                    | Database name. | ❌ | |
+| DB_HOST                    | Database host. | ❌ | |
 | DB_PORT                    | Database host port. | ❌ | |
 | DB_HOST_PORT               | Database mapped port for accessing the database in Docker. | ❌ | |
+| DB_SSL                     | Enable SSL for database connection (true/false). | ✔️ | false |
+| DB_AUTO_MIGRATE            | Automatically run pending migrations on startup (true/false). | ✔️ | true |
 | TEST_DB_HOST               | Test database host. | ❌ | |
 | TEST_DB_NAME               | Test database name. | ❌ | |
 | TEST_DB_PORT               | Test database host port. | ❌ | |
 | TEST_DB_HOST_PORT          | Test database mapped port for accessing the test database in Docker. | ❌ | |
-| JWT_SECRET                 | Secret used to encrypt JSON web tokens. | ❌ | |
-| JWT_EXPIRES_IN_SECONDS     | Number of seconds before JWT tokens expire. | ✔️ | 86400 |
-| CORS_ORIGIN_ALLOWED        | List of allowed origins for CORS. | ✔️ | * |
-| DB_LOGGING                 | Enables or disables query logging in TypeORM. | ✔️ | false |
-| TYPEORM_ENTITIES           | Path to TypeORM entity files. | ✔️ | src/infra/database/models/**/*.entity.ts |
-| TYPEORM_MIGRATIONS         | Path to TypeORM migration files. | ✔️ | src/infra/database/migrations/**/*.ts |
-| LOGGER_TYPE                | Specifies the type of logger to use | ✔️ | console |
 
 ---
 
@@ -307,41 +300,25 @@ This pattern allows you to secure endpoints declaratively and keeps the authenti
 
 ## Migrations
 
-This boilerplate uses **TypeORM** to handle database migrations efficiently. Migrations allow you to track and apply changes to your database schema in a controlled and versioned manner.  
+This boilerplate uses **Drizzle** to handle database migrations efficiently. Migrations allow you to track and apply changes to your database schema in a controlled and versioned manner.  
 
-All executed migrations are recorded in a dedicated database table, which enables TypeORM to:  
-- Identify pending migrations that need to be executed.  
-- Revert specific migrations if necessary.  
+All executed migrations are recorded in a dedicated database table, which enables Drizzle to identify pending migrations that need to be executed.  
 
-⚠️ **Important**: All migration commands must be executed from within the `backend` container shell.
+⚠️ **Important**: All migration commands must be executed from within the `backend` container shell. Use `yarn docker:shell` to access the container shell.
 
-### Creating a migration
-
-To create a new migration, run the following command:  
-```bash
-yarn migration:create MigrationName
-```
-
-This will create an empty migration file in src/infra/database/migrations/. A migration file contains two functions:
-
-- `up`: Defines the changes to be applied to the database when the migration is executed.
-- `down`: Defines how to revert the changes applied by the `up` function.
-
-You must manually define the logic for both functions when creating an empty migration.
 
 ### Generating a migration
-TypeORM also allows you to generate migrations automatically based on changes in your entities. To generate a migration:
+Drizzle allows you to generate migrations automatically based on changes in your schema files. To generate a migration, run:
 ```bash
 yarn migration:generate MigrationName
 ```
 
-This will create a migration file in `src/infra/database/migrations/`. The content of the migration will be automatically generated by comparing your updated entities with the current database schema.
+This will create a migration file in `src/infra/database/migrations/`. The content of the migration will be automatically generated by comparing your updated schema files with the current database schema.
 
-**Exemple:**
-1. Add a new property `firstName` to the `User` entity:
+**Example:**
+1. Add a new property `firstName` to the `user` schema:
 ```typescript
-@Column({ nullable: false, length: 20 })
-firstName!: string;
+firstName: varchar('first_name', { length: 20 }).notNull(),
 ```
 2. Run:
 ```bash
@@ -351,19 +328,23 @@ yarn migration:generate AddFirstNameInUser
 
 ### Running migrations
 
+#### Run migrations manually
 To execute pending migrations and update your database schema:
 ```bash
 yarn migration:run
 ```
 This will run all migrations that have not yet been applied to the database.
 
-### Reverting migrations
+#### Automatically apply migrations on startup
 
-To revert the last executed migration, run:
-```bash
-yarn migration:revert
-```
-If you need to revert multiple migrations, you can execute this command multiple times. Each execution will revert one migration in reverse order of their execution.
+You can let the application apply pending migrations automatically at startup.
+
+- Set the environment variable `DB_AUTO_MIGRATE=true` (default in this boilerplate) to enable auto-migrate.
+- On application start, pending migrations in `src/infra/database/migrations/` are executed using Drizzle's migrator.
+
+Notes:
+- This is convenient for development and CI. You may prefer setting `DB_AUTO_MIGRATE=false` in production to run migrations explicitly via `yarn migration:run` during your deploy process.
+- Auto-migrate runs as part of the app initialization; manual `yarn migration:run` remains available at any time.
 
 ---
 
@@ -379,9 +360,10 @@ The tests are divided into two types: **end-to-end tests** and **unit tests**.
 
 - **Run all tests:**
 ```bash
+yarn docker:test:up
 yarn test
 ```
-Execute this command in the `backend` container shell after running command `yarn docker:test:up`
+Execute the test commands in the `backend` container shell after running `yarn docker:test:up`
 
 - **Run tests with coverage:**
 ```bash
@@ -502,7 +484,7 @@ Include tests for error cases or edge conditions:
 ## HTTP Request Logging
 
 To log HTTP requests, we use the express middleware [morgan](https://github.com/expressjs/morgan).
-You can easily configure it by passing a [predifined format](https://github.com/expressjs/morgan#predefined-formats) as parameter in `src/config/express.ts`.
+You can easily configure it by passing a [predefined format](https://github.com/expressjs/morgan#predefined-formats) in `src/app/server.ts`.
 
 Example:
 ```typescript
@@ -511,11 +493,28 @@ app.use(morgan('short'));
 
 ---
 
-## Common Errors
+## Troubleshooting
 
-If you encounter an error when running `yarn docker:up`, make sure Docker Desktop is running.
+### Common Errors
 
-If you encounter an error when running a script, make sure you ran the script in the `backend` container shell.
+**Docker Issues:**
+- If you encounter an error when running `yarn docker:up`, make sure Docker Desktop is running
+- If containers fail to start, try `yarn docker:down` first to clean up any existing containers
+- If you get permission errors, ensure Docker has proper permissions on your system
+
+**Script Execution:**
+- If you encounter an error when running a script, make sure you ran the script in the `backend` container shell
+- Use `yarn docker:shell` to access the container shell if needed
+- Remember that most scripts (except Docker commands) must be executed inside the container
+
+**Database Issues:**
+- If migrations fail, ensure the database is running and accessible
+- Check that all required environment variables are set in your `.env` file
+- For test database issues, ensure `yarn docker:test:up` is running before executing tests
+
+**Port Conflicts:**
+- If you get "port already in use" errors, check if another service is using the same port
+- You can change ports in your `.env` file if needed
 
 ---
 
@@ -556,7 +555,7 @@ You can see the upcoming or in progress features [here](https://github.com/users
 | Name & Link                       | Description                       |
 | --------------------------------- | --------------------------------- |
 | [Express](https://expressjs.com/) | Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. |
-| [TypeORM](http://typeorm.io/#/) | TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework. |
+| [Drizzle ORM](https://orm.drizzle.team/) | Drizzle ORM is a lightweight TypeScript ORM for SQL databases, designed for type safety, performance, and developer experience. |
 | [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) | An implementation of JSON Web Tokens for Node.js that helps you securely transmit information between parties as a JSON object. |
 | [Docker](https://www.docker.com/) | Docker is a platform designed to help developers build, share, and run modern applications. We handle the tedious setup, so you can focus on the code. |
 | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. |

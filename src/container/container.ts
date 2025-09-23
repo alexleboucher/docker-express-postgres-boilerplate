@@ -11,18 +11,8 @@ import { registerRouters } from '@/container/routers/container';
 
 type ContainerRegisterAction = (container: Container) => void | Promise<void>;
 
-export type BuildContainerOptions = {
-  onlyDatabase?: boolean;
-};
-
-export const setupContainer = (options?: BuildContainerOptions) => {
-  let builder;
-
-  if (options?.onlyDatabase) {
-    builder = new ContainerBuilder().registerOnlyDatabase();
-  } else {
-    builder = new ContainerBuilder().register();
-  }
+export const setupContainer = () => {
+  const builder = new ContainerBuilder().register();
 
   return builder.build();
 };
@@ -53,17 +43,12 @@ export class ContainerBuilder {
     return this;
   }
 
-  registerOnlyDatabase() {
-    this.registerServices({ onlyDatabase: true });
-    return this;
-  }
-
   private registerCore() {
     return registerCore(this);
   }
 
-  private registerServices(options?: BuildContainerOptions) {
-    return registerServices(this, options);
+  private registerServices() {
+    return registerServices(this);
   }
 
   private registerRepositories() {
