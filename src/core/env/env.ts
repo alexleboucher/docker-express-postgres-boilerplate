@@ -2,11 +2,18 @@ import { config } from 'dotenv';
 
 config();
 
-export const env = (key: string, defaultValue: string): string => process.env[key] ?? defaultValue;
+export function isDefined<T>(value: T | undefined): value is T {
+  return value !== undefined && value !== '';
+}
+
+export const env = (key: string, defaultValue: string): string => {
+  const value = process.env[key];
+  return isDefined(value) ? value : defaultValue;
+};
 
 export const mandatoryEnv = (key: string): string => {
   const value = process.env[key];
-  if (value === undefined) {
+  if (!isDefined(value)) {
     throw new Error(`Variable ${key} not found in environment`);
   }
 
@@ -15,13 +22,13 @@ export const mandatoryEnv = (key: string): string => {
 
 export const integerEnv = (key: string, defaultValue: number): number => {
   const value = process.env[key];
-  return value === undefined ? defaultValue : parseInt(value, 10);
+  return isDefined(value) ? parseInt(value, 10) : defaultValue;
 };
 
 export const mandatoryIntegerEnv = (key: string): number => {
   const value = process.env[key];
 
-  if (value === undefined) {
+  if (!isDefined(value)) {
     throw new Error(`Variable ${key} not found in environment`);
   }
 
@@ -31,17 +38,19 @@ export const mandatoryIntegerEnv = (key: string): number => {
 export const booleanEnv = (key: string, defaultValue: boolean): boolean => {
   const value = process.env[key];
 
-  if (value !== undefined && value !== 'true' && value !== 'false') {
+  const isDefinedValue = isDefined(value);
+
+  if (isDefinedValue && value !== 'true' && value !== 'false') {
     throw new Error(`Variable ${key} must be a boolean`);
   }
 
-  return value === undefined ? defaultValue : value === 'true';
+  return isDefinedValue ? value === 'true' : defaultValue;
 };
 
 export const mandatoryBooleanEnv = (key: string): boolean => {
   const value = process.env[key];
 
-  if (value === undefined) {
+  if (!isDefined(value)) {
     throw new Error(`Variable ${key} not found in environment`);
   }
 
@@ -55,9 +64,11 @@ export const mandatoryBooleanEnv = (key: string): boolean => {
 export const unionEnv = <T extends string>(key: string, values: T[], defaultValue: T): T => {
   const value = process.env[key];
 
-  if (value !== undefined && !values.includes(value as T)) {
+  const isDefinedValue = isDefined(value);
+
+  if (isDefinedValue && !values.includes(value as T)) {
     throw new Error(`Variable ${key} must be one of ${values.join(', ')}`);
   }
 
-  return value === undefined ? defaultValue : value as T;
+  return isDefinedValue ? value as T : defaultValue;
 };
