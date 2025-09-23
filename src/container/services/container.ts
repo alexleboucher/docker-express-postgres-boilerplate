@@ -1,4 +1,4 @@
-import type { BuildContainerOptions, ContainerBuilder } from '@/container/container';
+import type { ContainerBuilder } from '@/container/container';
 import { REPOSITORIES_DI_TYPES } from '@/container/repositories/di-types';
 import { SERVICES_DI_TYPES } from '@/container/services/di-types';
 import { booleanEnv, integerEnv, mandatoryEnv, mandatoryIntegerEnv } from '@/core/env/env';
@@ -10,16 +10,8 @@ import type { IDatabase, DatabaseConfig } from '@/infra/database/database';
 import { Database } from '@/infra/database/database';
 import { BcryptEncryptor } from '@/infra/security/encryptor/bcrypt-encryptor';
 
-
-export const registerServices = (containerBuilder: ContainerBuilder, options?: BuildContainerOptions) => {
-  let builder;
-
-  if (options?.onlyDatabase) {
-    builder = new ServicesContainerBuilder(containerBuilder).registerOnlyDatabase();
-  } else {
-    builder = new ServicesContainerBuilder(containerBuilder).registerServices();
-  }
-
+export const registerServices = (containerBuilder: ContainerBuilder) => {
+  const builder = new ServicesContainerBuilder(containerBuilder).registerServices();
   return builder;
 };
 
@@ -34,12 +26,6 @@ class ServicesContainerBuilder {
       .registerAuthServices()
       .registerSecurityServices()
       .registerDatabaseService();
-
-    return this.containerBuilder;
-  }
-
-  registerOnlyDatabase() {
-    this.registerDatabaseService();
 
     return this.containerBuilder;
   }
@@ -87,6 +73,7 @@ class ServicesContainerBuilder {
     const password = mandatoryEnv('DB_PASSWORD');
     const database = isTest ? mandatoryEnv('TEST_DB_NAME') : mandatoryEnv('DB_NAME');
     const ssl = isTest ? false : booleanEnv('DB_SSL', false);
+    const autoMigrate = booleanEnv('DB_AUTO_MIGRATE', true);
 
     return {
       host,
@@ -95,6 +82,7 @@ class ServicesContainerBuilder {
       password,
       database,
       ssl,
+      autoMigrate,
     };
   }
 }

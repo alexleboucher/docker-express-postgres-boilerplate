@@ -12,6 +12,7 @@ export type DatabaseConfig = {
   password: string;
   database: string;
   ssl: boolean;
+  autoMigrate: boolean;
 };
 
 
@@ -31,6 +32,7 @@ export interface IDatabase {
 export class Database implements IDatabase {
   private instance: ReturnType<typeof buildDrizzle>;
   private pool: Pool;
+  private autoMigrate: boolean;
 
   constructor(config: DatabaseConfig) {
     const pool = new Pool({
@@ -43,10 +45,14 @@ export class Database implements IDatabase {
     });
     this.pool = pool;
     this.instance = buildDrizzle(pool);
+    this.autoMigrate = config.autoMigrate;
   }
 
-  async initialize() {
-    return migrate(this.instance, { migrationsFolder: 'src/infra/database/migrations' });
+  async initialize(): Promise<void> {
+    if (this.autoMigrate) {
+      await migrate(this.instance, { migrationsFolder: 'src/infra/database/migrations' });
+    }
+    return;
   }
 
   getInstance() {
