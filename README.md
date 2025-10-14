@@ -218,7 +218,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 | Name                                          | Description                                   |
 | --------------------------------------------- | --------------------------------------------- |
-| **@types/**                                   | Global types definitions |
+| **@types/**                                   | Types definitions |
 | **build/**                                    | Compiled source files will be placed here |
 | **coverage/**                                 | Jest coverage results will be placed here |
 | **src/**                                      | Source files |

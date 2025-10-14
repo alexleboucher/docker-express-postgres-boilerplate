@@ -27,14 +27,12 @@
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "typeRoots": ["@types", "./node_modules/@types"],  
 
     /* Paths */
     "paths": {
       "@/*": ["./src/*"]
+    },
   },
-  },
-  "include": ["src/**/*", "src/tests/**/*"],
-  "exclude": ["node_modules", "build"],
-  "files": ["@types/express/index.d.ts"]
+  "include": ["src/**/*", "src/tests/**/*", "@types/**/*"],
+  "exclude": ["node_modules", "build"]
 }
