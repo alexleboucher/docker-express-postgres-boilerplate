@@ -7,12 +7,13 @@ export class RequestUser {
   id: UserId;
   username: string;
   email: string;
+
   constructor(params: {
-    id: string;
+    id: UserId;
     username: string;
     email: string;
   }) {
-    this.id = params.id as UserId;
+    this.id = params.id;
     this.username = params.username;
     this.email = params.email;
   }
