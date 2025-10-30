@@ -3,7 +3,6 @@ import 'reflect-metadata';
 import { mock } from 'jest-mock-extended';
 
 import { setupContainer } from '@/container/container';
-import { SERVICES_DI_TYPES } from '@/container/services/di-types';
 import type { IDatabase } from '@/infra/database/database';
 import { TestEnvironment } from '@/tests/helpers/test-environment';
 import { createServer } from '@/app/server';
@@ -20,16 +19,11 @@ type CreateTestServerOptions = {
  * @returns The created test environment.
  */
 export const createTestEnvironment = async (options?: CreateTestServerOptions): Promise<TestEnvironment> => {
-  const { port = 7777, connectDatabase = true } = options || {};
+  const { port = 7777 } = options || {};
 
   const container = await setupContainer();
 
   const server = createServer(container);
-
-  if (connectDatabase) {
-    const database = container.get<IDatabase>(SERVICES_DI_TYPES.Database);
-    await database.initialize();
-  }
 
   return new TestEnvironment(server.listen(port), container);
 };

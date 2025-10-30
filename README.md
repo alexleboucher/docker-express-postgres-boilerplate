@@ -268,7 +268,6 @@ The project contains Github templates and workflows. If you don't want to keep t
 | DB_PORT                    | Database host port. | ❌ | |
 | DB_HOST_PORT               | Database mapped port for accessing the database in Docker. | ❌ | |
 | DB_SSL                     | Enable SSL for database connection (true/false). | ✔️ | false |
-| DB_AUTO_MIGRATE            | Automatically run pending migrations on startup (true/false). | ✔️ | true |
 | TEST_DB_HOST               | Test database host. | ❌ | |
 | TEST_DB_NAME               | Test database name. | ❌ | |
 | TEST_DB_PORT               | Test database host port. | ❌ | |
@@ -337,14 +336,24 @@ This will run all migrations that have not yet been applied to the database.
 
 #### Automatically apply migrations on startup
 
-You can let the application apply pending migrations automatically at startup.
+This project is set up so that pending migrations are applied automatically in non-local environments before the server starts handling requests. In local development, you run them manually.
 
-- Set the environment variable `DB_AUTO_MIGRATE=true` (default in this boilerplate) to enable auto-migrate.
-- On application start, pending migrations in `src/infra/database/migrations/` are executed using Drizzle's migrator.
+- Non-local environments (Docker image, CI, production):
+  - The Docker image runs migrations on container startup, then starts the server. This keeps the deployed schema up to date.
+  - Migrations are sourced from `src/infra/database/migrations/` (compiled into the image under `build/infra/database/migrations`) and executed using Drizzle's migrator.
 
-Notes:
-- This is convenient for development and CI. You may prefer setting `DB_AUTO_MIGRATE=false` in production to run migrations explicitly via `yarn migration:run` during your deploy process.
-- Auto-migrate runs as part of the app initialization; manual `yarn migration:run` remains available at any time.
+- Local development:
+  - When running the app locally (e.g., `yarn dev`), migrations are not applied automatically.
+  - Apply any pending migrations yourself:
+    ```bash
+    yarn migration:run
+    ```
+  - Repeat this whenever you pull changes that include new migrations.
+
+- Tests:
+  - The test scripts automatically apply pending migrations to the test database before running Jest.
+  - This is handled by the test script: `NODE_ENV=test yarn migration:run && jest`.
+  - Ensures the test schema is always up to date during `yarn test` and `yarn test:coverage`.
 
 ---
 
