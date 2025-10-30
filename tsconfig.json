@@ -1,5 +1,6 @@
 {
   "ts-node": {
+    "files": true,
     "require": [
       "tsconfig-paths/register"
     ]
@@ -33,6 +34,6 @@
       "@/*": ["./src/*"]
     },
   },
-  "include": ["src/**/*", "src/tests/**/*", "@types/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "build"]
 }

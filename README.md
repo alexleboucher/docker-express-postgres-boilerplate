@@ -218,7 +218,6 @@ The project contains Github templates and workflows. If you don't want to keep t
 
 | Name                                          | Description                                   |
 | --------------------------------------------- | --------------------------------------------- |
-| **@types/**                                   | Types definitions |
 | **build/**                                    | Compiled source files will be placed here |
 | **coverage/**                                 | Jest coverage results will be placed here |
 | **src/**                                      | Source files |
@@ -247,6 +246,7 @@ The project contains Github templates and workflows. If you don't want to keep t
 | **src/tests/e2e/**                            | End-to-end tests for API routes. |
 | **src/tests/unit/**                           | Unit tests for individual modules and layers. |
 | **src/tests/helpers/**                        | Utilities for simplifying test setup and assertions. |
+| **src/types/**                                | Types definitions |
 
 ---
 
