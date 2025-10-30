@@ -73,7 +73,6 @@ class ServicesContainerBuilder {
     const password = mandatoryEnv('DB_PASSWORD');
     const database = isTest ? mandatoryEnv('TEST_DB_NAME') : mandatoryEnv('DB_NAME');
     const ssl = isTest ? false : booleanEnv('DB_SSL', false);
-    const autoMigrate = booleanEnv('DB_AUTO_MIGRATE', true);
 
     return {
       host,
@@ -82,7 +81,6 @@ class ServicesContainerBuilder {
       password,
       database,
       ssl,
-      autoMigrate,
     };
   }
 }
