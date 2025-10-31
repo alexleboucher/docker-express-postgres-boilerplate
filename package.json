@@ -14,10 +14,10 @@
     "lint": "eslint \"src/**/*.{ts,js}\"",
     "test": "NODE_ENV=test yarn migration:run && jest --runInBand",
     "test:coverage": "NODE_ENV=test yarn migration:run && jest --runInBand --collectCoverage",
-    "docker:up": "docker-compose --profile dev up -d && yarn docker:shell",
+    "docker:up": "docker-compose --profile dev up -d",
     "docker:test:up": "docker-compose --profile test up -d && yarn docker:shell",
     "docker:down": "docker-compose --profile dev --profile test down",
-    "docker:shell": "docker exec -it backend sh",
+    "docker:shell": "docker exec -it backend sh || true",
     "docker:build": "docker build . -t backend",
     "migration:generate": "sh -c 'yarn drizzle-kit generate --config=./src/infra/database/config/drizzle.config.ts --name=$0'",
     "migration:run": "yarn drizzle-kit migrate --config=./src/infra/database/config/drizzle.config.ts"

@@ -21,7 +21,7 @@ const buildDrizzle = (pool: Pool) => drizzle({
 });
 
 export interface IDatabase {
-  destroyIfInitialized(): Promise<void>;
+  close(): Promise<void>;
   getInstance(): ReturnType<typeof buildDrizzle>;
 }
 
@@ -47,7 +47,7 @@ export class Database implements IDatabase {
     return this.instance;
   }
 
-  async destroyIfInitialized() {
+  async close() {
     await this.pool.end();
   }
 }

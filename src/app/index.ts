@@ -17,4 +17,7 @@ setupContainer()
       logger.info(`⚡️ Server is running at http://${host}:${port}`);
     });
   })
-  .catch((error) => { throw error; });
+  .catch((error) => {
+    // eslint-disable-next-line no-console -- we cannot use the logger here because it is not initialized yet
+    console.error('❌ Failed to start server:', error);
+  });
