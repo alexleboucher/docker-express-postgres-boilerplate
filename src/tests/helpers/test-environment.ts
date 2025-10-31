@@ -23,7 +23,7 @@ export class TestEnvironment {
   async close() {
     this.server.close();
     const database = this.container.get<IDatabase>(SERVICES_DI_TYPES.Database);
-    await database.destroyIfInitialized();
+    await database.close();
   }
 
   /**
