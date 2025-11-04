@@ -20,6 +20,7 @@ env:
   TEST_DB_NAME: test_db
   TEST_DB_PORT: 5432
   JWT_SECRET: secret
+  LOGGER_TYPE: broken
 
 jobs:
   type-check-lint-and-build:

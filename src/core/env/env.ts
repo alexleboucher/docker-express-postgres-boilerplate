@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 
 config();
 
-export function isDefined<T>(value: T | undefined): value is T {
+function isDefined<T>(value: T | undefined): value is T {
   return value !== undefined && value !== '';
 }
 
