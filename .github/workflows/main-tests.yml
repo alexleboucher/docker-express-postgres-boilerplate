@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 env:
+  DOTENV_CONFIG_QUIET: true
   DB_USER: postgres
   DB_PASSWORD: secret
   TEST_DB_HOST: localhost

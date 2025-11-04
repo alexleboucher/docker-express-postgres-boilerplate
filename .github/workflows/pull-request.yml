@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 
 env:
+  DOTENV_CONFIG_QUIET: true
   DB_USER: postgres
   DB_PASSWORD: secret
   DB_PORT: 5432
