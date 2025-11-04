@@ -36,7 +36,7 @@ export const createServer = (container: Container) => {
 
   // This is the last request middleware, if no other middleware handled the request, it means
   // the route is not found, so we throw a not found error
-  app.get('/{*splat}', (req, res) => {
+  app.use((_req, _res) => {
     throw HttpError.notFound('Resource not found');
   });
 
