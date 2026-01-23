@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "bcryptjs": "3.0.3",
-    "cors": "2.8.5",
+    "cors": "2.8.6",
     "dotenv": "17.2.3",
     "drizzle-kit": "0.31.8",
     "drizzle-orm": "0.45.1",
@@ -33,22 +33,22 @@
     "inversify": "7.11.0",
     "jsonwebtoken": "9.0.3",
     "morgan": "1.10.1",
-    "pg": "8.17.1",
+    "pg": "8.17.2",
     "reflect-metadata": "0.2.2",
     "tslib": "2.8.1",
-    "zod": "4.3.5"
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "4.6.0",
     "@eslint/js": "9.39.2",
-    "@stylistic/eslint-plugin": "5.7.0",
+    "@stylistic/eslint-plugin": "5.7.1",
     "@types/bcryptjs": "3.0.0",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
     "@types/jest": "30.0.0",
     "@types/jsonwebtoken": "9.0.10",
     "@types/morgan": "1.9.10",
-    "@types/node": "25.0.9",
+    "@types/node": "25.0.10",
     "@types/pg": "8.16.0",
     "@types/supertest": "6.0.3",
     "eslint": "9.39.2",
@@ -63,6 +63,6 @@
     "tsc-alias": "1.8.16",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.53.0"
+    "typescript-eslint": "8.53.1"
   }
 }
