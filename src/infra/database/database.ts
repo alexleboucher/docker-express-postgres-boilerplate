@@ -1,8 +1,11 @@
 import { injectable } from 'inversify';
+import { defineRelations } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 
 import * as userSchema from './schemas/user';
+
+const relations = defineRelations({ ...userSchema });
 
 export type DatabaseConfig = {
   host: string;
@@ -16,7 +19,7 @@ export type DatabaseConfig = {
 
 // Helper function to create db instance with proper typing
 const buildDrizzle = (pool: Pool) => drizzle({
-  schema: { ...userSchema },
+  relations,
   client: pool,
 });
 

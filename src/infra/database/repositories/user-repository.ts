@@ -16,7 +16,7 @@ export class UserRepository implements IUserRepository {
 
   async findOneByEmailPassword(email: string, password: string): Promise<User | null> {
     const user = await this.database.getInstance().query.userTable.findFirst({
-      where: (user, { eq }) => eq(user.email, email),
+      where: { email },
     });
 
     if (!user) {
@@ -33,7 +33,7 @@ export class UserRepository implements IUserRepository {
 
   async findOneById(id: string): Promise<User | null> {
     const user = await this.database.getInstance().query.userTable.findFirst({
-      where: (user, { eq }) => eq(user.id, id),
+      where: { id },
     });
 
     if (!user) {
@@ -66,7 +66,7 @@ export class UserRepository implements IUserRepository {
   async existsByEmail(email: string): Promise<boolean> {
     const db = this.database.getInstance();
     const result = await db.query.userTable.findFirst({
-      where: (user, { eq }) => eq(user.email, email),
+      where: { email },
     });
 
     return !!result;
@@ -75,7 +75,7 @@ export class UserRepository implements IUserRepository {
   async existsByUsername(username: string): Promise<boolean> {
     const db = this.database.getInstance();
     const result = await db.query.userTable.findFirst({
-      where: (user, { eq }) => eq(user.username, username),
+      where: { username },
     });
 
     return !!result;

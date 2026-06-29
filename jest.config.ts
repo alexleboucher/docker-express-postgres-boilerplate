@@ -8,6 +8,12 @@ const config: Config = {
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/$1',
   },
+  transform: {
+    '^.+\\.[cm]?[tj]sx?$': ['ts-jest', { isolatedModules: true }],
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(?:\\.pnpm/)?(?:inversify|@inversifyjs)/)',
+  ],
 }
 
 export default config;
