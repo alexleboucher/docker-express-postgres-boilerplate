@@ -6,6 +6,7 @@
     ]
   },
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "types": ["node", "jest"],
     "target": "ES2022",
     "module": "CommonJS",
@@ -13,7 +14,6 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "build",
-    "baseUrl": ".",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -24,6 +24,7 @@
     "isolatedModules": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "rootDir": ".",
 
     /* Linting */
     "strict": true,
