@@ -1,9 +1,8 @@
-import importPlugin from 'eslint-plugin-import';
+import { importX } from 'eslint-plugin-import-x'
 import commentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import stylistic from '@stylistic/eslint-plugin';
 import jseslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig(
@@ -12,27 +11,23 @@ export default defineConfig(
   },
   jseslint.configs.recommended,
   tseslint.configs.recommended,
-  importPlugin.flatConfigs.recommended,
-  importPlugin.flatConfigs.typescript,
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
   commentsPlugin.recommended,
   {
     files: ['**/*.ts', '**/*.mts'],
     extends: [...tseslint.configs.recommended],
     languageOptions: {
       parser: tseslint.parser,
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       sourceType: 'module',
 
-      globals: {
-        ...globals.node,
-      },
-
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.lint.json',
       },
     },
     settings: {
-      'import/resolver': {
+      'import-x/resolver': {
         typescript: {
           alwaysTryTypes: true,
           project: './tsconfig.lint.json',
@@ -42,6 +37,7 @@ export default defineConfig(
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       '@stylistic': stylistic,
+      'import-x': importX,
     },
     rules: {
       // General rules
@@ -64,10 +60,10 @@ export default defineConfig(
       "@typescript-eslint/no-floating-promises": "error",
   
       // Import rules
-      "import/default": "off",
-      "import/no-duplicates": ["error"],
-      "import/no-named-as-default-member": "off",
-      "import/order": [
+      "import-x/default": "off",
+      "import-x/no-duplicates": ["error"],
+      "import-x/no-named-as-default-member": "off",
+      "import-x/order": [
         "warn",
         {
           "groups": [

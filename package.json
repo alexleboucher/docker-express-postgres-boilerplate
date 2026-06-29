@@ -1,6 +1,7 @@
 {
   "name": "docker-express-boilerplate",
   "version": "3.0.0",
+  "private": true,
   "description": "A boilerplate for Express.js applications with Docker, PostgreSQL, and a pre-built authentication system.",
   "main": "build/app/index.js",
   "author": "Alexis Le Boucher",
@@ -39,9 +40,9 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@eslint-community/eslint-plugin-eslint-comments": "4.6.0",
-    "@eslint/js": "9.39.2",
-    "@stylistic/eslint-plugin": "5.7.1",
+    "@eslint-community/eslint-plugin-eslint-comments": "4.7.2",
+    "@eslint/js": "10.0.1",
+    "@stylistic/eslint-plugin": "5.10.0",
     "@types/bcryptjs": "3.0.0",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
@@ -51,9 +52,9 @@
     "@types/node": "26.0.1",
     "@types/pg": "8.20.0",
     "@types/supertest": "7.2.0",
-    "eslint": "9.39.2",
-    "eslint-import-resolver-typescript": "4.4.4",
-    "eslint-plugin-import": "2.32.0",
+    "eslint": "10.6.0",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-import-x": "^4.17.1",
     "jest": "30.4.2",
     "jest-mock-extended": "4.0.1",
     "nodemon": "3.1.14",
@@ -63,6 +64,6 @@
     "tsc-alias": "1.8.17",
     "tsconfig-paths": "4.2.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.53.1"
+    "typescript-eslint": "8.62.1"
   }
 }
