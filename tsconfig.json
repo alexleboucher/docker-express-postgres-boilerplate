@@ -6,12 +6,11 @@
     ]
   },
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "types": ["node", "jest"],
     "target": "ES2022",
-    "module": "CommonJS",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "lib": ["ES2022"],
-    "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "build",
     "skipLibCheck": true,
@@ -24,7 +23,7 @@
     "isolatedModules": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "rootDir": ".",
+    "rootDir": "src",
 
     /* Linting */
     "strict": true,

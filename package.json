@@ -2,7 +2,7 @@
   "name": "docker-express-boilerplate",
   "version": "3.0.0",
   "description": "A boilerplate for Express.js applications with Docker, PostgreSQL, and a pre-built authentication system.",
-  "main": "src/app/index.js",
+  "main": "build/app/index.js",
   "author": "Alexis Le Boucher",
   "license": "MIT",
   "scripts": {
